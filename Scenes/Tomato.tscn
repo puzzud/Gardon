@@ -107,3 +107,6 @@ region_rect = Rect2( 0, 0, 16, 16 )
 anims/activate = SubResource( 2 )
 anims/deactivate = SubResource( 3 )
 anims/idle = SubResource( 1 )
+
+[node name="MoveTween" type="Tween" parent="."]
+[connection signal="tween_all_completed" from="MoveTween" to="." method="onMoveTweenAllCompleted"]

@@ -43,8 +43,13 @@ func getCellContent(cellCoordinates: Vector2):
 	
 	return cellContents[cellCoordinates.y][cellCoordinates.x]
 
-func insertPiece(piece: Piece):
-	var cellCoordinates = getCellCoordinatesFromPiece(piece)
+func clearCell(cellCoordinates):
+	cellContents[cellCoordinates.y][cellCoordinates.x] = null
+
+func insertPiece(piece: Piece, cellCoordinates = null):
+	if cellCoordinates == null:
+		cellCoordinates = getCellCoordinatesFromPiece(piece)
+	
 	if cellCoordinates == null:
 		return false
 	

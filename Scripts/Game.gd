@@ -45,9 +45,9 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	if cellPiece == null:
 		if activePiece != null:
 			# TODO: Can active piece move to this cell?
-			# TODO: Move active piece to this cell.
-			#activePiece.setActivated(false)
-			#activePiece = null
+			activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
+			$Board.clearCell($Board.getCellCoordinatesFromPiece(activePiece))
+			$Board.insertPiece(activePiece, cellCoordinates)
 			return
 		else:
 			return
@@ -59,16 +59,6 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		else:
 			cellPiece.setActivated(true)
 			activePiece = cellPiece
-			
-	
-	#if activePiece == cellPiece:
-	#	activePiece.setActivated(false)
-	#else:
-	#	if cellContent != null:
-	#		cellContent.setActivated(!cellContent.activated)
-	#	
-	#	if activePiece != null:
-	#		activePiece.setActivated(false)
 
 func onOkButtonPressed():
 	var nextTeamTurnIndex = teamTurnIndex + 1
