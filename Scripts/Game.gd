@@ -62,10 +62,22 @@ func onBoardCellPress(cellCoordinates: Vector2):
 			if activePiece == cellPiece:
 				activePiece.setActivated(false)
 				activePiece = null
+				return
+			else:
+				if cellPiece.teamIndex == activePiece.teamIndex:
+					return
+				else:
+					# TODO: Can active piece attack this cell?
+					activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
+					$Board.removePiece(activePiece)
+					$Board.removePiece(cellPiece)
+					cellPiece.queue_free()
+					$Board.insertPiece(activePiece, cellCoordinates)
 		else:
 			if cellPiece.teamIndex == teamTurnIndex:
 				cellPiece.setActivated(true)
 				activePiece = cellPiece
+				return
 
 func onOkButtonPressed():
 	var nextTeamTurnIndex = teamTurnIndex + 1
