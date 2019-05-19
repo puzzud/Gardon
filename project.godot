@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Board",
+"language": "GDScript",
+"path": "res://Scripts/Board.gd"
+}, {
+"base": "Node2D",
+"class": "Game",
+"language": "GDScript",
+"path": "res://Scripts/Game.gd"
+} ]
 _global_script_class_icons={
-
+"Board": "",
+"Game": ""
 }
 
 [application]
