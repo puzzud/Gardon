@@ -1,8 +1,8 @@
 extends Node
 #class_name Global
 
+# warning-ignore:unused_class_variable
 var game: Game = null
-var board: Board = null
 
 func _ready():
 	pass

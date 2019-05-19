@@ -4,8 +4,8 @@
 [ext_resource path="res://Scenes/Ui.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Backgrounds/Background1.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Board.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Tomato.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Cursor.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Cursor.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Tomato.tscn" type="PackedScene" id=6]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -24,6 +24,9 @@ __meta__ = {
 [node name="Board" parent="." instance=ExtResource( 4 )]
 position = Vector2( 56, 48 )
 
+[node name="Cursor" parent="." instance=ExtResource( 5 )]
+position = Vector2( 62, 54 )
+
 [node name="Pieces" type="Node2D" parent="."]
 editor/display_folded = true
 __meta__ = {
@@ -32,51 +35,48 @@ __meta__ = {
 
 [node name="Team1" type="Node2D" parent="Pieces"]
 
-[node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 5 )]
-position = Vector2( 88, 170 )
+[node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 87, 175 )
 
-[node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 5 )]
-position = Vector2( 104, 154 )
+[node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 103, 159 )
 
-[node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 5 )]
-position = Vector2( 120, 154 )
+[node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 119, 159 )
 
-[node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 5 )]
-position = Vector2( 136, 154 )
+[node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 135, 159 )
 
-[node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 5 )]
-position = Vector2( 152, 154 )
+[node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 151, 159 )
 
-[node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 5 )]
-position = Vector2( 168, 170 )
+[node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 167, 175 )
 
 [node name="Team2" type="Node2D" parent="Pieces"]
 
-[node name="Tomato2" parent="Pieces/Team2" instance=ExtResource( 5 )]
-position = Vector2( 88, 58 )
-region_rect = Rect2( 16, 0, 16, 16 )
+[node name="Tomato2" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 87, 62 )
+teamIndex = 1
 
-[node name="Tomato3" parent="Pieces/Team2" instance=ExtResource( 5 )]
-position = Vector2( 104, 73 )
-region_rect = Rect2( 16, 0, 16, 16 )
+[node name="Tomato3" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 103, 78 )
+teamIndex = 1
 
-[node name="Tomato4" parent="Pieces/Team2" instance=ExtResource( 5 )]
-position = Vector2( 120, 73 )
-region_rect = Rect2( 16, 0, 16, 16 )
+[node name="Tomato4" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 119, 78 )
+teamIndex = 1
 
-[node name="Tomato5" parent="Pieces/Team2" instance=ExtResource( 5 )]
-position = Vector2( 136, 73 )
-region_rect = Rect2( 16, 0, 16, 16 )
+[node name="Tomato5" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 135, 78 )
+teamIndex = 1
 
-[node name="Tomato6" parent="Pieces/Team2" instance=ExtResource( 5 )]
-position = Vector2( 152, 73 )
-region_rect = Rect2( 16, 0, 16, 16 )
+[node name="Tomato6" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 151, 78 )
+teamIndex = 1
 
-[node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 5 )]
-position = Vector2( 168, 57 )
-region_rect = Rect2( 16, 0, 16, 16 )
-
-[node name="Cursor" parent="." instance=ExtResource( 6 )]
-position = Vector2( 62, 54 )
+[node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 167, 62 )
+teamIndex = 1
 
 [editable path="Ui"]
