@@ -1,0 +1,95 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Tilesets/BackgroundTiles1.png" type="Texture" id=1]
+
+[node name="Tileset" type="Node2D"]
+
+[node name="BoardBorderNW" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 8, 8 )
+
+[node name="BoardBorderN" type="Sprite" parent="."]
+position = Vector2( 8, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 8, 0, 8, 8 )
+
+[node name="BoardBorderNE" type="Sprite" parent="."]
+position = Vector2( 16, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 0, 8, 8 )
+
+[node name="BoardBorderW" type="Sprite" parent="."]
+position = Vector2( 0, 8 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 8, 8, 8 )
+
+[node name="BoardBorderE" type="Sprite" parent="."]
+position = Vector2( 16, 8 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 8, 8, 8 )
+
+[node name="BoardBorderSW" type="Sprite" parent="."]
+position = Vector2( 0, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 16, 8, 8 )
+
+[node name="BoardBorderS" type="Sprite" parent="."]
+position = Vector2( 8, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 8, 16, 8, 8 )
+
+[node name="BoardBorderSE" type="Sprite" parent="."]
+position = Vector2( 16, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 16, 8, 8 )
+
+[node name="Plant" type="Sprite" parent="."]
+position = Vector2( 56, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 80, 8, 16, 8 )
+
+[node name="CellNW" type="Sprite" parent="."]
+position = Vector2( 24, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 24, 0, 16, 16 )
+
+[node name="CellNE" type="Sprite" parent="."]
+position = Vector2( 40, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 0, 16, 16 )
+
+[node name="CellSW" type="Sprite" parent="."]
+position = Vector2( 24, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 24, 16, 16, 16 )
+
+[node name="CellSE" type="Sprite" parent="."]
+position = Vector2( 40, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 16, 16, 16 )
