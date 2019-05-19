@@ -12,6 +12,8 @@
 *.js text
 *.py text
 
+*.dia text
+
 *.pal text
 
 *.md5 text

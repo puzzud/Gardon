@@ -5,6 +5,8 @@ var teamTurnIndex = 0
 
 export(Array, Color) var teamColors
 
+var activePiece: Piece = null
+
 func _ready():
 	Global.game = self
 	
@@ -39,9 +41,34 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	#var cellContent = $Board.getCellContent(cellCoordinates)
 
 func onBoardCellPress(cellCoordinates: Vector2):
-	var cellContent = $Board.getCellContent(cellCoordinates)
-	if cellContent != null:
-		cellContent.setActivated(!cellContent.activated)
+	var cellPiece = $Board.getCellContent(cellCoordinates)
+	if cellPiece == null:
+		if activePiece != null:
+			# TODO: Can active piece move to this cell?
+			# TODO: Move active piece to this cell.
+			#activePiece.setActivated(false)
+			#activePiece = null
+			return
+		else:
+			return
+	else:
+		if activePiece != null:
+			if activePiece == cellPiece:
+				activePiece.setActivated(false)
+				activePiece = null
+		else:
+			cellPiece.setActivated(true)
+			activePiece = cellPiece
+			
+	
+	#if activePiece == cellPiece:
+	#	activePiece.setActivated(false)
+	#else:
+	#	if cellContent != null:
+	#		cellContent.setActivated(!cellContent.activated)
+	#	
+	#	if activePiece != null:
+	#		activePiece.setActivated(false)
 
 func onOkButtonPressed():
 	var nextTeamTurnIndex = teamTurnIndex + 1
