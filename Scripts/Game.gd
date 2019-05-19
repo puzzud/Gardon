@@ -1,10 +1,16 @@
 extends Node2D
 class_name Game
 
+var teamTurnIndex = 0
+
+export(Array, Color) var teamColors
+
 func _ready():
 	Global.game = self
 	
 	initializeBoard()
+	
+	setTeamTurnIndex(teamTurnIndex)
 
 func initializeBoard():
 	$Board.clear()
@@ -17,6 +23,15 @@ func initializeBoard():
 				printerr("Unable to insert piece into board: " + piece.name)
 	
 	#print($Board.cellContents)
+
+func setTeamTurnIndex(teamTurnIndex: int):
+	self.teamTurnIndex = teamTurnIndex
+	
+	$Cursor.modulate = getTeamColor(teamTurnIndex)
+
+func getTeamColor(teamIndex: int) -> Color:
+	var teamColor = teamColors[teamIndex]
+	return teamColor
 
 func onBoardCellHover(cellCoordinates: Vector2):
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))

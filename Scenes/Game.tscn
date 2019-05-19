@@ -9,6 +9,7 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
+teamColors = [ Color( 0.937255, 0.490196, 0.341176, 1 ), Color( 0.694118, 0.243137, 0.32549, 1 ) ]
 
 [node name="Ui" parent="." instance=ExtResource( 2 )]
 editor/display_folded = true
