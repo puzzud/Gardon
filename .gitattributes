@@ -12,8 +12,6 @@
 *.js text
 *.py text
 
-*.dia text
-
 *.pal text
 
 *.md5 text
@@ -29,6 +27,8 @@
 *.meshlib binary
 
 *.tsx text
+
+*.dia binary
 
 *.fnt text
 

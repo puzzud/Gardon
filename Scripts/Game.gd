@@ -57,8 +57,9 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				activePiece.setActivated(false)
 				activePiece = null
 		else:
-			cellPiece.setActivated(true)
-			activePiece = cellPiece
+			if cellPiece.teamIndex == teamTurnIndex:
+				cellPiece.setActivated(true)
+				activePiece = cellPiece
 
 func onOkButtonPressed():
 	var nextTeamTurnIndex = teamTurnIndex + 1
