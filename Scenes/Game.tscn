@@ -12,7 +12,6 @@ script = ExtResource( 1 )
 teamColors = [ Color( 0.937255, 0.490196, 0.341176, 1 ), Color( 0.694118, 0.243137, 0.32549, 1 ) ]
 
 [node name="Ui" parent="." instance=ExtResource( 2 )]
-editor/display_folded = true
 
 [node name="Background" type="TextureRect" parent="."]
 margin_right = 256.0
@@ -79,6 +78,7 @@ teamIndex = 1
 [node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 6 )]
 position = Vector2( 167, 62 )
 teamIndex = 1
+[connection signal="pressed" from="Ui/OkButton" to="." method="onOkButtonPressed"]
 [connection signal="cellHover" from="Board" to="." method="onBoardCellHover"]
 
 [editable path="Ui"]

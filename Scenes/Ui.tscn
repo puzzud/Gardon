@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Sprites/Sprites2.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Sprites/GoButtonNormal.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/GoButtonPressed.png" type="Texture" id=3]
 
 [node name="Ui" type="CanvasLayer"]
 
@@ -10,9 +12,10 @@ centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 96, 48 )
 
-[node name="OkButton" type="Sprite" parent="."]
-position = Vector2( 200, 184 )
-texture = ExtResource( 1 )
-centered = false
-region_enabled = true
-region_rect = Rect2( 208, 0, 48, 32 )
+[node name="OkButton" type="TextureButton" parent="."]
+margin_left = 200.0
+margin_top = 184.0
+margin_right = 240.0
+margin_bottom = 224.0
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 3 )

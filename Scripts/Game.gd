@@ -37,3 +37,10 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
 	
 	#var cellContent = $Board.getCellContent(cellCoordinates)
+
+func onOkButtonPressed():
+	var nextTeamTurnIndex = teamTurnIndex + 1
+	if nextTeamTurnIndex > 1:
+		nextTeamTurnIndex = 0
+	
+	setTeamTurnIndex(nextTeamTurnIndex)
