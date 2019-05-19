@@ -15,7 +15,7 @@ region_rect = Rect2( 0, 0, 96, 48 )
 [node name="OkButton" type="TextureButton" parent="."]
 margin_left = 200.0
 margin_top = 184.0
-margin_right = 240.0
-margin_bottom = 224.0
+margin_right = 248.0
+margin_bottom = 216.0
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 3 )
