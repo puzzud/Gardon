@@ -36,6 +36,7 @@
 *.png binary
 *.ico binary
 *.ttf binary
+*.ase binary
 
 *.dae binary
 *.fbx binary
