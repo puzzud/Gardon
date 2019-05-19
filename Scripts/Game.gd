@@ -38,6 +38,11 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	
 	#var cellContent = $Board.getCellContent(cellCoordinates)
 
+func onBoardCellPress(cellCoordinates: Vector2):
+	var cellContent = $Board.getCellContent(cellCoordinates)
+	if cellContent != null:
+		cellContent.setActivated(!cellContent.activated)
+
 func onOkButtonPressed():
 	var nextTeamTurnIndex = teamTurnIndex + 1
 	if nextTeamTurnIndex > 1:

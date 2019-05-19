@@ -2,6 +2,7 @@ extends Node2D
 class_name Board
 
 signal cellHover(cellCoordinates)
+signal cellPress(cellCoordinates)
 
 const CellDimensions := Vector2(16.0, 16.0)
 
@@ -26,6 +27,11 @@ func _input(event):
 		var cellCoordinates = getCellCoordinatesFromPosition(event.global_position)
 		if cellCoordinates != null:
 			emit_signal("cellHover", cellCoordinates)
+	elif event is InputEventMouseButton:
+		var cellCoordinates = getCellCoordinatesFromPosition(event.global_position)
+		if cellCoordinates != null:
+			if event.pressed:
+				emit_signal("cellPress", cellCoordinates)
 
 func clear():
 	for row in cellContents:
