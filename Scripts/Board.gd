@@ -48,7 +48,7 @@ func clearCell(cellCoordinates):
 
 func insertPiece(piece: Piece, cellCoordinates = null):
 	if cellCoordinates == null:
-		cellCoordinates = getCellCoordinatesFromPiece(piece)
+		cellCoordinates = getCellCoordinatesFromPiecePosition(piece)
 	
 	if cellCoordinates == null:
 		return false
@@ -56,6 +56,11 @@ func insertPiece(piece: Piece, cellCoordinates = null):
 	cellContents[cellCoordinates.y][cellCoordinates.x] = piece
 	
 	return true
+
+func removePiece(piece: Piece):
+	var cellCoordinates = getCellCoordinatesFromPiece(piece)
+	if cellCoordinates != null:
+		clearCell(cellCoordinates)
 
 func getCellPosition(cellCoordinates: Vector2):
 	return global_position + TileMapOffset + (cellCoordinates * CellDimensions) - Vector2(1.0, 1.0)
@@ -75,5 +80,14 @@ func getCellCoordinatesFromPosition(position: Vector2):
 	
 	return cellCoordinates
 
-func getCellCoordinatesFromPiece(piece: Piece) -> Vector2:
+func getCellCoordinatesFromPiecePosition(piece: Piece):
 	return getCellCoordinatesFromPosition(piece.global_position)
+
+func getCellCoordinatesFromPiece(piece: Piece):
+	for y in range(0, cellContents.size()):
+		var row = cellContents[y]
+		for x in range(0, row.size()):
+			if row[x] == piece:
+				return Vector2(x, y)
+	
+	return null

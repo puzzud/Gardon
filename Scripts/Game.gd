@@ -46,7 +46,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		if activePiece != null:
 			# TODO: Can active piece move to this cell?
 			activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-			$Board.clearCell($Board.getCellCoordinatesFromPiece(activePiece))
+			$Board.removePiece(activePiece)
 			$Board.insertPiece(activePiece, cellCoordinates)
 			return
 		else:
