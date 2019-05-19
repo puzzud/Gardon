@@ -17,3 +17,8 @@ func initializeBoard():
 				printerr("Unable to insert piece into board: " + piece.name)
 	
 	#print($Board.cellContents)
+
+func onBoardCellHover(cellCoordinates: Vector2):
+	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
+	
+	#var cellContent = $Board.getCellContent(cellCoordinates)

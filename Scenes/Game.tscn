@@ -78,5 +78,6 @@ teamIndex = 1
 [node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 6 )]
 position = Vector2( 167, 62 )
 teamIndex = 1
+[connection signal="cellHover" from="Board" to="." method="onBoardCellHover"]
 
 [editable path="Ui"]

@@ -1,6 +1,8 @@
 extends Node2D
 class_name Board
 
+signal cellHover(cellCoordinates)
+
 const CellDimensions := Vector2(16.0, 16.0)
 
 const TileMapOffset := Vector2(8.0, 8.0)
@@ -19,19 +21,33 @@ var cellContents = [
 func _ready():
 	pass
 
+func _input(event):
+	if event is InputEventMouseMotion:
+		var cellCoordinates = getCellCoordinatesFromPosition(event.global_position)
+		if cellCoordinates != null:
+			emit_signal("cellHover", cellCoordinates)
+
 func clear():
 	for row in cellContents:
 		for x in range(0, row.size()):
 			row[x] = null
 
+func getCellContent(cellCoordinates: Vector2):
+	# TODO: Do bound checking.
+	
+	return cellContents[cellCoordinates.y][cellCoordinates.x]
+
 func insertPiece(piece: Piece):
-	var boardCellCoordinates = getCellCoordinatesFromPiece(piece)
-	if boardCellCoordinates == null:
+	var cellCoordinates = getCellCoordinatesFromPiece(piece)
+	if cellCoordinates == null:
 		return false
 	
-	cellContents[boardCellCoordinates.y][boardCellCoordinates.x] = piece
+	cellContents[cellCoordinates.y][cellCoordinates.x] = piece
 	
 	return true
+
+func getCellPosition(cellCoordinates: Vector2):
+	return global_position + TileMapOffset + (cellCoordinates * CellDimensions) - Vector2(1.0, 1.0)
 
 func getCellCoordinatesFromPosition(position: Vector2):
 	var cellCoordinates = Vector2()
