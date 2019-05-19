@@ -36,11 +36,17 @@ func getTeamColor(teamIndex: int) -> Color:
 	return teamColor
 
 func onBoardCellHover(cellCoordinates: Vector2):
+	if activePiece != null && activePiece.moving:
+		return
+	
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
 	
 	#var cellContent = $Board.getCellContent(cellCoordinates)
 
 func onBoardCellPress(cellCoordinates: Vector2):
+	if activePiece != null && activePiece.moving:
+		return
+	
 	var cellPiece = $Board.getCellContent(cellCoordinates)
 	if cellPiece == null:
 		if activePiece != null:
