@@ -19,8 +19,26 @@ var cellContents = [
 	[null, null, null, null, null, null, null, null]
 ]
 
+var cellOverlays = [
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1],
+	[-1, -1, -1, -1, -1, -1, -1, -1]
+]
+
+var lightBlueTileIndex: int
+
 func _ready():
-	clearOverlay()
+	var cellsOverlayTileMap = $CellsOverlay
+	var cellsOverlayTileSet = cellsOverlayTileMap.tile_set
+	lightBlueTileIndex = cellsOverlayTileSet.find_tile_by_name("GroundLightBlue")
+	
+	clearOverlayData()
+	refreshOverlay()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -92,13 +110,31 @@ func getCellCoordinatesFromPiece(piece: Piece):
 	
 	return null
 
-func clearOverlay():
-	var tileMap = $CellsOverlay
-	
-	var tileSet = tileMap.tile_set
-	var lightBlueTile = tileSet.find_tile_by_name("GroundLightBlue")
+func clearOverlayData():
+	for y in range(0, cellOverlays.size()):
+		var row = cellOverlays[y]
+		for x in range(0, row.size()):
+			row[x] = -1
+
+func refreshOverlay():
+	for y in range(0, cellOverlays.size()):
+		var row = cellOverlays[y]
+		for x in range(0, row.size()):
+			$CellsOverlay.set_cell(x, y, row[x])
+
+func overlayActivatablePieces(teamIndex):
+	#clearOverlayData()
 	
 	for y in range(0, cellContents.size()):
 		var row = cellContents[y]
 		for x in range(0, row.size()):
-			tileMap.set_cell(x, y, -1)
+			var piece: Piece = row[x]
+			if piece == null:
+				cellOverlays[y][x] = -1
+			else:
+				if piece.teamIndex == teamIndex:
+					cellOverlays[y][x] = lightBlueTileIndex
+				else:
+					cellOverlays[y][x] = -1
+	
+	refreshOverlay()

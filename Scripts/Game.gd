@@ -30,6 +30,8 @@ func setTeamTurnIndex(teamTurnIndex: int):
 	self.teamTurnIndex = teamTurnIndex
 	
 	$Cursor.modulate = getTeamColor(teamTurnIndex)
+	
+	$Board.overlayActivatablePieces(teamTurnIndex)
 
 func getTeamColor(teamIndex: int) -> Color:
 	var teamColor = teamColors[teamIndex]
