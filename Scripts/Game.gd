@@ -5,7 +5,7 @@ var teamTurnIndex = 0
 
 export(Array, Color) var teamColors
 
-var activePiece: Piece = null
+var activePiece: Piece
 
 func _ready():
 	Global.game = self
@@ -50,7 +50,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	var cellPiece = $Board.getCellContent(cellCoordinates)
 	if cellPiece == null:
 		if activePiece != null:
-			# TODO: Can active piece move to this cell?
+			# TODO: Can the active piece move to this cell?
 			activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 			$Board.removePiece(activePiece)
 			$Board.insertPiece(activePiece, cellCoordinates)
@@ -67,17 +67,21 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				if cellPiece.teamIndex == activePiece.teamIndex:
 					return
 				else:
-					# TODO: Can active piece attack this cell?
+					# TODO: Can the active piece attack this cell?
+					activePiece.attack(cellPiece)
 					activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 					$Board.removePiece(activePiece)
-					$Board.removePiece(cellPiece)
-					cellPiece.queue_free()
-					$Board.insertPiece(activePiece, cellCoordinates)
 		else:
 			if cellPiece.teamIndex == teamTurnIndex:
 				cellPiece.setActivated(true)
 				activePiece = cellPiece
 				return
+
+func processPieceAttackingPiece(attackingPiece, targetPiece):
+	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
+	$Board.removePiece(targetPiece)
+	targetPiece.queue_free()
+	$Board.insertPiece(attackingPiece, cellCoordinates)
 
 func onOkButtonPressed():
 	var nextTeamTurnIndex = teamTurnIndex + 1

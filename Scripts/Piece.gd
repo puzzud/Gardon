@@ -8,9 +8,22 @@ export(int) var teamIndex = 0
 var activated: bool = false
 
 var moving: bool = false
+var attacking: bool = false
+
+var targetPiece: Piece = null
 
 func _ready():
 	setTeamIndex(teamIndex)
+
+func _process(delta):
+	if Global.game.activePiece == self:
+		if attacking && targetPiece != null:
+			if global_position.distance_to(targetPiece.global_position) < 7.0:
+				Global.game.processPieceAttackingPiece(self, targetPiece)
+				attacking = false
+				targetPiece = null
+				
+				#Global.game.endTurn()
 
 func setTeamIndex(teamIndex):
 	self.teamIndex = teamIndex
@@ -37,3 +50,9 @@ func onMoveTweenAllCompleted():
 	if Global.game.activePiece == self:
 		Global.game.activePiece.setActivated(false)
 		Global.game.activePiece = null
+		
+		#Global.game.endTurn()
+
+func attack(piece):
+	attacking = true
+	targetPiece = piece
