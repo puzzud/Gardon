@@ -93,3 +93,59 @@ texture = ExtResource( 1 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 40, 16, 16, 16 )
+
+[node name="GroundLightOrange" type="Sprite" parent="."]
+position = Vector2( 0, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 32, 16, 16 )
+
+[node name="GroundWhite" type="Sprite" parent="."]
+position = Vector2( 16, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 32, 16, 16 )
+
+[node name="GroundRed" type="Sprite" parent="."]
+position = Vector2( 32, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 32, 32, 16, 16 )
+
+[node name="GroundGreen" type="Sprite" parent="."]
+position = Vector2( 48, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 48, 32, 16, 16 )
+
+[node name="GroundLightBlue" type="Sprite" parent="."]
+position = Vector2( 64, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 64, 32, 16, 16 )
+
+[node name="GroundBlue" type="Sprite" parent="."]
+position = Vector2( 80, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 80, 32, 16, 16 )
+
+[node name="GroundMediumGrey" type="Sprite" parent="."]
+position = Vector2( 16, 48 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 48, 16, 16 )
+
+[node name="GroundDarkGrey" type="Sprite" parent="."]
+position = Vector2( 16, 64 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 64, 16, 16 )
