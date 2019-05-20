@@ -22,8 +22,6 @@ func _process(delta):
 				Global.game.processPieceAttackingPiece(self, targetPiece)
 				attacking = false
 				targetPiece = null
-				
-				#Global.game.endTurn()
 
 func setTeamIndex(teamIndex):
 	self.teamIndex = teamIndex
@@ -51,7 +49,7 @@ func onMoveTweenAllCompleted():
 		Global.game.activePiece.setActivated(false)
 		Global.game.activePiece = null
 		
-		#Global.game.endTurn()
+		Global.game.endTurn()
 
 func attack(piece):
 	attacking = true

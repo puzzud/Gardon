@@ -83,9 +83,12 @@ func processPieceAttackingPiece(attackingPiece, targetPiece):
 	targetPiece.queue_free()
 	$Board.insertPiece(attackingPiece, cellCoordinates)
 
-func onOkButtonPressed():
+func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1
 	if nextTeamTurnIndex > 1:
 		nextTeamTurnIndex = 0
 	
 	setTeamTurnIndex(nextTeamTurnIndex)
+
+func onOkButtonPressed():
+	endTurn()
