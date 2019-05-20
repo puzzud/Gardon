@@ -41,6 +41,8 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
 	
+	$Cursor.visible = true
+	
 	#var cellContent = $Board.getCellContent(cellCoordinates)
 
 func onBoardCellPress(cellCoordinates: Vector2):
@@ -87,6 +89,8 @@ func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1
 	if nextTeamTurnIndex > 1:
 		nextTeamTurnIndex = 0
+	
+	$Cursor.visible = false
 	
 	setTeamTurnIndex(nextTeamTurnIndex)
 
