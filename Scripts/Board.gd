@@ -20,7 +20,7 @@ var cellContents = [
 ]
 
 func _ready():
-	pass
+	clearOverlay()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -91,3 +91,14 @@ func getCellCoordinatesFromPiece(piece: Piece):
 				return Vector2(x, y)
 	
 	return null
+
+func clearOverlay():
+	var tileMap = $CellsOverlay
+	
+	var tileSet = tileMap.tile_set
+	var lightBlueTile = tileSet.find_tile_by_name("GroundLightBlue")
+	
+	for y in range(0, cellContents.size()):
+		var row = cellContents[y]
+		for x in range(0, row.size()):
+			tileMap.set_cell(x, y, -1)
