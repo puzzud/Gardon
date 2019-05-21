@@ -210,6 +210,8 @@ func endGame(winningTeamIndex):
 	$Ui.declareWinner(winningTeamIndex)
 	
 	$Timers/EndGameTimer.start()
+	
+	$AudioPlayers/EndGame1.play()
 
 func getWinningTeamIndex():
 	var team0Pieces = getTeamPieces(0)

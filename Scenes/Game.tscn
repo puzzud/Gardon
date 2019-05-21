@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Ui.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scenes/Cursor.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Tomato.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Sounds/StartTurn1.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Sounds/EndGame1.ogg" type="AudioStream" id=8]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -93,6 +94,9 @@ one_shot = true
 
 [node name="StartTurn1" type="AudioStreamPlayer" parent="AudioPlayers"]
 stream = ExtResource( 7 )
+
+[node name="EndGame1" type="AudioStreamPlayer" parent="AudioPlayers"]
+stream = ExtResource( 8 )
 [connection signal="pressed" from="Ui/OkButton" to="." method="onOkButtonPressed"]
 [connection signal="cellHover" from="Board" to="." method="onBoardCellHover"]
 [connection signal="cellPress" from="Board" to="." method="onBoardCellPress"]
