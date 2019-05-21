@@ -118,7 +118,9 @@ func calculateCellActionsForTeam(teamIndex: int):
 
 func calculateCellActionsForPiece(piece: Piece):
 	$Board.clearCellActions()
-	$Board.overlayCellActions()
+	
+	var cellCoordinates = $Board.getCellCoordinatesFromPiece(piece)
+	$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
 
 func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1
