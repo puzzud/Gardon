@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/Piece.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Sprites1.png" type="Texture" id=2]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=5]
 resource_name = "activate"
 length = 0.33
 tracks/0/type = "value"
@@ -13,10 +13,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.001, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( -8, -12 ), Vector2( -8, -12 ), Vector2( -8, -12 ) ]
+"values": [ Vector2( -8, -12 ), Vector2( -8, -12 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Body:position")
@@ -31,7 +31,7 @@ tracks/1/keys = {
 "values": [ Vector2( -7, -14 ), Vector2( -7, -17 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "deactivate"
 length = 0.33
 tracks/0/type = "value"
@@ -59,7 +59,7 @@ tracks/1/keys = {
 "values": [ Vector2( -7, -17 ), Vector2( -7, -14 ) ]
 }
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id=4]
 resource_name = "idle"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shadow:position")
@@ -104,9 +104,9 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/activate = SubResource( 2 )
-anims/deactivate = SubResource( 3 )
-anims/idle = SubResource( 1 )
+anims/activate = SubResource( 5 )
+anims/deactivate = SubResource( 2 )
+anims/idle = SubResource( 4 )
 
 [node name="MoveTween" type="Tween" parent="."]
 [connection signal="tween_all_completed" from="MoveTween" to="." method="onMoveTweenAllCompleted"]
