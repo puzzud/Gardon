@@ -64,8 +64,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	else:
 		if activePiece != null:
 			if activePiece == cellPiece:
-				activePiece.setActivated(false)
-				activePiece = null
+				setPieceActivated(activePiece, false)
 				return
 			else:
 				if cellPiece.teamIndex == activePiece.teamIndex:
@@ -77,9 +76,18 @@ func onBoardCellPress(cellCoordinates: Vector2):
 					$Board.removePiece(activePiece)
 		else:
 			if cellPiece.teamIndex == teamTurnIndex:
-				cellPiece.setActivated(true)
-				activePiece = cellPiece
+				setPieceActivated(cellPiece, true)
 				return
+
+func setPieceActivated(piece: Piece, activated: bool):
+	piece.setActivated(activated)
+	
+	if activated:
+		activePiece = piece
+	else:
+		activePiece = null
+	
+	
 
 func processPieceAttackingPiece(attackingPiece, targetPiece):
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
