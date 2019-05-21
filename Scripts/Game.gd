@@ -43,6 +43,8 @@ func setTeamTurnIndex(teamTurnIndex: int):
 	
 	calculateCellActions()
 	$Board.overlayCellActions()
+	
+	$AudioPlayers/StartTurn1.play()
 
 func getTeamColor(teamIndex: int) -> Color:
 	var teamColor = teamColors[teamIndex]

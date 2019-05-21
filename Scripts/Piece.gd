@@ -91,6 +91,8 @@ func startDying():
 	
 	$GibsParticles.set_emitting(true)
 	$GibsParticles.restart()
+	
+	$AudioPlayers/Hit1.play()
 
 func dyingAnimationFinished():
 	alive = false

@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Piece.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Sprites1.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sounds/Hit1.ogg" type="AudioStream" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "activate"
@@ -155,5 +156,10 @@ initial_velocity = 16.0
 scale_amount = 4.0
 scale_amount_random = 1.0
 color = Color( 0.694118, 0.243137, 0.32549, 1 )
+
+[node name="AudioPlayers" type="Node2D" parent="."]
+
+[node name="Hit1" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource( 3 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationPlayerAnimationFinished"]
 [connection signal="tween_all_completed" from="MoveTween" to="." method="onMoveTweenAllCompleted"]
