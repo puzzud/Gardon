@@ -9,6 +9,7 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
+teamNames = [ "Orange", "Red" ]
 teamColors = [ Color( 0.937255, 0.490196, 0.341176, 1 ), Color( 0.694118, 0.243137, 0.32549, 1 ) ]
 
 [node name="Ui" parent="." instance=ExtResource( 2 )]
@@ -23,11 +24,10 @@ __meta__ = {
 }
 
 [node name="Board" parent="." instance=ExtResource( 4 )]
-position = Vector2( 56, 48 )
+position = Vector2( 56, 32 )
 
 [node name="Cursor" parent="." instance=ExtResource( 5 )]
-visible = false
-position = Vector2( 62, 54 )
+position = Vector2( 62, 38 )
 
 [node name="Pieces" type="Node2D" parent="."]
 editor/display_folded = true
@@ -38,50 +38,51 @@ __meta__ = {
 [node name="Team1" type="Node2D" parent="Pieces"]
 
 [node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 87, 175 )
+position = Vector2( 87, 159 )
 
 [node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 103, 159 )
+position = Vector2( 103, 143 )
 
 [node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 119, 159 )
+position = Vector2( 119, 143 )
 
 [node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 135, 159 )
+position = Vector2( 135, 143 )
 
 [node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 151, 159 )
+position = Vector2( 151, 143 )
 
 [node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 167, 175 )
+position = Vector2( 167, 159 )
 
 [node name="Team2" type="Node2D" parent="Pieces"]
 
 [node name="Tomato2" parent="Pieces/Team2" instance=ExtResource( 6 )]
-position = Vector2( 87, 62 )
+position = Vector2( 87, 46 )
 teamIndex = 1
 
 [node name="Tomato3" parent="Pieces/Team2" instance=ExtResource( 6 )]
-position = Vector2( 103, 78 )
+position = Vector2( 103, 62 )
 teamIndex = 1
 
 [node name="Tomato4" parent="Pieces/Team2" instance=ExtResource( 6 )]
-position = Vector2( 119, 78 )
+position = Vector2( 119, 62 )
 teamIndex = 1
 
 [node name="Tomato5" parent="Pieces/Team2" instance=ExtResource( 6 )]
-position = Vector2( 135, 78 )
+position = Vector2( 135, 62 )
 teamIndex = 1
 
 [node name="Tomato6" parent="Pieces/Team2" instance=ExtResource( 6 )]
-position = Vector2( 151, 78 )
+position = Vector2( 151, 62 )
 teamIndex = 1
 
 [node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 6 )]
-position = Vector2( 167, 62 )
+position = Vector2( 167, 46 )
 teamIndex = 1
 
 [node name="Timers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="EndGameTimer" type="Timer" parent="Timers"]
 wait_time = 3.0

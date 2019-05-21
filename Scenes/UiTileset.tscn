@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Sprites/Sprites2.png" type="Texture" id=1]
+
+[node name="Tileset" type="Node2D"]
+
+[node name="MessageBoxNW" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 8, 8 )
+
+[node name="MessageBoxN" type="Sprite" parent="."]
+position = Vector2( 8, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 8, 0, 8, 8 )
+
+[node name="MessageBoxNE" type="Sprite" parent="."]
+position = Vector2( 16, 0 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 0, 8, 8 )
+
+[node name="MessageBoxW" type="Sprite" parent="."]
+position = Vector2( 0, 8 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 8, 8, 8 )
+
+[node name="MessageBoxCenter" type="Sprite" parent="."]
+position = Vector2( 8, 8 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 8, 8, 8, 8 )
+
+[node name="MessageBoxE" type="Sprite" parent="."]
+position = Vector2( 16, 8 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 8, 8, 8 )
+
+[node name="MessageBoxSW" type="Sprite" parent="."]
+position = Vector2( 0, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 16, 8, 8 )
+
+[node name="MessageBoxS" type="Sprite" parent="."]
+position = Vector2( 8, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 8, 16, 8, 8 )
+
+[node name="MessageBoxSE" type="Sprite" parent="."]
+position = Vector2( 16, 16 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 16, 8, 8 )

@@ -3,6 +3,7 @@ class_name Game
 
 var teamTurnIndex = 0
 
+export(Array, String) var teamNames
 export(Array, Color) var teamColors
 
 var activePiece: Piece
@@ -32,6 +33,8 @@ func setTeamTurnIndex(teamTurnIndex: int):
 	self.teamTurnIndex = teamTurnIndex
 	
 	$Cursor.modulate = getTeamColor(teamTurnIndex)
+	
+	$Ui.indicateTeamTurn(teamTurnIndex)
 	
 	calculateCellActions()
 	$Board.overlayCellActions()

@@ -1,18 +1,30 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Ui.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sprites/Sprites2.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Sprites/GoButtonNormal.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Sprites/GoButtonPressed.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Fonts/HeaderFont1.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/MessageBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Sprites/GoButtonNormal.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sprites/GoButtonPressed.png" type="Texture" id=5]
 
 [node name="Ui" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="MessageBox" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-centered = false
-region_enabled = true
-region_rect = Rect2( 0, 0, 96, 48 )
+[node name="Title" type="Label" parent="."]
+margin_left = 40.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.956863, 0.956863, 0.956863, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+text = "TEAM NAME"
+align = 1
+valign = 1
+
+[node name="CaptionMessageBox" parent="." instance=ExtResource( 3 )]
+position = Vector2( 40, 176 )
 
 [node name="OkButton" type="TextureButton" parent="."]
 visible = false
@@ -21,5 +33,5 @@ margin_top = 184.0
 margin_right = 248.0
 margin_bottom = 216.0
 disabled = true
-texture_normal = ExtResource( 3 )
-texture_pressed = ExtResource( 4 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
