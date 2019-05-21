@@ -7,6 +7,8 @@ export(Array, Color) var teamColors
 
 var activePiece: Piece
 
+var isGameOver = false
+
 func _ready():
 	Global.game = self
 	
@@ -39,6 +41,9 @@ func getTeamColor(teamIndex: int) -> Color:
 	return teamColor
 
 func onBoardCellHover(cellCoordinates: Vector2):
+	if isGameOver:
+		return
+	
 	if activePiece != null && activePiece.moving:
 		return
 	
@@ -49,6 +54,9 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	#var cellContent = $Board.getCellContent(cellCoordinates)
 
 func onBoardCellPress(cellCoordinates: Vector2):
+	if isGameOver:
+		return
+	
 	if activePiece != null && activePiece.moving:
 		return
 	
@@ -98,6 +106,9 @@ func processPieceAttackingPiece(attackingPiece, targetPiece):
 	$Board.removePiece(targetPiece)
 	targetPiece.queue_free()
 	$Board.insertPiece(attackingPiece, cellCoordinates)
+	
+	$Board.clearCellActions()
+	$Board.overlayCellActions()
 
 func calculateCellActions():
 	if activePiece != null:
@@ -159,12 +170,32 @@ func endTurn():
 		endGame(winningTeamIndex)
 
 func endGame(winningTeamIndex):
+	isGameOver = true
+	
 	$Ui.declareWinner(winningTeamIndex)
 	
 	$Timers/EndGameTimer.start()
 
 func getWinningTeamIndex():
+	var team0Pieces = getTeamPieces(0)
+	var team1Pieces = getTeamPieces(1)
+	
+	if team0Pieces.empty():
+		return 1
+	elif team1Pieces.empty():
+		return 0
+	
 	return -1
+
+func getTeamPieces(teamIndex: int) -> Array:
+	var teamNumber = teamIndex + 1
+	
+	var piecesNode = $Pieces
+	var teamPiecesNode = piecesNode.get_node("Team" + str(teamNumber))
+	if teamPiecesNode == null:
+		return []
+	
+	return teamPiecesNode.get_children()
 
 func onOkButtonPressed():
 	endTurn()
