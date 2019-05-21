@@ -152,7 +152,22 @@ func endTurn():
 	
 	$Cursor.visible = false
 	
-	setTeamTurnIndex(nextTeamTurnIndex)
+	var winningTeamIndex = getWinningTeamIndex()
+	if winningTeamIndex < 0:
+		setTeamTurnIndex(nextTeamTurnIndex)
+	else:
+		endGame(winningTeamIndex)
+
+func endGame(winningTeamIndex):
+	$Ui.declareWinner(winningTeamIndex)
+	
+	$Timers/EndGameTimer.start()
+
+func getWinningTeamIndex():
+	return -1
 
 func onOkButtonPressed():
 	endTurn()
+
+func onEndGameTimerTimeout():
+	get_tree().reload_current_scene()
