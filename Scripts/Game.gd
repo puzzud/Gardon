@@ -84,6 +84,9 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 				$Board.removePiece(activePiece)
 				$Board.insertPiece(activePiece, cellCoordinates)
+				
+				$Board.clearCellActions()
+				$Board.overlayCellActions()
 				$Cursor.setFlashingColor(false)
 			return
 		else:
@@ -102,6 +105,10 @@ func onBoardCellPress(cellCoordinates: Vector2):
 						activePiece.attack(cellPiece)
 						activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 						$Board.removePiece(activePiece)
+						
+						$Board.clearCellActions()
+						$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = $Board.CELL_ACTION_ATTACK
+						$Board.overlayCellActions()
 						$Cursor.setFlashingColor(false)
 		else:
 			if cellPiece.teamIndex == teamTurnIndex:
