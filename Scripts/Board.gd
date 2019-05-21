@@ -48,7 +48,7 @@ func _ready():
 	buildCellActionOverlayTileIndexTable()
 	initializeCellActions()
 	
-	refreshCellOverlays()
+	overlayCellActions()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -138,9 +138,9 @@ func clearCellActions():
 	for y in range(0, cellActions.size()):
 		var row = cellActions[y]
 		for x in range(0, row.size()):
-			row[x] = -1
+			row[x] = CELL_ACTION_NONE
 
-func refreshCellOverlays():
+func overlayCellActions():
 	for y in range(0, cellActions.size()):
 		var row = cellActions[y]
 		for x in range(0, row.size()):
@@ -149,18 +149,3 @@ func refreshCellOverlays():
 			if cellAction > -1:
 				tileIndex = cellActionOverlayTileIndexTable[cellAction]
 			$CellsOverlay.set_cell(x, y, tileIndex)
-
-func overlayActivatablePieces(teamIndex):
-	for y in range(0, cellContents.size()):
-		var row = cellContents[y]
-		for x in range(0, row.size()):
-			var piece: Piece = row[x]
-			if piece == null:
-				cellActions[y][x] = -1
-			else:
-				if piece.teamIndex == teamIndex:
-					cellActions[y][x] = CELL_ACTION_ACTIVATE
-				else:
-					cellActions[y][x] = -1
-	
-	refreshCellOverlays()

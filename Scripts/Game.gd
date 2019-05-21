@@ -31,7 +31,8 @@ func setTeamTurnIndex(teamTurnIndex: int):
 	
 	$Cursor.modulate = getTeamColor(teamTurnIndex)
 	
-	$Board.overlayActivatablePieces(teamTurnIndex)
+	calculateCellActions()
+	$Board.overlayCellActions()
 
 func getTeamColor(teamIndex: int) -> Color:
 	var teamColor = teamColors[teamIndex]
@@ -87,13 +88,37 @@ func setPieceActivated(piece: Piece, activated: bool):
 	else:
 		activePiece = null
 	
-	
+	calculateCellActions()
+	$Board.overlayCellActions()
 
 func processPieceAttackingPiece(attackingPiece, targetPiece):
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
 	$Board.removePiece(targetPiece)
 	targetPiece.queue_free()
 	$Board.insertPiece(attackingPiece, cellCoordinates)
+
+func calculateCellActions():
+	if activePiece != null:
+		calculateCellActionsForPiece(activePiece)
+	else:
+		calculateCellActionsForTeam(teamTurnIndex)
+	
+func calculateCellActionsForTeam(teamIndex: int):
+	for y in range(0, $Board.cellContents.size()):
+		var row = $Board.cellContents[y]
+		for x in range(0, row.size()):
+			var piece: Piece = row[x]
+			if piece == null:
+				$Board.cellActions[y][x] = $Board.CELL_ACTION_NONE
+			else:
+				if piece.teamIndex == teamIndex:
+					$Board.cellActions[y][x] = $Board.CELL_ACTION_ACTIVATE
+				else:
+					$Board.cellActions[y][x] = $Board.CELL_ACTION_NONE
+
+func calculateCellActionsForPiece(piece: Piece):
+	$Board.clearCellActions()
+	$Board.overlayCellActions()
 
 func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1
