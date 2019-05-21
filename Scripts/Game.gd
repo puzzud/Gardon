@@ -128,13 +128,22 @@ func calculateCellActionsForPiece(piece: Piece):
 	for movementDirection in pieceMovementDirections:
 		var movementDirectionCellOffset = $Board.getCellOffsetFromDirection(movementDirection)
 		
-		var offsetCellCoordinates = $Board.getCellCoordinatesFromCellOffset(cellCoordinates, movementDirectionCellOffset)
-		if offsetCellCoordinates == null:
-			continue
-		
-		var offsetCellContents = $Board.getCellContent(offsetCellCoordinates)
-		if offsetCellContents == null:
-			$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
+		for distance in range(1, piece.movementRange + 1):
+			var scaledMovementDirectionCellOffset = movementDirectionCellOffset * distance
+			
+			var offsetCellCoordinates = $Board.getCellCoordinatesFromCellOffset(cellCoordinates, scaledMovementDirectionCellOffset)
+			if offsetCellCoordinates == null:
+				break
+			
+			var offsetCellContents = $Board.getCellContent(offsetCellCoordinates)
+			if offsetCellContents == null:
+				$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
+			else:
+				if offsetCellContents.teamIndex == piece.teamIndex:
+					break
+				else:
+					$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
+					break
 
 func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1

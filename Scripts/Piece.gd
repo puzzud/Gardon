@@ -5,6 +5,8 @@ const BoardCellOffset := Vector2(8, 7)
 
 export(int) var teamIndex = 0
 
+export(int) var movementRange = 7
+
 var movementDirections = [
 	Global.DIRECTION_LEFT_UP,
 	Global.DIRECTION_UP,
