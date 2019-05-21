@@ -3,6 +3,8 @@ class_name Piece
 
 const BoardCellOffset := Vector2(8, 7)
 
+var alive: bool = true
+
 export(int) var teamIndex = 0
 
 # warning-ignore:unused_class_variable
@@ -67,7 +69,7 @@ func onMoveTweenAllCompleted():
 		Global.game.activePiece.setActivated(false)
 		Global.game.activePiece = null
 		
-		Global.game.endTurn()
+	Global.game.removeProcessingPiece(self)
 
 func attack(piece):
 	attacking = true
@@ -81,6 +83,8 @@ func receiveDamage(damageAmount: float, attacker: Piece):
 	startDying()
 
 func startDying():
+	Global.game.addProcessingPiece(self)
+	
 	$AnimationPlayer.play("dying")
 	$Body.visible = false
 	$Shadow.visible = false
@@ -89,6 +93,10 @@ func startDying():
 	$GibsParticles.restart()
 
 func dyingAnimationFinished():
+	alive = false
+	
+	Global.game.removeProcessingPiece(self)
+	
 	self.queue_free()
 
 func onAnimationPlayerAnimationFinished(anim_name):

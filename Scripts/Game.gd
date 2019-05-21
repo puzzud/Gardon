@@ -12,6 +12,8 @@ var activePiece: Piece
 
 var isGameOver = false
 
+var piecesThatAreProcessing = []
+
 func _ready():
 	Global.game = self
 	
@@ -85,6 +87,8 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				$Board.removePiece(activePiece)
 				$Board.insertPiece(activePiece, cellCoordinates)
 				
+				addProcessingPiece(activePiece)
+				
 				$Board.clearCellActions()
 				$Board.overlayCellActions()
 				$Cursor.setFlashingColor(false)
@@ -105,6 +109,8 @@ func onBoardCellPress(cellCoordinates: Vector2):
 						activePiece.attack(cellPiece)
 						activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 						$Board.removePiece(activePiece)
+						
+						addProcessingPiece(activePiece)
 						
 						$Board.clearCellActions()
 						$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = $Board.CELL_ACTION_ATTACK
@@ -207,9 +213,15 @@ func getWinningTeamIndex():
 	var team0Pieces = getTeamPieces(0)
 	var team1Pieces = getTeamPieces(1)
 	
-	if team0Pieces.empty():
+	var numberOfAliveTeam0Pieces = getNumberOfAlivePieces(team0Pieces)
+	var numberOfAliveTeam1Pieces = getNumberOfAlivePieces(team1Pieces)
+	
+	print("Team0 alive pieces: " + str(numberOfAliveTeam0Pieces))
+	print("Team1 alive pieces: " + str(numberOfAliveTeam1Pieces))
+	
+	if numberOfAliveTeam0Pieces == 0:
 		return 1
-	elif team1Pieces.empty():
+	elif numberOfAliveTeam1Pieces == 0:
 		return 0
 	
 	return -1
@@ -223,6 +235,30 @@ func getTeamPieces(teamIndex: int) -> Array:
 		return []
 	
 	return teamPiecesNode.get_children()
+
+func getNumberOfAlivePieces(pieces: Array):
+	var numberOfAlivePieces := 0
+	
+	for piece in pieces:
+		if piece.alive:
+			numberOfAlivePieces = numberOfAlivePieces + 1
+	
+	return numberOfAlivePieces
+
+func addProcessingPiece(piece: Piece):
+	if piecesThatAreProcessing.has(piece):
+		return
+	piecesThatAreProcessing.append(piece)
+
+func removeProcessingPiece(piece: Piece):
+	var index = piecesThatAreProcessing.find(piece)
+	if index < 0:
+		return
+	
+	piecesThatAreProcessing.remove(index)
+	
+	if piecesThatAreProcessing.empty():
+		endTurn()
 
 func onOkButtonPressed():
 	endTurn()
