@@ -19,7 +19,13 @@ var cellContents = [
 	[null, null, null, null, null, null, null, null]
 ]
 
-var cellOverlays = [
+enum {
+	CELL_ACTION_NONE = -1,
+	CELL_ACTION_ACTIVATE,
+	CELL_ACTION_ATTACK
+}
+
+var cellActions = [
 	[-1, -1, -1, -1, -1, -1, -1, -1],
 	[-1, -1, -1, -1, -1, -1, -1, -1],
 	[-1, -1, -1, -1, -1, -1, -1, -1],
@@ -30,15 +36,19 @@ var cellOverlays = [
 	[-1, -1, -1, -1, -1, -1, -1, -1]
 ]
 
-var lightBlueTileIndex: int
+var tileNameCellActionOverlayTable = {
+	"": CELL_ACTION_NONE,
+	"GroundLightBlue": CELL_ACTION_ACTIVATE,
+	"GroundRed": CELL_ACTION_ATTACK
+}
+
+var cellActionOverlayTileIndexTable = {}
 
 func _ready():
-	var cellsOverlayTileMap = $CellsOverlay
-	var cellsOverlayTileSet = cellsOverlayTileMap.tile_set
-	lightBlueTileIndex = cellsOverlayTileSet.find_tile_by_name("GroundLightBlue")
+	buildCellActionOverlayTileIndexTable()
+	initializeCellActions()
 	
-	clearOverlayData()
-	refreshOverlay()
+	refreshCellOverlays()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -50,6 +60,20 @@ func _input(event):
 		if cellCoordinates != null:
 			if event.pressed:
 				emit_signal("cellPress", cellCoordinates)
+
+func buildCellActionOverlayTileIndexTable():
+	var cellsOverlayTileSet = $CellsOverlay.tile_set
+	
+	for key in tileNameCellActionOverlayTable.keys():
+		if key.empty():
+			continue
+		
+		var tileIndex = cellsOverlayTileSet.find_tile_by_name(key)
+		if tileIndex != null:
+			cellActionOverlayTileIndexTable[tileNameCellActionOverlayTable[key]] = tileIndex
+
+func initializeCellActions():
+	clearCellActions()
 
 func clear():
 	for row in cellContents:
@@ -110,31 +134,33 @@ func getCellCoordinatesFromPiece(piece: Piece):
 	
 	return null
 
-func clearOverlayData():
-	for y in range(0, cellOverlays.size()):
-		var row = cellOverlays[y]
+func clearCellActions():
+	for y in range(0, cellActions.size()):
+		var row = cellActions[y]
 		for x in range(0, row.size()):
 			row[x] = -1
 
-func refreshOverlay():
-	for y in range(0, cellOverlays.size()):
-		var row = cellOverlays[y]
+func refreshCellOverlays():
+	for y in range(0, cellActions.size()):
+		var row = cellActions[y]
 		for x in range(0, row.size()):
-			$CellsOverlay.set_cell(x, y, row[x])
+			var tileIndex = -1
+			var cellAction = row[x]
+			if cellAction > -1:
+				tileIndex = cellActionOverlayTileIndexTable[cellAction]
+			$CellsOverlay.set_cell(x, y, tileIndex)
 
 func overlayActivatablePieces(teamIndex):
-	#clearOverlayData()
-	
 	for y in range(0, cellContents.size()):
 		var row = cellContents[y]
 		for x in range(0, row.size()):
 			var piece: Piece = row[x]
 			if piece == null:
-				cellOverlays[y][x] = -1
+				cellActions[y][x] = -1
 			else:
 				if piece.teamIndex == teamIndex:
-					cellOverlays[y][x] = lightBlueTileIndex
+					cellActions[y][x] = CELL_ACTION_ACTIVATE
 				else:
-					cellOverlays[y][x] = -1
+					cellActions[y][x] = -1
 	
-	refreshOverlay()
+	refreshCellOverlays()
