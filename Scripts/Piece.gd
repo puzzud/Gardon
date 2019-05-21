@@ -5,6 +5,7 @@ const BoardCellOffset := Vector2(8, 7)
 
 export(int) var teamIndex = 0
 
+# warning-ignore:unused_class_variable
 export(int) var movementRange = 7
 
 var movementDirections = [
@@ -28,6 +29,7 @@ var targetPiece: Piece = null
 func _ready():
 	setTeamIndex(teamIndex)
 
+# warning-ignore:unused_argument
 func _process(delta):
 	if Global.game.activePiece == self:
 		if attacking && targetPiece != null:
