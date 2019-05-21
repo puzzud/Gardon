@@ -50,8 +50,10 @@ func setActivated(activated: bool):
 	
 	if activated:
 		$AnimationPlayer.play("activate")
+		$AudioPlayers/Activate1.play()
 	else:
 		$AnimationPlayer.play("deactivate")
+		$AudioPlayers/Deactivate1.play()
 
 func getMovementDirections():
 	return movementDirections
@@ -61,6 +63,8 @@ func moveToPosition(position: Vector2):
 	
 	$MoveTween.interpolate_property(self, "global_position", global_position, position, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$MoveTween.start()
+	
+	$AudioPlayers/StartMove1.play()
 
 func onMoveTweenAllCompleted():
 	moving = false
@@ -74,6 +78,8 @@ func onMoveTweenAllCompleted():
 func attack(piece):
 	attacking = true
 	targetPiece = piece
+	
+	$AudioPlayers/StartAttack1.play()
 
 func receiveDamage(damageAmount: float, attacker: Piece):
 	if damageAmount == 0.0:
