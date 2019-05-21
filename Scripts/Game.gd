@@ -35,7 +35,7 @@ func initializeBoard():
 func setTeamTurnIndex(teamTurnIndex: int):
 	self.teamTurnIndex = teamTurnIndex
 	
-	$Cursor.modulate = getTeamColor(teamTurnIndex)
+	$Cursor.setMainColor(getTeamColor(teamTurnIndex))
 	
 	$Ui.indicateTeamTurn(teamTurnIndex)
 	
@@ -48,6 +48,8 @@ func getTeamColor(teamIndex: int) -> Color:
 
 func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
+	
+	$Cursor.setFlashingColor($Board.getCellActionFromCellCoordinates(cellCoordinates) != $Board.CELL_ACTION_NONE)
 
 func onBoardCellHover(cellCoordinates: Vector2):
 	cursorCellCoordinates = cellCoordinates
@@ -82,6 +84,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 				$Board.removePiece(activePiece)
 				$Board.insertPiece(activePiece, cellCoordinates)
+				$Cursor.setFlashingColor(false)
 			return
 		else:
 			return
@@ -99,6 +102,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 						activePiece.attack(cellPiece)
 						activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 						$Board.removePiece(activePiece)
+						$Cursor.setFlashingColor(false)
 		else:
 			if cellPiece.teamIndex == teamTurnIndex:
 				setPieceActivated(cellPiece, true)
