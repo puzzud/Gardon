@@ -113,11 +113,9 @@ func getCellCoordinatesFromPosition(position: Vector2):
 	var cellFirstPosition = global_position + TileMapOffset
 	
 	cellCoordinates.x = int((position.x - cellFirstPosition.x) / CellDimensions.x)
-	if cellCoordinates.x < 0 || cellCoordinates.x >= 8:
-		return null
-	
 	cellCoordinates.y = int((position.y - cellFirstPosition.y) / CellDimensions.y)
-	if cellCoordinates.y < 0 || cellCoordinates.y >= 8:
+	
+	if areCellCoordinatesOutOfBounds(cellCoordinates):
 		return null
 	
 	return cellCoordinates
@@ -133,6 +131,44 @@ func getCellCoordinatesFromPiece(piece: Piece):
 				return Vector2(x, y)
 	
 	return null
+
+func getCellCoordinatesFromCellOffset(cellCoordinates: Vector2, cellOffset: Vector2):
+	var offsetCellCoordinates = cellCoordinates + cellOffset
+	
+	if areCellCoordinatesOutOfBounds(offsetCellCoordinates):
+		return null
+	
+	return offsetCellCoordinates
+	
+func areCellCoordinatesOutOfBounds(cellCoordinates: Vector2):
+	# TODO: Make upper bounds actually use board dimensions.
+	if cellCoordinates.x < 0 || cellCoordinates.x >= 8:
+		return true
+	
+	if cellCoordinates.y < 0 || cellCoordinates.y >= 8:
+		return true
+	
+	return false
+
+func getCellOffsetFromDirection(direction: int) -> Vector2:
+	var cellOffset = Vector2()
+	
+	if direction & Global.DIRECTION_FLAG_LEFT:
+		cellOffset.x = cellOffset.x - 1
+		
+	if direction & Global.DIRECTION_FLAG_RIGHT:
+		cellOffset.x = cellOffset.x + 1
+	
+	if direction & Global.DIRECTION_FLAG_UP:
+		cellOffset.y = cellOffset.y - 1
+	
+	if direction & Global.DIRECTION_FLAG_DOWN:
+		cellOffset.y = cellOffset.y + 1
+	
+	return cellOffset
+
+func getCellActionFromCellCoordinates(cellCoordinates: Vector2) -> int:
+	return cellActions[cellCoordinates.y][cellCoordinates.x]
 
 func clearCellActions():
 	for y in range(0, cellActions.size()):

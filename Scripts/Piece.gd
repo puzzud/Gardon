@@ -5,6 +5,17 @@ const BoardCellOffset := Vector2(8, 7)
 
 export(int) var teamIndex = 0
 
+var movementDirections = [
+	Global.DIRECTION_LEFT_UP,
+	Global.DIRECTION_UP,
+	Global.DIRECTION_RIGHT_UP,
+	Global.DIRECTION_LEFT,
+	Global.DIRECTION_RIGHT,
+	Global.DIRECTION_LEFT_DOWN,
+	Global.DIRECTION_DOWN,
+	Global.DIRECTION_RIGHT_DOWN
+]
+
 var activated: bool = false
 
 var moving: bool = false
@@ -35,6 +46,9 @@ func setActivated(activated: bool):
 		$AnimationPlayer.play("activate")
 	else:
 		$AnimationPlayer.play("deactivate")
+
+func getMovementDirections():
+	return movementDirections
 
 func moveToPosition(position: Vector2):
 	moving = true

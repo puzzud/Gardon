@@ -55,10 +55,11 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	var cellPiece = $Board.getCellContent(cellCoordinates)
 	if cellPiece == null:
 		if activePiece != null:
-			# TODO: Can the active piece move to this cell?
-			activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-			$Board.removePiece(activePiece)
-			$Board.insertPiece(activePiece, cellCoordinates)
+			# Can the active piece move to this cell?
+			if $Board.getCellActionFromCellCoordinates(cellCoordinates) == $Board.CELL_ACTION_ACTIVATE:
+				activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
+				$Board.removePiece(activePiece)
+				$Board.insertPiece(activePiece, cellCoordinates)
 			return
 		else:
 			return
@@ -71,10 +72,11 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				if cellPiece.teamIndex == activePiece.teamIndex:
 					return
 				else:
-					# TODO: Can the active piece attack this cell?
-					activePiece.attack(cellPiece)
-					activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-					$Board.removePiece(activePiece)
+					# Can the active piece attack this cell?
+					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == $Board.CELL_ACTION_ATTACK:
+						activePiece.attack(cellPiece)
+						activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
+						$Board.removePiece(activePiece)
 		else:
 			if cellPiece.teamIndex == teamTurnIndex:
 				setPieceActivated(cellPiece, true)
@@ -121,6 +123,18 @@ func calculateCellActionsForPiece(piece: Piece):
 	
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(piece)
 	$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
+	
+	var pieceMovementDirections = piece.getMovementDirections()
+	for movementDirection in pieceMovementDirections:
+		var movementDirectionCellOffset = $Board.getCellOffsetFromDirection(movementDirection)
+		
+		var offsetCellCoordinates = $Board.getCellCoordinatesFromCellOffset(cellCoordinates, movementDirectionCellOffset)
+		if offsetCellCoordinates == null:
+			continue
+		
+		var offsetCellContents = $Board.getCellContent(offsetCellCoordinates)
+		if offsetCellContents == null:
+			$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
 
 func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1
