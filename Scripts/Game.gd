@@ -18,6 +18,8 @@ func _ready():
 	initializeBoard()
 	
 	setTeamTurnIndex(teamTurnIndex)
+	
+	$Cursor.visible = false
 
 func initializeBoard():
 	$Board.clear()
