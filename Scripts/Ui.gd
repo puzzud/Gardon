@@ -12,6 +12,10 @@ func indicateTeamTurn(teamIndex: int):
 
 func declareWinner(winningTeamIndex: int):
 	var teamName: String = Global.game.teamNames[winningTeamIndex]
+	var teamColor: Color = Global.game.teamColors[winningTeamIndex]
 	
+	$Title["custom_colors/font_color"] = teamColor
 	$Title.text = teamName.to_upper() + " WINS"
+	
+	$CaptionMessageBox/Text["custom_colors/font_color"] = teamColor
 	$CaptionMessageBox/Text.text = teamName.to_upper() + " WINS!"
