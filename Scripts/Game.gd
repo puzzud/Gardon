@@ -6,6 +6,8 @@ var teamTurnIndex = 0
 export(Array, String) var teamNames
 export(Array, Color) var teamColors
 
+var cursorCellCoordinates: Vector2 = Vector2(0, 0)
+
 var activePiece: Piece
 
 var isGameOver = false
@@ -43,25 +45,33 @@ func getTeamColor(teamIndex: int) -> Color:
 	var teamColor = teamColors[teamIndex]
 	return teamColor
 
+func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
+	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
+
 func onBoardCellHover(cellCoordinates: Vector2):
+	cursorCellCoordinates = cellCoordinates
+	
 	if isGameOver:
 		return
 	
 	if activePiece != null && activePiece.moving:
 		return
 	
-	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
-	
+	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	$Cursor.visible = true
 	
 	#var cellContent = $Board.getCellContent(cellCoordinates)
 
 func onBoardCellPress(cellCoordinates: Vector2):
+	cursorCellCoordinates = cellCoordinates
+	
 	if isGameOver:
 		return
 	
 	if activePiece != null && activePiece.moving:
 		return
+	
+	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	
 	var cellPiece = $Board.getCellContent(cellCoordinates)
 	if cellPiece == null:
@@ -164,7 +174,8 @@ func endTurn():
 	if nextTeamTurnIndex > 1:
 		nextTeamTurnIndex = 0
 	
-	$Cursor.visible = false
+	#$Cursor.visible = false
+	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	
 	var winningTeamIndex = getWinningTeamIndex()
 	if winningTeamIndex < 0:
