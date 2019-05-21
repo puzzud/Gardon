@@ -129,7 +129,8 @@ func setPieceActivated(piece: Piece, activated: bool):
 func processPieceAttackingPiece(attackingPiece, targetPiece):
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
 	$Board.removePiece(targetPiece)
-	targetPiece.queue_free()
+	targetPiece.receiveDamage(5.0, attackingPiece)
+	
 	$Board.insertPiece(attackingPiece, cellCoordinates)
 	
 	$Board.clearCellActions()

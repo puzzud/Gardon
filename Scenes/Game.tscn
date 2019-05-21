@@ -30,7 +30,6 @@ position = Vector2( 56, 32 )
 position = Vector2( 62, 38 )
 
 [node name="Pieces" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_lock_": true
 }

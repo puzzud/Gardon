@@ -72,3 +72,25 @@ func onMoveTweenAllCompleted():
 func attack(piece):
 	attacking = true
 	targetPiece = piece
+
+func receiveDamage(damageAmount: float, attacker: Piece):
+	if damageAmount == 0.0:
+		return
+	
+	# NOTE: No concept of HP.
+	startDying()
+
+func startDying():
+	$AnimationPlayer.play("dying")
+	$Body.visible = false
+	$Shadow.visible = false
+	
+	$GibsParticles.set_emitting(true)
+	$GibsParticles.restart()
+
+func dyingAnimationFinished():
+	self.queue_free()
+
+func onAnimationPlayerAnimationFinished(anim_name):
+	if anim_name == "dying":
+		dyingAnimationFinished()

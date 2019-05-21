@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Piece.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Sprites1.png" type="Texture" id=2]
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=1]
 resource_name = "activate"
 length = 0.33
 tracks/0/type = "value"
@@ -60,6 +60,34 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=4]
+resource_name = "dying"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shadow:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -8, -12 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -7, -14 ) ]
+}
+
+[sub_resource type="Animation" id=3]
 resource_name = "idle"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shadow:position")
@@ -104,9 +132,28 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/activate = SubResource( 5 )
+anims/activate = SubResource( 1 )
 anims/deactivate = SubResource( 2 )
-anims/idle = SubResource( 4 )
+anims/dying = SubResource( 4 )
+anims/idle = SubResource( 3 )
 
 [node name="MoveTween" type="Tween" parent="."]
+
+[node name="GibsParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 0.5, -2.5 )
+emitting = false
+amount = 18
+lifetime = 0.5
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.75
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 16.0
+scale_amount = 4.0
+scale_amount_random = 1.0
+color = Color( 0.694118, 0.243137, 0.32549, 1 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationPlayerAnimationFinished"]
 [connection signal="tween_all_completed" from="MoveTween" to="." method="onMoveTweenAllCompleted"]
