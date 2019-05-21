@@ -13,4 +13,5 @@ func indicateTeamTurn(teamIndex: int):
 func declareWinner(winningTeamIndex: int):
 	var teamName: String = Global.game.teamNames[winningTeamIndex]
 	
+	$Title.text = teamName.to_upper() + " WINS"
 	$CaptionMessageBox/Text.text = teamName.to_upper() + " WINS!"
