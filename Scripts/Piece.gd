@@ -92,11 +92,6 @@ func onMoveTweenAllCompleted():
 		Global.game.activePiece = null
 	
 	Global.game.removeProcessingPiece(self)
-	
-	if $AnimationPlayer.has_animation("idle"):
-		$AnimationPlayer.play("idle")
-	elif $AnimationPlayer.has_animation("idleUp"):
-		$AnimationPlayer.play("idleUp")
 
 func getAnimationNameFromMovementDirection(direction: int):
 	return moveDirectionAnimationNames[direction]
@@ -137,3 +132,8 @@ func dyingAnimationFinished():
 func onAnimationPlayerAnimationFinished(anim_name):
 	if anim_name == "dying":
 		dyingAnimationFinished()
+	elif anim_name == "deactivate":
+		if $AnimationPlayer.has_animation("idle"):
+			$AnimationPlayer.play("idle")
+		elif $AnimationPlayer.has_animation("idleUp"):
+			$AnimationPlayer.play("idleUp")
