@@ -1,6 +1,7 @@
 extends Node2D
 class_name Piece
 
+# warning-ignore:unused_class_variable
 export(Vector2) var BoardCellOffset := Vector2(8, 7)
 
 var alive: bool = true

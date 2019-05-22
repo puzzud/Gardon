@@ -3,6 +3,7 @@ class_name Game
 
 var teamTurnIndex = 0
 
+# warning-ignore:unused_class_variable
 export(Array, String) var teamNames
 export(Array, Color) var teamColors
 
