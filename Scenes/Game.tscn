@@ -33,34 +33,13 @@ position = Vector2( 56, 32 )
 position = Vector2( 62, 38 )
 
 [node name="Pieces" type="Node2D" parent="."]
+editor/display_folded = true
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Team1" type="Node2D" parent="Pieces"]
-
-[node name="Farmer" parent="Pieces/Team1" instance=ExtResource( 6 )]
-position = Vector2( 135, 159 )
-
-[node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 7 )]
-position = Vector2( 87, 159 )
-
-[node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 7 )]
-position = Vector2( 103, 143 )
-
-[node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 7 )]
-position = Vector2( 119, 143 )
-
-[node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 7 )]
-position = Vector2( 135, 143 )
-
-[node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 7 )]
-position = Vector2( 151, 143 )
-
-[node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 7 )]
-position = Vector2( 167, 159 )
-
 [node name="Team2" type="Node2D" parent="Pieces"]
+editor/display_folded = true
 
 [node name="Farmer" parent="Pieces/Team2" instance=ExtResource( 6 )]
 position = Vector2( 119, 46 )
@@ -89,6 +68,30 @@ teamIndex = 1
 [node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 167, 46 )
 teamIndex = 1
+
+[node name="Team1" type="Node2D" parent="Pieces"]
+editor/display_folded = true
+
+[node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 7 )]
+position = Vector2( 87, 158 )
+
+[node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 7 )]
+position = Vector2( 103, 142 )
+
+[node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 7 )]
+position = Vector2( 119, 142 )
+
+[node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 7 )]
+position = Vector2( 135, 142 )
+
+[node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 7 )]
+position = Vector2( 151, 142 )
+
+[node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 7 )]
+position = Vector2( 167, 158 )
+
+[node name="Farmer" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 135, 158 )
 
 [node name="Timers" type="Node" parent="."]
 editor/display_folded = true
