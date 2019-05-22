@@ -21,3 +21,18 @@ var game: Game = null
 
 func _ready():
 	pass
+
+func getDirectionFromVector(vector: Vector2) -> int:
+	var direction = DIRECTION_NONE
+	
+	if vector.x < 0:
+		direction = direction | DIRECTION_FLAG_LEFT
+	elif vector.x > 0:
+		direction = direction | DIRECTION_FLAG_RIGHT
+	
+	if vector.y < 0:
+		direction = direction | DIRECTION_FLAG_UP
+	elif vector.y > 0:
+		direction = direction | DIRECTION_FLAG_DOWN
+	
+	return direction

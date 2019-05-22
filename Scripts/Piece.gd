@@ -1,7 +1,7 @@
 extends Node2D
 class_name Piece
 
-const BoardCellOffset := Vector2(8, 7)
+export(Vector2) var BoardCellOffset := Vector2(8, 7)
 
 var alive: bool = true
 
@@ -20,6 +20,18 @@ var movementDirections = [
 	Global.DIRECTION_DOWN,
 	Global.DIRECTION_RIGHT_DOWN
 ]
+
+var moveDirectionAnimationNames = {
+	Global.DIRECTION_LEFT_UP: "moveUp",
+	Global.DIRECTION_UP: "moveUp",
+	Global.DIRECTION_RIGHT_UP: "moveUp",
+	Global.DIRECTION_LEFT: "moveLeft",
+	Global.DIRECTION_NONE: "idleUp",
+	Global.DIRECTION_RIGHT: "moveRight",
+	Global.DIRECTION_LEFT_DOWN: "moveDown",
+	Global.DIRECTION_DOWN: "moveDown",
+	Global.DIRECTION_RIGHT_DOWN: "moveDown"
+}
 
 var activated: bool = false
 
@@ -64,6 +76,12 @@ func moveToPosition(position: Vector2):
 	$MoveTween.interpolate_property(self, "global_position", global_position, position, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$MoveTween.start()
 	
+	var moveDirection = Global.getDirectionFromVector(position - global_position)
+	
+	var moveAnimationName = getAnimationNameFromMovementDirection(moveDirection)
+	if $AnimationPlayer.has_animation(moveAnimationName):
+		$AnimationPlayer.play(moveAnimationName)
+	
 	$AudioPlayers/StartMove1.play()
 
 func onMoveTweenAllCompleted():
@@ -72,8 +90,16 @@ func onMoveTweenAllCompleted():
 	if Global.game.activePiece == self:
 		Global.game.activePiece.setActivated(false)
 		Global.game.activePiece = null
-		
+	
 	Global.game.removeProcessingPiece(self)
+	
+	if $AnimationPlayer.has_animation("idle"):
+		$AnimationPlayer.play("idle")
+	elif $AnimationPlayer.has_animation("idleUp"):
+		$AnimationPlayer.play("idleUp")
+
+func getAnimationNameFromMovementDirection(direction: int):
+	return moveDirectionAnimationNames[direction]
 
 func attack(piece):
 	attacking = true
@@ -81,6 +107,7 @@ func attack(piece):
 	
 	$AudioPlayers/StartAttack1.play()
 
+# warning-ignore:unused_argument
 func receiveDamage(damageAmount: float, attacker: Piece):
 	if damageAmount == 0.0:
 		return

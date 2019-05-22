@@ -1,0 +1,223 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Scripts/Piece.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/Sprites1.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/FarmerRed.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sounds/Hit1.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sounds/Activation1.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Sounds/Deactivation1.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Sounds/StartMove1.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Sounds/StartAttack1.ogg" type="AudioStream" id=8]
+
+[sub_resource type="Animation" id=9]
+resource_name = "activate"
+length = 0.5
+
+[sub_resource type="Animation" id=10]
+resource_name = "deactivate"
+length = 0.5
+
+[sub_resource type="Animation" id=4]
+resource_name = "dying"
+length = 0.5
+
+[sub_resource type="Animation" id=12]
+resource_name = "idleDown"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "idleLeft"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 160, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "idleRight"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 112, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "idleUp"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 48, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "moveDown"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 16, 0, 16, 24 ), Rect2( 32, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "moveLeft"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 144, 0, 16, 24 ), Rect2( 160, 0, 16, 24 ), Rect2( 176, 0, 16, 24 ), Rect2( 160, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "moveRight"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 96, 0, 16, 24 ), Rect2( 112, 0, 16, 24 ), Rect2( 128, 0, 16, 24 ), Rect2( 112, 0, 16, 24 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "moveUp"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 80, 0, 16, 24 ), Rect2( 64, 0, 16, 24 ) ]
+}
+
+[node name="Farmer" type="Node2D"]
+script = ExtResource( 1 )
+BoardCellOffset = Vector2( 8, 8 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( -8, -12 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 64, 0, 16, 16 )
+
+[node name="Body" type="Sprite" parent="."]
+position = Vector2( -8, -21 )
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 16, 24 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/activate = SubResource( 9 )
+anims/deactivate = SubResource( 10 )
+anims/dying = SubResource( 4 )
+anims/idleDown = SubResource( 12 )
+anims/idleLeft = SubResource( 13 )
+anims/idleRight = SubResource( 14 )
+anims/idleUp = SubResource( 11 )
+anims/moveDown = SubResource( 5 )
+anims/moveLeft = SubResource( 8 )
+anims/moveRight = SubResource( 7 )
+anims/moveUp = SubResource( 6 )
+
+[node name="MoveTween" type="Tween" parent="."]
+
+[node name="GibsParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 0.5, -2.5 )
+emitting = false
+amount = 18
+lifetime = 0.5
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.75
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 16.0
+scale_amount = 4.0
+scale_amount_random = 1.0
+color = Color( 0.694118, 0.243137, 0.32549, 1 )
+
+[node name="AudioPlayers" type="Node2D" parent="."]
+
+[node name="Hit1" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource( 4 )
+
+[node name="Activate1" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource( 5 )
+
+[node name="Deactivate1" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource( 6 )
+
+[node name="StartMove1" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource( 7 )
+
+[node name="StartAttack1" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource( 8 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="onAnimationPlayerAnimationFinished"]
+[connection signal="tween_all_completed" from="MoveTween" to="." method="onMoveTweenAllCompleted"]

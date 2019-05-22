@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Ui.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Backgrounds/Background1.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Board.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Cursor.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Tomato.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Assets/Sounds/StartTurn1.ogg" type="AudioStream" id=7]
-[ext_resource path="res://Assets/Sounds/EndGame1.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Scenes/Farmer.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Tomato.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Sounds/StartTurn1.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sounds/EndGame1.ogg" type="AudioStream" id=9]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -32,54 +33,60 @@ position = Vector2( 56, 32 )
 position = Vector2( 62, 38 )
 
 [node name="Pieces" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Team1" type="Node2D" parent="Pieces"]
 
-[node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 6 )]
+[node name="Farmer" parent="Pieces/Team1" instance=ExtResource( 6 )]
+position = Vector2( 135, 159 )
+
+[node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 87, 159 )
 
-[node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 6 )]
+[node name="Tomato3" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 103, 143 )
 
-[node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 6 )]
+[node name="Tomato4" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 119, 143 )
 
-[node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 6 )]
+[node name="Tomato5" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 135, 143 )
 
-[node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 6 )]
+[node name="Tomato6" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 151, 143 )
 
-[node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 6 )]
+[node name="Tomato7" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 167, 159 )
 
 [node name="Team2" type="Node2D" parent="Pieces"]
 
-[node name="Tomato2" parent="Pieces/Team2" instance=ExtResource( 6 )]
+[node name="Farmer" parent="Pieces/Team2" instance=ExtResource( 6 )]
+position = Vector2( 119, 46 )
+teamIndex = 1
+
+[node name="Tomato2" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 87, 46 )
 teamIndex = 1
 
-[node name="Tomato3" parent="Pieces/Team2" instance=ExtResource( 6 )]
+[node name="Tomato3" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 103, 62 )
 teamIndex = 1
 
-[node name="Tomato4" parent="Pieces/Team2" instance=ExtResource( 6 )]
+[node name="Tomato4" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 119, 62 )
 teamIndex = 1
 
-[node name="Tomato5" parent="Pieces/Team2" instance=ExtResource( 6 )]
+[node name="Tomato5" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 135, 62 )
 teamIndex = 1
 
-[node name="Tomato6" parent="Pieces/Team2" instance=ExtResource( 6 )]
+[node name="Tomato6" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 151, 62 )
 teamIndex = 1
 
-[node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 6 )]
+[node name="Tomato7" parent="Pieces/Team2" instance=ExtResource( 7 )]
 position = Vector2( 167, 46 )
 teamIndex = 1
 
@@ -91,12 +98,13 @@ wait_time = 3.0
 one_shot = true
 
 [node name="AudioPlayers" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="StartTurn1" type="AudioStreamPlayer" parent="AudioPlayers"]
-stream = ExtResource( 7 )
+stream = ExtResource( 8 )
 
 [node name="EndGame1" type="AudioStreamPlayer" parent="AudioPlayers"]
-stream = ExtResource( 8 )
+stream = ExtResource( 9 )
 [connection signal="pressed" from="Ui/OkButton" to="." method="onOkButtonPressed"]
 [connection signal="cellHover" from="Board" to="." method="onBoardCellHover"]
 [connection signal="cellPress" from="Board" to="." method="onBoardCellPress"]
