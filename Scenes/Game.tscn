@@ -101,7 +101,6 @@ wait_time = 3.0
 one_shot = true
 
 [node name="AudioPlayers" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="StartTurn1" type="AudioStreamPlayer" parent="AudioPlayers"]
 stream = ExtResource( 8 )

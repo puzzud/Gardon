@@ -220,9 +220,6 @@ func getWinningTeamIndex():
 	var numberOfAliveTeam0Pieces = getNumberOfAlivePieces(team0Pieces)
 	var numberOfAliveTeam1Pieces = getNumberOfAlivePieces(team1Pieces)
 	
-	print("Team0 alive pieces: " + str(numberOfAliveTeam0Pieces))
-	print("Team1 alive pieces: " + str(numberOfAliveTeam1Pieces))
-	
 	if numberOfAliveTeam0Pieces == 0:
 		return 1
 	elif numberOfAliveTeam1Pieces == 0:
