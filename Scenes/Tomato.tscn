@@ -12,7 +12,7 @@
 resource_name = "activate"
 length = 0.33
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Farmer/Shadow:position")
+tracks/0/path = NodePath("Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -21,14 +21,14 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( -8, -12 ), Vector2( -8, -12 ) ]
+"values": [ Vector2( -7, -14 ), Vector2( -7, -17 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=5]
 resource_name = "deactivate"
 length = 0.33
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Farmer/Shadow:position")
+tracks/0/path = NodePath("Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -37,7 +37,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( -8, -12 ), Vector2( -8, -12 ) ]
+"values": [ Vector2( -7, -17 ), Vector2( -7, -14 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -46,7 +46,7 @@ length = 0.5
 
 [sub_resource type="Animation" id=4]
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Farmer/Shadow:position")
+tracks/0/path = NodePath("Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -55,7 +55,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -8, -12 ) ]
+"values": [ Vector2( -7, -14 ) ]
 }
 
 [node name="Tomato" type="Node2D"]
@@ -77,7 +77,7 @@ region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/activate = SubResource( 1 )
-anims/deactivate = SubResource( 2 )
+anims/deactivate = SubResource( 5 )
 anims/dying = SubResource( 3 )
 anims/idle = SubResource( 4 )
 
