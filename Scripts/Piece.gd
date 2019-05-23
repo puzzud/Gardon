@@ -27,16 +27,16 @@ var movementDirections = [
 	Global.DIRECTION_RIGHT_DOWN
 ]
 
-var moveDirectionAnimationNames = {
-	Global.DIRECTION_LEFT_UP: "moveUp",
-	Global.DIRECTION_UP: "moveUp",
-	Global.DIRECTION_RIGHT_UP: "moveUp",
-	Global.DIRECTION_LEFT: "moveLeft",
-	Global.DIRECTION_NONE: "idleUp",
-	Global.DIRECTION_RIGHT: "moveRight",
-	Global.DIRECTION_LEFT_DOWN: "moveDown",
-	Global.DIRECTION_DOWN: "moveDown",
-	Global.DIRECTION_RIGHT_DOWN: "moveDown"
+var moveDirectionAnimationNameSuffixes = {
+	Global.DIRECTION_LEFT_UP: "Up",
+	Global.DIRECTION_UP: "Up",
+	Global.DIRECTION_RIGHT_UP: "Up",
+	Global.DIRECTION_LEFT: "Left",
+	Global.DIRECTION_NONE: "Down",
+	Global.DIRECTION_RIGHT: "Right",
+	Global.DIRECTION_LEFT_DOWN: "Down",
+	Global.DIRECTION_DOWN: "Down",
+	Global.DIRECTION_RIGHT_DOWN: "Down"
 }
 
 var activated: bool = false
@@ -112,7 +112,7 @@ func moveToPosition(position: Vector2):
 	
 	var moveDirection = Global.getDirectionFromVector(position - global_position)
 	
-	var moveAnimationName = getAnimationNameFromMovementDirection(moveDirection)
+	var moveAnimationName = "move" + getAnimationNameSuffixFromMovementDirection(moveDirection)
 	if $AnimationPlayer.has_animation(moveAnimationName):
 		$AnimationPlayer.play(moveAnimationName)
 	
@@ -128,8 +128,8 @@ func onMoveTweenAllCompleted():
 	
 	Global.game.removeProcessingPiece(self) # Remove processing piece to end move process.
 
-func getAnimationNameFromMovementDirection(direction: int):
-	return moveDirectionAnimationNames[direction]
+func getAnimationNameSuffixFromMovementDirection(direction: int):
+	return moveDirectionAnimationNameSuffixes[direction]
 
 func attack(piece):
 	attacking = true
@@ -170,7 +170,8 @@ func onAnimationPlayerAnimationFinished(anim_name):
 	elif anim_name == "deactivate":
 		Global.game.removeProcessingPiece(self)
 		
-		if $AnimationPlayer.has_animation("idle"):
-			$AnimationPlayer.play("idle")
-		elif $AnimationPlayer.has_animation("idleUp"):
-			$AnimationPlayer.play("idleUp")
+		onDeactivationFinished()
+
+func onDeactivationFinished():
+	if $AnimationPlayer.has_animation("idle"):
+		$AnimationPlayer.play("idle")

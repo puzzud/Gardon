@@ -234,6 +234,16 @@ func endGame(winningTeamIndex):
 	
 	$AudioPlayers/EndGame1.play()
 
+func getEnemyTeamIndices(teamIndex: int) -> Array:
+	var teamIndices := []
+	
+	if teamIndex == 0:
+		teamIndices.append(1)
+	elif teamIndex == 1:
+		teamIndices.append(0)
+	
+	return teamIndices
+
 func getWinningTeamIndex():
 	var team0Pieces = getTeamPieces(0)
 	var team1Pieces = getTeamPieces(1)
@@ -257,6 +267,29 @@ func getTeamPieces(teamIndex: int) -> Array:
 		return []
 	
 	return teamPiecesNode.get_children()
+
+func getWizards() -> Array:
+	var wizards := []
+	
+	for teamIndex in range(0, 1 + 1):
+		var teamWizards = getWizardsFromTeamIndex(teamIndex)
+		wizards = wizards + teamWizards
+	
+	return wizards
+
+func getWizardsFromTeamIndex(teamIndex: int) -> Array:
+	var teamPieces = getTeamPieces(teamIndex)
+	var teamWizards = getWizardsFromPieces(teamPieces)
+	return teamWizards
+
+func getWizardsFromPieces(pieces: Array) -> Array:
+	var wizards := []
+	
+	for piece in pieces:
+		if piece is Wizard:
+			wizards.append(piece)
+	
+	return wizards
 
 func getNumberOfAlivePieces(pieces: Array):
 	var numberOfAlivePieces := 0
