@@ -205,6 +205,8 @@ func calculateCellActionsForPiece(piece: Piece):
 				else:
 					if piece.canAttack:
 						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
+					elif piece.user != null && piece.user.canAttack:
+						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
 					break
 
 func endTurn():
