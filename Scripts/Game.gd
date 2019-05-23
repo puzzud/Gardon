@@ -47,6 +47,8 @@ func setTeamTurnIndex(teamTurnIndex: int):
 	calculateCellActions()
 	$Board.overlayCellActions()
 	
+	faceWizards()
+	
 	$AudioPlayers/StartTurn1.play()
 
 func getTeamColor(teamIndex: int) -> Color:
@@ -333,6 +335,10 @@ func removeProcessingPiece(piece: Piece):
 	if piecesThatAreProcessing.empty():
 		if activePieceStack.empty():
 			endTurn()
+
+func faceWizards():
+	for wizard in getWizards():
+		wizard.faceEnemyWizard()
 
 func onOkButtonPressed():
 	endTurn()
