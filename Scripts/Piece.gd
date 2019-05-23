@@ -61,12 +61,32 @@ func setTeamIndex(teamIndex):
 func setActivated(activated: bool):
 	self.activated = activated
 	
+	var audioPlaybackPosition = 0.0
+	
 	if activated:
 		$AnimationPlayer.play("activate")
-		$AudioPlayers/Activate1.play()
+		
+		if $AudioPlayers/Deactivate1.playing:
+			audioPlaybackPosition = $AudioPlayers/Deactivate1.get_playback_position()
+			$AudioPlayers/Deactivate1.stop()
+			
+			audioPlaybackPosition = $AudioPlayers/Activate1.stream.get_length() - audioPlaybackPosition
+			if audioPlaybackPosition < 0.0:
+				audioPlaybackPosition = 0.0
+		
+		$AudioPlayers/Activate1.play(audioPlaybackPosition)
 	else:
 		$AnimationPlayer.play("deactivate")
-		$AudioPlayers/Deactivate1.play()
+		
+		if $AudioPlayers/Activate1.playing:
+			audioPlaybackPosition = $AudioPlayers/Activate1.get_playback_position()
+			$AudioPlayers/Activate1.stop()
+			
+			audioPlaybackPosition = $AudioPlayers/Deactivate1.stream.get_length() - audioPlaybackPosition
+			if audioPlaybackPosition < 0.0:
+				audioPlaybackPosition = 0.0
+			
+		$AudioPlayers/Deactivate1.play(audioPlaybackPosition)
 
 func getMovementDirections():
 	return movementDirections
