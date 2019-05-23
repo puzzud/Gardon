@@ -377,4 +377,6 @@ func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 	$Ui.setCaptionText(actionName, cellActionColor)
 
 func onEndGameTimerTimeout():
-	get_tree().reload_current_scene()
+	#get_tree().reload_current_scene()
+	
+	get_tree().change_scene("res://Scenes/TitleScreen.tscn")
