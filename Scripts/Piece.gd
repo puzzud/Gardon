@@ -6,6 +6,8 @@ export(Vector2) var BoardCellOffset := Vector2(8, 7)
 
 var alive: bool = true
 
+var user: Piece = null
+
 export(int) var teamIndex = 0
 
 # warning-ignore:unused_class_variable
@@ -52,6 +54,10 @@ func _process(delta):
 				Global.game.processPieceAttackingPiece(self, targetPiece)
 				attacking = false
 				targetPiece = null
+				
+				if user != null:
+					Global.game.setPieceActivated(user, false, false)
+					user = null
 
 func setTeamIndex(teamIndex):
 	self.teamIndex = teamIndex
@@ -94,6 +100,10 @@ func getMovementDirections():
 func moveToPosition(position: Vector2):
 	moving = true
 	
+	if user != null:
+		Global.game.setPieceActivated(user, false, false)
+		user = null
+	
 	$MoveTween.interpolate_property(self, "global_position", global_position, position, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$MoveTween.start()
 	
@@ -110,8 +120,7 @@ func onMoveTweenAllCompleted():
 	
 	var activePiece = Global.game.getActivePiece()
 	if activePiece == self:
-		setActivated(false)
-		Global.game.removeActivePiece(self)
+		Global.game.setPieceActivated(self, false, false) # NOTE: Call this instead of setActivated.
 		Global.game.addProcessingPiece(self) # Add processing piece to track deactivation process.
 	
 	Global.game.removeProcessingPiece(self) # Remove processing piece to end move process.

@@ -11,7 +11,9 @@ var cursorCellCoordinates: Vector2 = Vector2(0, 0)
 
 var activePieceStack: Array = []
 
-var isGameOver = false
+var turnActionPerformed: bool = false
+
+var isGameOver: bool = false
 
 var piecesThatAreProcessing = []
 
@@ -108,6 +110,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 			else:
 				if cellPiece.teamIndex == activePiece.teamIndex:
 					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == $Board.CELL_ACTION_USE:
+						cellPiece.user = activePiece
 						setPieceActivated(cellPiece, true)
 						return
 				else:
@@ -128,7 +131,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				setPieceActivated(cellPiece, true)
 				return
 
-func setPieceActivated(piece: Piece, activated: bool):
+func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = true):
 	piece.setActivated(activated)
 	
 	if activated:
@@ -136,8 +139,9 @@ func setPieceActivated(piece: Piece, activated: bool):
 	else:
 		removeActivePiece(piece)
 	
-	calculateCellActions()
-	$Board.overlayCellActions()
+	if updateCellActions:
+		calculateCellActions()
+		$Board.overlayCellActions()
 
 func processPieceAttackingPiece(attackingPiece, targetPiece):
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
@@ -198,6 +202,8 @@ func calculateCellActionsForPiece(piece: Piece):
 					break
 
 func endTurn():
+	turnActionPerformed = false
+	
 	var nextTeamTurnIndex = teamTurnIndex + 1
 	if nextTeamTurnIndex > 1:
 		nextTeamTurnIndex = 0
@@ -283,8 +289,9 @@ func removeProcessingPiece(piece: Piece):
 	
 	piecesThatAreProcessing.remove(index)
 	
-	if piecesThatAreProcessing.empty() && activePieceStack.empty():
-		endTurn()
+	if piecesThatAreProcessing.empty():
+		if activePieceStack.empty():
+			endTurn()
 
 func onOkButtonPressed():
 	endTurn()
