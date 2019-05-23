@@ -22,6 +22,7 @@ __meta__ = {
 }
 
 [node name="1Player" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 
@@ -38,6 +39,7 @@ margin_left = 140.0
 margin_top = 134.0
 margin_right = 188.0
 margin_bottom = 152.0
+disabled = true
 
 [node name="2Players" type="Control" parent="."]
 margin_right = 40.0
