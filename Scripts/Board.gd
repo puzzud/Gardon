@@ -46,6 +46,19 @@ var tileNameCellActionOverlayTable = {
 
 var cellActionOverlayTileIndexTable = {}
 
+var cellActionNames = {
+	CELL_ACTION_NONE: "",
+	CELL_ACTION_ACTIVATE: "Activate",
+	CELL_ACTION_ATTACK: "Attack",
+	CELL_ACTION_USE: "Use"
+}
+
+var cellActionColors = {
+	CELL_ACTION_ACTIVATE: Color("73eff7"),
+	CELL_ACTION_ATTACK: Color("b13e53"),
+	CELL_ACTION_USE: Color("38b764")
+}
+
 func _ready():
 	buildCellActionOverlayTileIndexTable()
 	initializeCellActions()

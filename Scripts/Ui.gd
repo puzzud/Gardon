@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const defaultCaptionTextColor: Color = Color("f4f4f4")
+
 func _ready():
 	$CaptionMessageBox/Text.text = ""
 
@@ -17,5 +19,8 @@ func declareWinner(winningTeamIndex: int):
 	$Title["custom_colors/font_color"] = teamColor
 	$Title.text = teamName.to_upper() + " WINS"
 	
-	$CaptionMessageBox/Text["custom_colors/font_color"] = teamColor
-	$CaptionMessageBox/Text.text = teamName.to_upper() + " WINS!"
+	setCaptionText(teamName.to_upper() + " WINS!", teamColor)
+
+func setCaptionText(text: String, color: Color = defaultCaptionTextColor):
+	$CaptionMessageBox/Text["custom_colors/font_color"] = color
+	$CaptionMessageBox/Text.text = text

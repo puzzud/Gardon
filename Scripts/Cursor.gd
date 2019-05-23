@@ -3,6 +3,8 @@ extends Sprite
 export(Color) var mainColor
 export(Color) var flashColor
 
+var cellCoordinates: Vector2
+
 var isFlashingColor := false
 
 func _ready():

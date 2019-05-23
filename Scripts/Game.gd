@@ -56,9 +56,15 @@ func getTeamColor(teamIndex: int) -> Color:
 	return teamColor
 
 func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
+	$Cursor.cellCoordinates = cellCoordinates
+	
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
 	
-	$Cursor.setFlashingColor($Board.getCellActionFromCellCoordinates(cellCoordinates) != $Board.CELL_ACTION_NONE)
+	var cellAction = $Board.getCellActionFromCellCoordinates(cellCoordinates)
+	var cellHasAction = (cellAction != $Board.CELL_ACTION_NONE)
+	$Cursor.setFlashingColor(cellHasAction)
+	
+	updateCaptionTextFromCellCoordinates(cellCoordinates)
 
 func onBoardCellHover(cellCoordinates: Vector2):
 	cursorCellCoordinates = cellCoordinates
@@ -144,6 +150,8 @@ func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = 
 	if updateCellActions:
 		calculateCellActions()
 		$Board.overlayCellActions()
+		
+		updateCaptionTextFromCellCoordinates($Cursor.cellCoordinates)
 
 func processPieceAttackingPiece(attackingPiece, targetPiece):
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
@@ -345,8 +353,28 @@ func faceWizards():
 	for wizard in getWizards():
 		wizard.faceEnemyWizard()
 
-func onOkButtonPressed():
-	endTurn()
+func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
+	var cellAction = $Board.getCellActionFromCellCoordinates(cellCoordinates)
+	
+	var actionName = $Board.cellActionNames[cellAction].to_upper()
+	
+	var cellContents = $Board.getCellContent(cellCoordinates)
+	
+	if cellContents == null:
+		if cellAction == $Board.CELL_ACTION_ACTIVATE:
+			actionName = "Move".to_upper()
+	else:
+		var activePiece = getActivePiece()
+		
+		if activePiece == cellContents:
+			if cellAction == $Board.CELL_ACTION_ACTIVATE:
+				actionName = "Deactivate".to_upper()
+	
+	var cellActionColor := Color("f4f4f4")
+	if $Board.cellActionColors.has(cellAction):
+		cellActionColor = $Board.cellActionColors[cellAction]
+	
+	$Ui.setCaptionText(actionName, cellActionColor)
 
 func onEndGameTimerTimeout():
 	get_tree().reload_current_scene()
