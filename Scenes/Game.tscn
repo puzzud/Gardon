@@ -41,6 +41,7 @@ __meta__ = {
 
 [node name="Farmer" parent="Pieces/Team2" instance=ExtResource( 6 )]
 position = Vector2( 119, 46 )
+canUsePieces = true
 teamIndex = 1
 
 [node name="Tomato2" parent="Pieces/Team2" instance=ExtResource( 7 )]
@@ -68,7 +69,6 @@ position = Vector2( 167, 46 )
 teamIndex = 1
 
 [node name="Team1" type="Node2D" parent="Pieces"]
-editor/display_folded = true
 
 [node name="Tomato2" parent="Pieces/Team1" instance=ExtResource( 7 )]
 position = Vector2( 87, 158 )
@@ -90,6 +90,7 @@ position = Vector2( 167, 158 )
 
 [node name="Farmer" parent="Pieces/Team1" instance=ExtResource( 6 )]
 position = Vector2( 135, 158 )
+canUsePieces = true
 
 [node name="Timers" type="Node" parent="."]
 editor/display_folded = true

@@ -195,7 +195,8 @@ func calculateCellActionsForPiece(piece: Piece):
 				$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
 			else:
 				if offsetCellContents.teamIndex == piece.teamIndex:
-					$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_USE
+					if piece.canUsePieces:
+						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_USE
 					break
 				else:
 					$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
