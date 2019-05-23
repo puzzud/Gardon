@@ -9,7 +9,7 @@ export(Array, Color) var teamColors
 
 var cursorCellCoordinates: Vector2 = Vector2(0, 0)
 
-var activePiece: Piece
+var activePiece: Piece = null
 
 var isGameOver = false
 
@@ -62,6 +62,7 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	if isGameOver:
 		return
 	
+	var activePiece = getActivePiece()
 	if activePiece != null && activePiece.moving:
 		return
 	
@@ -76,6 +77,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	if isGameOver:
 		return
 	
+	var activePiece = getActivePiece()
 	if activePiece != null && activePiece.moving:
 		return
 	
@@ -128,9 +130,9 @@ func setPieceActivated(piece: Piece, activated: bool):
 	piece.setActivated(activated)
 	
 	if activated:
-		activePiece = piece
+		setActivePiece(piece)
 	else:
-		activePiece = null
+		setActivePiece(null)
 	
 	calculateCellActions()
 	$Board.overlayCellActions()
@@ -146,6 +148,7 @@ func processPieceAttackingPiece(attackingPiece, targetPiece):
 	$Board.overlayCellActions()
 
 func calculateCellActions():
+	var activePiece = getActivePiece()
 	if activePiece != null:
 		calculateCellActionsForPiece(activePiece)
 	else:
