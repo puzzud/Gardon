@@ -254,8 +254,6 @@ func setActivePiece(piece: Piece):
 	activePiece = piece
 
 func addProcessingPiece(piece: Piece):
-	if piecesThatAreProcessing.has(piece):
-		return
 	piecesThatAreProcessing.append(piece)
 
 func removeProcessingPiece(piece: Piece):

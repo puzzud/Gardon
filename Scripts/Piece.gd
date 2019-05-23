@@ -92,6 +92,7 @@ func onMoveTweenAllCompleted():
 	if activePiece == self:
 		setActivated(false)
 		Global.game.setActivePiece(null)
+		Global.game.addProcessingPiece(self)
 	
 	Global.game.removeProcessingPiece(self)
 
@@ -135,6 +136,8 @@ func onAnimationPlayerAnimationFinished(anim_name):
 	if anim_name == "dying":
 		dyingAnimationFinished()
 	elif anim_name == "deactivate":
+		Global.game.removeProcessingPiece(self)
+		
 		if $AnimationPlayer.has_animation("idle"):
 			$AnimationPlayer.play("idle")
 		elif $AnimationPlayer.has_animation("idleUp"):
