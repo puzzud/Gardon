@@ -258,6 +258,11 @@ func getWinningTeamIndex():
 	elif numberOfAliveTeam1Pieces == 0:
 		return 0
 	
+	if getWizardsFromPieces(team0Pieces).empty():
+		return 1
+	elif getWizardsFromPieces(team1Pieces).empty():
+		return 0
+	
 	return -1
 
 func getTeamPieces(teamIndex: int) -> Array:
