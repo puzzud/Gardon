@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/GoButtonPressed.png-f1c97a637944dea654e8f5785c363870.stex"
+path="res://.import/StartButtonNormal.png-e5e008896bb56c94bced83d9628d59fc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/GoButtonPressed.png"
-dest_files=[ "res://.import/GoButtonPressed.png-f1c97a637944dea654e8f5785c363870.stex" ]
+source_file="res://Assets/Sprites/StartButtonNormal.png"
+dest_files=[ "res://.import/StartButtonNormal.png-e5e008896bb56c94bced83d9628d59fc.stex" ]
 
 [params]
 

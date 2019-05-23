@@ -104,7 +104,6 @@ stream = ExtResource( 8 )
 
 [node name="EndGame1" type="AudioStreamPlayer" parent="AudioPlayers"]
 stream = ExtResource( 9 )
-[connection signal="pressed" from="Ui/OkButton" to="." method="onOkButtonPressed"]
 [connection signal="cellHover" from="Board" to="." method="onBoardCellHover"]
 [connection signal="cellPress" from="Board" to="." method="onBoardCellPress"]
 [connection signal="timeout" from="Timers/EndGameTimer" to="." method="onEndGameTimerTimeout"]
