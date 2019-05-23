@@ -183,7 +183,11 @@ func calculateCellActionsForPiece(piece: Piece):
 	for movementDirection in pieceMovementDirections:
 		var movementDirectionCellOffset = $Board.getCellOffsetFromDirection(movementDirection)
 		
-		for distance in range(1, piece.movementRange + 1):
+		var movementRange = piece.movementRange
+		if piece.user != null:
+			movementRange = 7 # TODO: Determine this in a better way.
+		
+		for distance in range(1, movementRange + 1):
 			var scaledMovementDirectionCellOffset = movementDirectionCellOffset * distance
 			
 			var offsetCellCoordinates = $Board.getCellCoordinatesFromCellOffset(cellCoordinates, scaledMovementDirectionCellOffset)
