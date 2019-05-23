@@ -5,6 +5,6 @@
 
 [node name="StartButton" type="TextureButton"]
 margin_right = 48.0
-margin_bottom = 32.0
+margin_bottom = 18.0
 texture_normal = ExtResource( 1 )
 texture_pressed = ExtResource( 2 )

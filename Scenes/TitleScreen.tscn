@@ -88,5 +88,5 @@ margin_right = 224.0
 margin_bottom = 216.0
 custom_fonts/font = ExtResource( 3 )
 text = "WEEKLY GAME JAM : WEEK 97"
-[connection signal="pressed" from="1Player/1PlayerStartButton" to="." method="onStartButtonPressed" binds= [ 1 ]]
-[connection signal="pressed" from="2Players/2PlayerStartButton" to="." method="onStartButtonPressed" binds= [ 2 ]]
+[connection signal="button_up" from="1Player/1PlayerStartButton" to="." method="onStartButtonUp" binds= [ 1 ]]
+[connection signal="button_up" from="2Players/2PlayerStartButton" to="." method="onStartButtonUp" binds= [ 2 ]]
