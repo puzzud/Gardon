@@ -60,8 +60,8 @@ gdscript/warnings/return_value_discarded=false
 
 window/size/width=256
 window/size/height=224
-window/size/test_width=512
-window/size/test_height=448
+window/size/test_width=1024
+window/size/test_height=896
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
