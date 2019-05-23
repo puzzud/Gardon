@@ -247,6 +247,12 @@ func getNumberOfAlivePieces(pieces: Array):
 	
 	return numberOfAlivePieces
 
+func getActivePiece() -> Piece:
+	return activePiece
+
+func setActivePiece(piece: Piece):
+	activePiece = piece
+
 func addProcessingPiece(piece: Piece):
 	if piecesThatAreProcessing.has(piece):
 		return

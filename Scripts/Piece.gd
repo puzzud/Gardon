@@ -46,7 +46,7 @@ func _ready():
 
 # warning-ignore:unused_argument
 func _process(delta):
-	if Global.game.activePiece == self:
+	if Global.game.getActivePiece() == self:
 		if attacking && targetPiece != null:
 			if global_position.distance_to(targetPiece.global_position) < 7.0:
 				Global.game.processPieceAttackingPiece(self, targetPiece)
@@ -88,9 +88,10 @@ func moveToPosition(position: Vector2):
 func onMoveTweenAllCompleted():
 	moving = false
 	
-	if Global.game.activePiece == self:
-		Global.game.activePiece.setActivated(false)
-		Global.game.activePiece = null
+	var activePiece = Global.game.getActivePiece()
+	if activePiece == self:
+		setActivated(false)
+		Global.game.setActivePiece(null)
 	
 	Global.game.removeProcessingPiece(self)
 
