@@ -9,6 +9,9 @@
 [ext_resource path="res://Assets/Sounds/StartMove1.ogg" type="AudioStream" id=7]
 [ext_resource path="res://Assets/Sounds/StartAttack1.ogg" type="AudioStream" id=8]
 
+[sub_resource type="Animation" id=1]
+length = 0.5
+
 [sub_resource type="Animation" id=2]
 length = 0.5
 
@@ -16,9 +19,6 @@ length = 0.5
 length = 0.5
 
 [sub_resource type="Animation" id=4]
-length = 0.5
-
-[sub_resource type="Animation" id=5]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:region_rect")
@@ -33,7 +33,7 @@ tracks/0/keys = {
 "values": [ Rect2( 0, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:region_rect")
@@ -48,7 +48,7 @@ tracks/0/keys = {
 "values": [ Rect2( 160, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:region_rect")
@@ -63,7 +63,7 @@ tracks/0/keys = {
 "values": [ Rect2( 112, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:region_rect")
@@ -78,7 +78,7 @@ tracks/0/keys = {
 "values": [ Rect2( 48, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -94,7 +94,7 @@ tracks/0/keys = {
 "values": [ Rect2( 16, 0, 16, 24 ), Rect2( 32, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=9]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -110,7 +110,7 @@ tracks/0/keys = {
 "values": [ Rect2( 144, 0, 16, 24 ), Rect2( 160, 0, 16, 24 ), Rect2( 176, 0, 16, 24 ), Rect2( 160, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=10]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -126,7 +126,7 @@ tracks/0/keys = {
 "values": [ Rect2( 96, 0, 16, 24 ), Rect2( 112, 0, 16, 24 ), Rect2( 128, 0, 16, 24 ), Rect2( 112, 0, 16, 24 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=11]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -162,24 +162,24 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 16, 24 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/activate = SubResource( 2 )
-anims/deactivate = SubResource( 3 )
-anims/dying = SubResource( 4 )
-anims/idleDown = SubResource( 5 )
-anims/idleLeft = SubResource( 6 )
-anims/idleRight = SubResource( 7 )
-anims/idleUp = SubResource( 8 )
-anims/moveDown = SubResource( 9 )
-anims/moveLeft = SubResource( 10 )
-anims/moveRight = SubResource( 11 )
-anims/moveUp = SubResource( 12 )
+anims/activate = SubResource( 1 )
+anims/deactivate = SubResource( 2 )
+anims/dying = SubResource( 3 )
+anims/idleDown = SubResource( 4 )
+anims/idleLeft = SubResource( 5 )
+anims/idleRight = SubResource( 6 )
+anims/idleUp = SubResource( 7 )
+anims/moveDown = SubResource( 8 )
+anims/moveLeft = SubResource( 9 )
+anims/moveRight = SubResource( 10 )
+anims/moveUp = SubResource( 11 )
 
 [node name="MoveTween" type="Tween" parent="."]
 
 [node name="GibsParticles" type="CPUParticles2D" parent="."]
-position = Vector2( 0.5, -2.5 )
+position = Vector2( 0.5, -8 )
 emitting = false
-amount = 18
+amount = 32
 lifetime = 0.5
 one_shot = true
 speed_scale = 2.0
