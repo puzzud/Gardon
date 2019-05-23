@@ -111,10 +111,10 @@ func onMoveTweenAllCompleted():
 	var activePiece = Global.game.getActivePiece()
 	if activePiece == self:
 		setActivated(false)
-		Global.game.setActivePiece(null)
-		Global.game.addProcessingPiece(self)
+		Global.game.removeActivePiece(self)
+		Global.game.addProcessingPiece(self) # Add processing piece to track deactivation process.
 	
-	Global.game.removeProcessingPiece(self)
+	Global.game.removeProcessingPiece(self) # Remove processing piece to end move process.
 
 func getAnimationNameFromMovementDirection(direction: int):
 	return moveDirectionAnimationNames[direction]

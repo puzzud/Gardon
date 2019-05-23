@@ -22,7 +22,8 @@ var cellContents = [
 enum {
 	CELL_ACTION_NONE = -1,
 	CELL_ACTION_ACTIVATE,
-	CELL_ACTION_ATTACK
+	CELL_ACTION_ATTACK,
+	CELL_ACTION_USE
 }
 
 var cellActions = [
@@ -39,7 +40,8 @@ var cellActions = [
 var tileNameCellActionOverlayTable = {
 	"": CELL_ACTION_NONE,
 	"GroundLightBlue": CELL_ACTION_ACTIVATE,
-	"GroundRed": CELL_ACTION_ATTACK
+	"GroundRed": CELL_ACTION_ATTACK,
+	"GroundGreen": CELL_ACTION_USE
 }
 
 var cellActionOverlayTileIndexTable = {}
@@ -182,6 +184,9 @@ func overlayCellActions():
 		for x in range(0, row.size()):
 			var tileIndex = -1
 			var cellAction = row[x]
-			if cellAction > -1:
-				tileIndex = cellActionOverlayTileIndexTable[cellAction]
+			if cellAction != CELL_ACTION_NONE:
+				if !cellActionOverlayTileIndexTable.has(cellAction):
+					printerr("No tile index for cell action: " + str(cellAction))
+				else:
+					tileIndex = cellActionOverlayTileIndexTable[cellAction]
 			$CellsOverlay.set_cell(x, y, tileIndex)

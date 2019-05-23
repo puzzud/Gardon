@@ -107,7 +107,9 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				return
 			else:
 				if cellPiece.teamIndex == activePiece.teamIndex:
-					return
+					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == $Board.CELL_ACTION_USE:
+						setPieceActivated(cellPiece, true)
+						return
 				else:
 					# Can the active piece attack this cell?
 					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == $Board.CELL_ACTION_ATTACK:
@@ -132,7 +134,7 @@ func setPieceActivated(piece: Piece, activated: bool):
 	if activated:
 		setActivePiece(piece)
 	else:
-		setActivePiece(null)
+		removeActivePiece(piece)
 	
 	calculateCellActions()
 	$Board.overlayCellActions()
@@ -189,6 +191,7 @@ func calculateCellActionsForPiece(piece: Piece):
 				$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ACTIVATE
 			else:
 				if offsetCellContents.teamIndex == piece.teamIndex:
+					$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_USE
 					break
 				else:
 					$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
@@ -257,7 +260,18 @@ func getActivePiece() -> Piece:
 	return activePieceStack.front()
 
 func setActivePiece(piece: Piece):
-	activePieceStack.push_front(piece)
+	if piece == null:
+		printerr("Attempted to set null as an active piece.")
+	else:
+		activePieceStack.push_front(piece)
+
+func removeActivePiece(piece = null):
+	if piece == null:
+		activePieceStack.pop_front()
+	else:
+		var index = activePieceStack.find(piece)
+		if index > -1:
+			activePieceStack.remove(index)
 
 func addProcessingPiece(piece: Piece):
 	piecesThatAreProcessing.append(piece)
@@ -269,7 +283,7 @@ func removeProcessingPiece(piece: Piece):
 	
 	piecesThatAreProcessing.remove(index)
 	
-	if piecesThatAreProcessing.empty():
+	if piecesThatAreProcessing.empty() && activePieceStack.empty():
 		endTurn()
 
 func onOkButtonPressed():
