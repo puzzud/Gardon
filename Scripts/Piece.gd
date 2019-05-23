@@ -64,8 +64,6 @@ func _process(delta):
 
 func setTeamIndex(teamIndex):
 	self.teamIndex = teamIndex
-	
-	$Body.region_rect.position.x = teamIndex * 16
 
 func setActivated(activated: bool):
 	self.activated = activated

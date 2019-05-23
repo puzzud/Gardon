@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Scripts/Piece.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Pawn.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Sprites1.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sounds/Hit1.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/Activation1.ogg" type="AudioStream" id=4]

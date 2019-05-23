@@ -1,8 +1,19 @@
 extends Piece
 class_name Wizard
 
+const bodyTextureTeam0 = preload("res://Assets/Sprites/FarmerOrange.tres")
+const bodyTextureTeam1 = preload("res://Assets/Sprites/FarmerRed.tres")
+
 func _ready():
 	pass
+
+func setTeamIndex(teamIndex):
+	.setTeamIndex(teamIndex)
+	
+	if teamIndex == 0:
+		$Body.texture = bodyTextureTeam0
+	else:
+		$Body.texture = bodyTextureTeam1
 
 func onDeactivationFinished():
 	faceEnemyWizard()
