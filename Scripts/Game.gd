@@ -203,7 +203,8 @@ func calculateCellActionsForPiece(piece: Piece):
 						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_USE
 					break
 				else:
-					$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
+					if piece.canAttack:
+						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = $Board.CELL_ACTION_ATTACK
 					break
 
 func endTurn():

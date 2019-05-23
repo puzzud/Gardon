@@ -1,6 +1,7 @@
 extends Node2D
 class_name Piece
 
+export(bool) var canAttack = false
 export(bool) var canUsePieces = false
 
 # warning-ignore:unused_class_variable
