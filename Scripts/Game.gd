@@ -9,7 +9,7 @@ export(Array, Color) var teamColors
 
 var cursorCellCoordinates: Vector2 = Vector2(0, 0)
 
-var activePiece: Piece = null
+var activePieceStack: Array = []
 
 var isGameOver = false
 
@@ -251,10 +251,13 @@ func getNumberOfAlivePieces(pieces: Array):
 	return numberOfAlivePieces
 
 func getActivePiece() -> Piece:
-	return activePiece
+	if activePieceStack.empty():
+		return null
+	
+	return activePieceStack.front()
 
 func setActivePiece(piece: Piece):
-	activePiece = piece
+	activePieceStack.push_front(piece)
 
 func addProcessingPiece(piece: Piece):
 	piecesThatAreProcessing.append(piece)
