@@ -51,7 +51,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Gardon"
-run/main_scene="res://Scenes/TitleScreen.tscn"
+run/main_scene="res://Scenes/Game.tscn"
 config/icon="res://Assets/Icons/icon.png"
 
 [autoload]
