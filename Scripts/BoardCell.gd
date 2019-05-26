@@ -13,3 +13,7 @@ var action: int = CellAction.NONE
 
 func _ready():
 	pass
+
+func clear():
+	content = null
+	action = CellAction.NONE

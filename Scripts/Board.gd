@@ -8,27 +8,7 @@ const CellDimensions := Vector2(16.0, 16.0)
 
 const TileMapOffset := Vector2(8.0, 8.0)
 
-var cellContents = [
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null],
-	[null, null, null, null, null, null, null, null]
-]
-
-var cellActions = [
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1, -1, -1, -1]
-]
+var cells = []
 
 var tileNameCellActionOverlayTable = {
 	"": BoardCell.CellAction.NONE,
@@ -69,6 +49,21 @@ func _input(event):
 			if event.pressed:
 				emit_signal("cellPress", cellCoordinates)
 
+func initialize():
+	cells = []
+	
+	for y in range(0, 8):
+		var row = []
+		
+		for x in range(0, 8):
+			var newBoardCell = BoardCell.new()
+			
+			row.append(newBoardCell)
+		
+		cells.append(row)
+	
+	clear()
+
 func buildCellActionOverlayTileIndexTable():
 	var cellsOverlayTileSet = $CellsOverlay.tile_set
 	
@@ -84,17 +79,19 @@ func initializeCellActions():
 	clearCellActions()
 
 func clear():
-	for row in cellContents:
+	for row in cells:
 		for x in range(0, row.size()):
-			row[x] = null
+			var cell: BoardCell = row[x]
+			cell.clear()
 
 func getCellContent(cellCoordinates: Vector2):
 	# TODO: Do bound checking.
 	
-	return cellContents[cellCoordinates.y][cellCoordinates.x]
+	return cells[cellCoordinates.y][cellCoordinates.x].content
 
 func clearCell(cellCoordinates):
-	cellContents[cellCoordinates.y][cellCoordinates.x] = null
+	var cell: BoardCell = cells[cellCoordinates.y][cellCoordinates.x]
+	cell.clear()
 
 func insertPiece(piece: Piece, cellCoordinates = null):
 	if cellCoordinates == null:
@@ -103,7 +100,7 @@ func insertPiece(piece: Piece, cellCoordinates = null):
 	if cellCoordinates == null:
 		return false
 	
-	cellContents[cellCoordinates.y][cellCoordinates.x] = piece
+	cells[cellCoordinates.y][cellCoordinates.x].content = piece
 	
 	return true
 
@@ -132,10 +129,10 @@ func getCellCoordinatesFromPiecePosition(piece: Piece):
 	return getCellCoordinatesFromPosition(piece.global_position)
 
 func getCellCoordinatesFromPiece(piece: Piece):
-	for y in range(0, cellContents.size()):
-		var row = cellContents[y]
+	for y in range(0, cells.size()):
+		var row = cells[y]
 		for x in range(0, row.size()):
-			if row[x] == piece:
+			if row[x].content == piece:
 				return Vector2(x, y)
 	
 	return null
@@ -175,21 +172,24 @@ func getCellOffsetFromDirection(direction: int) -> Vector2:
 	
 	return cellOffset
 
-func getCellActionFromCellCoordinates(cellCoordinates: Vector2) -> int:
-	return cellActions[cellCoordinates.y][cellCoordinates.x]
+func getCellAction(cellCoordinates: Vector2) -> int:
+	return cells[cellCoordinates.y][cellCoordinates.x].action
+
+func setCellAction(cellCoordinates: Vector2, cellAction: int):
+	cells[cellCoordinates.y][cellCoordinates.x].action = cellAction
 
 func clearCellActions():
-	for y in range(0, cellActions.size()):
-		var row = cellActions[y]
+	for y in range(0, cells.size()):
+		var row = cells[y]
 		for x in range(0, row.size()):
-			row[x] = BoardCell.CellAction.NONE
+			row[x].action = BoardCell.CellAction.NONE
 
 func overlayCellActions():
-	for y in range(0, cellActions.size()):
-		var row = cellActions[y]
+	for y in range(0, cells.size()):
+		var row = cells[y]
 		for x in range(0, row.size()):
 			var tileIndex = -1
-			var cellAction = row[x]
+			var cellAction = row[x].action
 			if cellAction != BoardCell.CellAction.NONE:
 				if !cellActionOverlayTileIndexTable.has(cellAction):
 					printerr("No tile index for cell action: " + str(cellAction))
