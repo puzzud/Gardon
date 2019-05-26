@@ -1,4 +1,5 @@
 extends Node
+class_name BoardCell
 
 enum CellAction {
 	NONE = -1,

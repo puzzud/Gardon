@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Board.gd"
 }, {
+"base": "Node",
+"class": "BoardCell",
+"language": "GDScript",
+"path": "res://Scripts/BoardCell.gd"
+}, {
 "base": "Node2D",
 "class": "Game",
 "language": "GDScript",
@@ -41,6 +46,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Board": "",
+"BoardCell": "",
 "Game": "",
 "Pawn": "",
 "Piece": "",

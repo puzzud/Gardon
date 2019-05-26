@@ -1,8 +1,6 @@
 extends Node2D
 class_name Board
 
-var boardCellClass = preload("res://Scripts/BoardCell.gd")
-
 signal cellHover(cellCoordinates)
 signal cellPress(cellCoordinates)
 
@@ -33,25 +31,25 @@ var cellActions = [
 ]
 
 var tileNameCellActionOverlayTable = {
-	"": boardCellClass.CellAction.NONE,
-	"GroundLightBlue": boardCellClass.CellAction.ACTIVATE,
-	"GroundRed": boardCellClass.CellAction.ATTACK,
-	"GroundGreen": boardCellClass.CellAction.USE
+	"": BoardCell.CellAction.NONE,
+	"GroundLightBlue": BoardCell.CellAction.ACTIVATE,
+	"GroundRed": BoardCell.CellAction.ATTACK,
+	"GroundGreen": BoardCell.CellAction.USE
 }
 
 var cellActionOverlayTileIndexTable = {}
 
 var cellActionNames = {
-	boardCellClass.CellAction.NONE: "",
-	boardCellClass.CellAction.ACTIVATE: "Activate",
-	boardCellClass.CellAction.ATTACK: "Attack",
-	boardCellClass.CellAction.USE: "Use"
+	BoardCell.CellAction.NONE: "",
+	BoardCell.CellAction.ACTIVATE: "Activate",
+	BoardCell.CellAction.ATTACK: "Attack",
+	BoardCell.CellAction.USE: "Use"
 }
 
 var cellActionColors = {
-	boardCellClass.CellAction.ACTIVATE: Color("73eff7"),
-	boardCellClass.CellAction.ATTACK: Color("b13e53"),
-	boardCellClass.CellAction.USE: Color("38b764")
+	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
+	BoardCell.CellAction.ATTACK: Color("b13e53"),
+	BoardCell.CellAction.USE: Color("38b764")
 }
 
 func _ready():
@@ -184,7 +182,7 @@ func clearCellActions():
 	for y in range(0, cellActions.size()):
 		var row = cellActions[y]
 		for x in range(0, row.size()):
-			row[x] = boardCellClass.CellAction.NONE
+			row[x] = BoardCell.CellAction.NONE
 
 func overlayCellActions():
 	for y in range(0, cellActions.size()):
@@ -192,7 +190,7 @@ func overlayCellActions():
 		for x in range(0, row.size()):
 			var tileIndex = -1
 			var cellAction = row[x]
-			if cellAction != boardCellClass.CellAction.NONE:
+			if cellAction != BoardCell.CellAction.NONE:
 				if !cellActionOverlayTileIndexTable.has(cellAction):
 					printerr("No tile index for cell action: " + str(cellAction))
 				else:

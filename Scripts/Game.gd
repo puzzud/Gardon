@@ -1,8 +1,6 @@
 extends Node2D
 class_name Game
 
-var boardCellClass = preload("res://Scripts/BoardCell.gd")
-
 var teamTurnIndex = 0
 
 # warning-ignore:unused_class_variable
@@ -63,7 +61,7 @@ func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
 	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
 	
 	var cellAction = $Board.getCellActionFromCellCoordinates(cellCoordinates)
-	var cellHasAction = (cellAction != boardCellClass.CellAction.NONE)
+	var cellHasAction = (cellAction != BoardCell.CellAction.NONE)
 	$Cursor.setFlashingColor(cellHasAction)
 	
 	updateCaptionTextFromCellCoordinates(cellCoordinates)
@@ -99,7 +97,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	if cellPiece == null:
 		if activePiece != null:
 			# Can the active piece move to this cell?
-			if $Board.getCellActionFromCellCoordinates(cellCoordinates) == boardCellClass.CellAction.ACTIVATE:
+			if $Board.getCellActionFromCellCoordinates(cellCoordinates) == BoardCell.CellAction.ACTIVATE:
 				activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 				$Board.removePiece(activePiece)
 				$Board.insertPiece(activePiece, cellCoordinates)
@@ -119,13 +117,13 @@ func onBoardCellPress(cellCoordinates: Vector2):
 				return
 			else:
 				if cellPiece.teamIndex == activePiece.teamIndex:
-					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == boardCellClass.CellAction.USE:
+					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == BoardCell.CellAction.USE:
 						cellPiece.user = activePiece
 						setPieceActivated(cellPiece, true)
 						return
 				else:
 					# Can the active piece attack this cell?
-					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == boardCellClass.CellAction.ATTACK:
+					if $Board.getCellActionFromCellCoordinates(cellCoordinates) == BoardCell.CellAction.ATTACK:
 						activePiece.attack(cellPiece)
 						activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 						$Board.removePiece(activePiece)
@@ -133,7 +131,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 						addProcessingPiece(activePiece)
 						
 						$Board.clearCellActions()
-						$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = boardCellClass.CellAction.ATTACK
+						$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = BoardCell.CellAction.ATTACK
 						$Board.overlayCellActions()
 						$Cursor.setFlashingColor(false)
 		else:
@@ -178,18 +176,18 @@ func calculateCellActionsForTeam(teamIndex: int):
 		for x in range(0, row.size()):
 			var piece: Piece = row[x]
 			if piece == null:
-				$Board.cellActions[y][x] = boardCellClass.CellAction.NONE
+				$Board.cellActions[y][x] = BoardCell.CellAction.NONE
 			else:
 				if piece.teamIndex == teamIndex:
-					$Board.cellActions[y][x] = boardCellClass.CellAction.ACTIVATE
+					$Board.cellActions[y][x] = BoardCell.CellAction.ACTIVATE
 				else:
-					$Board.cellActions[y][x] = boardCellClass.CellAction.NONE
+					$Board.cellActions[y][x] = BoardCell.CellAction.NONE
 
 func calculateCellActionsForPiece(piece: Piece):
 	$Board.clearCellActions()
 	
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(piece)
-	$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = boardCellClass.CellAction.ACTIVATE
+	$Board.cellActions[cellCoordinates.y][cellCoordinates.x] = BoardCell.CellAction.ACTIVATE
 	
 	var pieceMovementDirections = piece.getMovementDirections()
 	for movementDirection in pieceMovementDirections:
@@ -208,17 +206,17 @@ func calculateCellActionsForPiece(piece: Piece):
 			
 			var offsetCellContents = $Board.getCellContent(offsetCellCoordinates)
 			if offsetCellContents == null:
-				$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = boardCellClass.CellAction.ACTIVATE
+				$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = BoardCell.CellAction.ACTIVATE
 			else:
 				if offsetCellContents.teamIndex == piece.teamIndex:
 					if piece.canUsePieces && distance == 1:
-						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = boardCellClass.CellAction.USE
+						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = BoardCell.CellAction.USE
 					break
 				else:
 					if piece.canAttack:
-						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = boardCellClass.CellAction.ATTACK
+						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = BoardCell.CellAction.ATTACK
 					elif piece.user != null && piece.user.canAttack:
-						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = boardCellClass.CellAction.ATTACK
+						$Board.cellActions[offsetCellCoordinates.y][offsetCellCoordinates.x] = BoardCell.CellAction.ATTACK
 					break
 
 func endTurn():
@@ -363,13 +361,13 @@ func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 	var cellContents = $Board.getCellContent(cellCoordinates)
 	
 	if cellContents == null:
-		if cellAction == boardCellClass.CellAction.ACTIVATE:
+		if cellAction == BoardCell.CellAction.ACTIVATE:
 			actionName = "Move".to_upper()
 	else:
 		var activePiece = getActivePiece()
 		
 		if activePiece == cellContents:
-			if cellAction == boardCellClass.CellAction.ACTIVATE:
+			if cellAction == BoardCell.CellAction.ACTIVATE:
 				actionName = "Deactivate".to_upper()
 	
 	var cellActionColor := Color("f4f4f4")
