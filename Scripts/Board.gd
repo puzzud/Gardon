@@ -1,6 +1,8 @@
 extends Node2D
 class_name Board
 
+var boardCellClass = preload("res://Scripts/BoardCell.gd")
+
 signal cellHover(cellCoordinates)
 signal cellPress(cellCoordinates)
 
@@ -19,13 +21,6 @@ var cellContents = [
 	[null, null, null, null, null, null, null, null]
 ]
 
-enum CellAction {
-	NONE = -1,
-	ACTIVATE,
-	ATTACK,
-	USE
-}
-
 var cellActions = [
 	[-1, -1, -1, -1, -1, -1, -1, -1],
 	[-1, -1, -1, -1, -1, -1, -1, -1],
@@ -38,25 +33,25 @@ var cellActions = [
 ]
 
 var tileNameCellActionOverlayTable = {
-	"": CellAction.NONE,
-	"GroundLightBlue": CellAction.ACTIVATE,
-	"GroundRed": CellAction.ATTACK,
-	"GroundGreen": CellAction.USE
+	"": boardCellClass.CellAction.NONE,
+	"GroundLightBlue": boardCellClass.CellAction.ACTIVATE,
+	"GroundRed": boardCellClass.CellAction.ATTACK,
+	"GroundGreen": boardCellClass.CellAction.USE
 }
 
 var cellActionOverlayTileIndexTable = {}
 
 var cellActionNames = {
-	CellAction.NONE: "",
-	CellAction.ACTIVATE: "Activate",
-	CellAction.ATTACK: "Attack",
-	CellAction.USE: "Use"
+	boardCellClass.CellAction.NONE: "",
+	boardCellClass.CellAction.ACTIVATE: "Activate",
+	boardCellClass.CellAction.ATTACK: "Attack",
+	boardCellClass.CellAction.USE: "Use"
 }
 
 var cellActionColors = {
-	CellAction.ACTIVATE: Color("73eff7"),
-	CellAction.ATTACK: Color("b13e53"),
-	CellAction.USE: Color("38b764")
+	boardCellClass.CellAction.ACTIVATE: Color("73eff7"),
+	boardCellClass.CellAction.ATTACK: Color("b13e53"),
+	boardCellClass.CellAction.USE: Color("38b764")
 }
 
 func _ready():
@@ -189,7 +184,7 @@ func clearCellActions():
 	for y in range(0, cellActions.size()):
 		var row = cellActions[y]
 		for x in range(0, row.size()):
-			row[x] = CellAction.NONE
+			row[x] = boardCellClass.CellAction.NONE
 
 func overlayCellActions():
 	for y in range(0, cellActions.size()):
@@ -197,7 +192,7 @@ func overlayCellActions():
 		for x in range(0, row.size()):
 			var tileIndex = -1
 			var cellAction = row[x]
-			if cellAction != CellAction.NONE:
+			if cellAction != boardCellClass.CellAction.NONE:
 				if !cellActionOverlayTileIndexTable.has(cellAction):
 					printerr("No tile index for cell action: " + str(cellAction))
 				else:
