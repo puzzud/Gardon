@@ -19,11 +19,11 @@ var cellContents = [
 	[null, null, null, null, null, null, null, null]
 ]
 
-enum {
-	CELL_ACTION_NONE = -1,
-	CELL_ACTION_ACTIVATE,
-	CELL_ACTION_ATTACK,
-	CELL_ACTION_USE
+enum CellAction {
+	NONE = -1,
+	ACTIVATE,
+	ATTACK,
+	USE
 }
 
 var cellActions = [
@@ -38,25 +38,25 @@ var cellActions = [
 ]
 
 var tileNameCellActionOverlayTable = {
-	"": CELL_ACTION_NONE,
-	"GroundLightBlue": CELL_ACTION_ACTIVATE,
-	"GroundRed": CELL_ACTION_ATTACK,
-	"GroundGreen": CELL_ACTION_USE
+	"": CellAction.NONE,
+	"GroundLightBlue": CellAction.ACTIVATE,
+	"GroundRed": CellAction.ATTACK,
+	"GroundGreen": CellAction.USE
 }
 
 var cellActionOverlayTileIndexTable = {}
 
 var cellActionNames = {
-	CELL_ACTION_NONE: "",
-	CELL_ACTION_ACTIVATE: "Activate",
-	CELL_ACTION_ATTACK: "Attack",
-	CELL_ACTION_USE: "Use"
+	CellAction.NONE: "",
+	CellAction.ACTIVATE: "Activate",
+	CellAction.ATTACK: "Attack",
+	CellAction.USE: "Use"
 }
 
 var cellActionColors = {
-	CELL_ACTION_ACTIVATE: Color("73eff7"),
-	CELL_ACTION_ATTACK: Color("b13e53"),
-	CELL_ACTION_USE: Color("38b764")
+	CellAction.ACTIVATE: Color("73eff7"),
+	CellAction.ATTACK: Color("b13e53"),
+	CellAction.USE: Color("38b764")
 }
 
 func _ready():
@@ -189,7 +189,7 @@ func clearCellActions():
 	for y in range(0, cellActions.size()):
 		var row = cellActions[y]
 		for x in range(0, row.size()):
-			row[x] = CELL_ACTION_NONE
+			row[x] = CellAction.NONE
 
 func overlayCellActions():
 	for y in range(0, cellActions.size()):
@@ -197,7 +197,7 @@ func overlayCellActions():
 		for x in range(0, row.size()):
 			var tileIndex = -1
 			var cellAction = row[x]
-			if cellAction != CELL_ACTION_NONE:
+			if cellAction != CellAction.NONE:
 				if !cellActionOverlayTileIndexTable.has(cellAction):
 					printerr("No tile index for cell action: " + str(cellAction))
 				else:
