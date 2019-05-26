@@ -19,6 +19,7 @@ const DIRECTION_RIGHT_DOWN = DIRECTION_FLAG_RIGHT | DIRECTION_FLAG_DOWN
 # warning-ignore:unused_class_variable
 var game: Game = null
 
+# warning-ignore:unused_class_variable
 var numberOfHumanPlayers: int = 2
 
 func _ready():

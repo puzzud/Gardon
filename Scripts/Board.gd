@@ -19,6 +19,7 @@ var tileNameCellActionOverlayTable = {
 
 var cellActionOverlayTileIndexTable = {}
 
+# warning-ignore:unused_class_variable
 var cellActionNames = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "Activate",
@@ -26,6 +27,7 @@ var cellActionNames = {
 	BoardCell.CellAction.USE: "Use"
 }
 
+# warning-ignore:unused_class_variable
 var cellActionColors = {
 	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
 	BoardCell.CellAction.ATTACK: Color("b13e53"),
@@ -52,9 +54,11 @@ func _input(event):
 func initialize():
 	cells = []
 	
+# warning-ignore:unused_variable
 	for y in range(0, 8):
 		var row = []
 		
+# warning-ignore:unused_variable
 		for x in range(0, 8):
 			var newBoardCell = BoardCell.new()
 			

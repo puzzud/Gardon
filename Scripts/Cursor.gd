@@ -3,6 +3,7 @@ extends Sprite
 export(Color) var mainColor
 export(Color) var flashColor
 
+# warning-ignore:unused_class_variable
 var cellCoordinates: Vector2
 
 var isFlashingColor := false
