@@ -36,7 +36,6 @@ var cellActionColors = {
 
 func _ready():
 	buildCellActionOverlayTileIndexTable()
-	initializeCellActions()
 	
 	overlayCellActions()
 
@@ -78,9 +77,6 @@ func buildCellActionOverlayTileIndexTable():
 		var tileIndex = cellsOverlayTileSet.find_tile_by_name(key)
 		if tileIndex != null:
 			cellActionOverlayTileIndexTable[tileNameCellActionOverlayTable[key]] = tileIndex
-
-func initializeCellActions():
-	clearCellActions()
 
 func clear():
 	for row in cells:
