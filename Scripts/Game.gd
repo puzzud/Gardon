@@ -105,53 +105,57 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	
 	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	
-	var activePiece = getActivePiece()
+	var cellAction = $Board.getCellAction(cellCoordinates)
 	
-	var cellPiece = $Board.getCellContent(cellCoordinates)
-	if cellPiece == null:
-		if activePiece != null:
-			# Can the active piece move to this cell?
-			if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.MOVE:
-				activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-				$Board.removePiece(activePiece)
-				$Board.insertPiece(activePiece, cellCoordinates)
-				
-				addProcessingPiece(activePiece)
-				
-				$Board.clearCellActions()
-				$Board.overlayCellActions()
-				$Cursor.setFlashingColor(false)
-			return
-		else:
-			return
-	else:
-		if activePiece != null:
-			if activePiece == cellPiece:
-				setPieceActivated(activePiece, false)
-				return
-			else:
-				if cellPiece.teamIndex == activePiece.teamIndex:
-					if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.USE:
-						cellPiece.user = activePiece
-						setPieceActivated(cellPiece, true)
-						return
-				else:
-					# Can the active piece attack this cell?
-					if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.ATTACK:
-						activePiece.attack(cellPiece)
-						activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-						$Board.removePiece(activePiece)
-						
-						addProcessingPiece(activePiece)
-						
-						$Board.clearCellActions()
-						$Board.setCellAction(cellCoordinates, BoardCell.CellAction.ATTACK)
-						$Board.overlayCellActions()
-						$Cursor.setFlashingColor(false)
-		else:
-			if cellPiece.teamIndex == teamTurnIndex:
-				setPieceActivated(cellPiece, true)
-				return
+	if cellAction == BoardCell.CellAction.MOVE:
+		var activePiece = getActivePiece()
+		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
+		$Board.removePiece(activePiece)
+		$Board.insertPiece(activePiece, cellCoordinates)
+		
+		addProcessingPiece(activePiece)
+		
+		$Board.clearCellActions()
+		$Board.overlayCellActions()
+		$Cursor.setFlashingColor(false)
+		
+		return
+	
+	if cellAction == BoardCell.CellAction.DEACTIVATE:
+		var activePiece = getActivePiece()
+		setPieceActivated(activePiece, false)
+		
+		return
+	
+	if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.USE:
+		var activePiece = getActivePiece()
+		var cellPiece = $Board.getCellContent(cellCoordinates)
+		cellPiece.user = activePiece
+		setPieceActivated(cellPiece, true)
+		
+		return
+	
+	if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.ATTACK:
+		var activePiece = getActivePiece()
+		var cellPiece = $Board.getCellContent(cellCoordinates)
+		activePiece.attack(cellPiece)
+		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
+		$Board.removePiece(activePiece)
+		
+		addProcessingPiece(activePiece)
+		
+		$Board.clearCellActions()
+		$Board.setCellAction(cellCoordinates, BoardCell.CellAction.ATTACK)
+		$Board.overlayCellActions()
+		$Cursor.setFlashingColor(false)
+		
+		return
+	
+	if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.ACTIVATE:
+		var cellPiece = $Board.getCellContent(cellCoordinates)
+		setPieceActivated(cellPiece, true)
+		
+		return
 
 func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = true):
 	piece.setActivated(activated)
