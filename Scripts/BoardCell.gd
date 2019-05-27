@@ -4,6 +4,7 @@ class_name BoardCell
 enum CellAction {
 	NONE = -1,
 	ACTIVATE,
+	DEACTIVATE,
 	ATTACK,
 	USE
 }

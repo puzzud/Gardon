@@ -4,12 +4,14 @@ class_name Game
 const cellActionNames = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "Activate",
+	BoardCell.CellAction.DEACTIVATE: "Deactivate",
 	BoardCell.CellAction.ATTACK: "Attack",
 	BoardCell.CellAction.USE: "Use"
 }
 
 const cellActionColors = {
 	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
+	BoardCell.CellAction.DEACTIVATE: Color("f4f4f4"),
 	BoardCell.CellAction.ATTACK: Color("b13e53"),
 	BoardCell.CellAction.USE: Color("38b764")
 }
@@ -197,7 +199,7 @@ func calculateCellActionsForPiece(piece: Piece):
 	$Board.clearCellActions()
 	
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(piece)
-	$Board.setCellAction(cellCoordinates, BoardCell.CellAction.ACTIVATE)
+	$Board.setCellAction(cellCoordinates, BoardCell.CellAction.DEACTIVATE)
 	
 	var pieceMovementDirections = piece.getMovementDirections()
 	for movementDirection in pieceMovementDirections:
@@ -373,12 +375,6 @@ func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 	if cellContents == null:
 		if cellAction == BoardCell.CellAction.ACTIVATE:
 			actionName = "Move".to_upper()
-	else:
-		var activePiece = getActivePiece()
-		
-		if activePiece == cellContents:
-			if cellAction == BoardCell.CellAction.ACTIVATE:
-				actionName = "Deactivate".to_upper()
 	
 	var cellActionColor := Color("f4f4f4")
 	if cellActionColors.has(cellAction):

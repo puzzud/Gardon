@@ -9,6 +9,7 @@ var cells = []
 const cellActionOverlayTileNameTable = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "GroundLightBlue",
+	BoardCell.CellAction.DEACTIVATE: "GroundWhite",
 	BoardCell.CellAction.ATTACK: "GroundRed",
 	BoardCell.CellAction.USE: "GroundGreen"
 }
