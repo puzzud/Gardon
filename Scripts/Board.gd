@@ -6,18 +6,14 @@ signal cellPress(cellCoordinates)
 
 var cells = []
 
-const tileNameCellActionOverlayTable = {
-	"": BoardCell.CellAction.NONE,
-	"GroundLightBlue": BoardCell.CellAction.ACTIVATE,
-	"GroundRed": BoardCell.CellAction.ATTACK,
-	"GroundGreen": BoardCell.CellAction.USE
+const cellActionOverlayTileNameTable = {
+	BoardCell.CellAction.NONE: "",
+	BoardCell.CellAction.ACTIVATE: "GroundLightBlue",
+	BoardCell.CellAction.ATTACK: "GroundRed",
+	BoardCell.CellAction.USE: "GroundGreen"
 }
 
-var cellActionOverlayTileIndexTable = {}
-
 func _ready():
-	buildCellActionOverlayTileIndexTable()
-	
 	overlayCellActions()
 
 func _input(event):
@@ -47,17 +43,6 @@ func initialize():
 		cells.append(row)
 	
 	clear()
-
-func buildCellActionOverlayTileIndexTable():
-	var cellsOverlayTileSet = $CellsOverlay.tile_set
-	
-	for key in tileNameCellActionOverlayTable.keys():
-		if key.empty():
-			continue
-		
-		var tileIndex = cellsOverlayTileSet.find_tile_by_name(key)
-		if tileIndex != null:
-			cellActionOverlayTileIndexTable[tileNameCellActionOverlayTable[key]] = tileIndex
 
 func clear():
 	for row in cells:
@@ -172,8 +157,11 @@ func overlayCellActions():
 			var tileIndex = -1
 			var cellAction = row[x].action
 			if cellAction != BoardCell.CellAction.NONE:
-				if !cellActionOverlayTileIndexTable.has(cellAction):
-					printerr("No tile index for cell action: " + str(cellAction))
+				if !cellActionOverlayTileNameTable.has(cellAction):
+					printerr("No tile name for cell action: " + str(cellAction))
 				else:
-					tileIndex = cellActionOverlayTileIndexTable[cellAction]
+					tileIndex = $CellsOverlay.tile_set.find_tile_by_name(cellActionOverlayTileNameTable[cellAction])
+					if tileIndex == -1:
+						printerr("No tile name for cell action: " + str(cellAction))
+			
 			$CellsOverlay.set_cell(x, y, tileIndex)
