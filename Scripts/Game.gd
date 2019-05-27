@@ -1,6 +1,19 @@
 extends Node2D
 class_name Game
 
+const cellActionNames = {
+	BoardCell.CellAction.NONE: "",
+	BoardCell.CellAction.ACTIVATE: "Activate",
+	BoardCell.CellAction.ATTACK: "Attack",
+	BoardCell.CellAction.USE: "Use"
+}
+
+const cellActionColors = {
+	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
+	BoardCell.CellAction.ATTACK: Color("b13e53"),
+	BoardCell.CellAction.USE: Color("38b764")
+}
+
 var teamTurnIndex = 0
 
 # warning-ignore:unused_class_variable
@@ -352,7 +365,7 @@ func faceWizards():
 func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 	var cellAction = $Board.getCellAction(cellCoordinates)
 	
-	var actionName = $Board.cellActionNames[cellAction].to_upper()
+	var actionName = cellActionNames[cellAction].to_upper()
 	
 	var cellContents = $Board.getCellContent(cellCoordinates)
 	
@@ -367,8 +380,8 @@ func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 				actionName = "Deactivate".to_upper()
 	
 	var cellActionColor := Color("f4f4f4")
-	if $Board.cellActionColors.has(cellAction):
-		cellActionColor = $Board.cellActionColors[cellAction]
+	if cellActionColors.has(cellAction):
+		cellActionColor = cellActionColors[cellAction]
 	
 	$Ui.setCaptionText(actionName, cellActionColor)
 

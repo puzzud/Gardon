@@ -15,21 +15,6 @@ const tileNameCellActionOverlayTable = {
 
 var cellActionOverlayTileIndexTable = {}
 
-# warning-ignore:unused_class_variable
-const cellActionNames = {
-	BoardCell.CellAction.NONE: "",
-	BoardCell.CellAction.ACTIVATE: "Activate",
-	BoardCell.CellAction.ATTACK: "Attack",
-	BoardCell.CellAction.USE: "Use"
-}
-
-# warning-ignore:unused_class_variable
-const cellActionColors = {
-	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
-	BoardCell.CellAction.ATTACK: Color("b13e53"),
-	BoardCell.CellAction.USE: Color("38b764")
-}
-
 func _ready():
 	buildCellActionOverlayTileIndexTable()
 	
