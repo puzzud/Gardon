@@ -88,8 +88,7 @@ func onBoardCellHover(cellCoordinates: Vector2):
 	if isGameOver:
 		return
 	
-	var activePiece = getActivePiece()
-	if activePiece != null && activePiece.moving:
+	if !piecesThatAreProcessing.empty():
 		return
 	
 	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
@@ -101,11 +100,12 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	if isGameOver:
 		return
 	
-	var activePiece = getActivePiece()
-	if activePiece != null && activePiece.moving:
+	if !piecesThatAreProcessing.empty():
 		return
 	
 	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
+	
+	var activePiece = getActivePiece()
 	
 	var cellPiece = $Board.getCellContent(cellCoordinates)
 	if cellPiece == null:

@@ -48,12 +48,6 @@ const moveDirectionAnimationNameSuffixes = {
 var activated: bool = false
 
 # warning-ignore:unused_class_variable
-var moving: bool = false
-
-# warning-ignore:unused_class_variable
-var attacking: bool = false
-
-# warning-ignore:unused_class_variable
 var targetPiece: BoardCellContent = null
 
 func _ready():
