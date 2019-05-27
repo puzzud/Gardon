@@ -10,6 +10,7 @@ const cellActionOverlayTileNameTable = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "GroundLightBlue",
 	BoardCell.CellAction.DEACTIVATE: "GroundWhite",
+	BoardCell.CellAction.MOVE: "GroundLightBlue",
 	BoardCell.CellAction.ATTACK: "GroundRed",
 	BoardCell.CellAction.USE: "GroundGreen"
 }

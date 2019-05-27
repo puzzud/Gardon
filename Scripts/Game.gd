@@ -5,6 +5,7 @@ const cellActionNames = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "Activate",
 	BoardCell.CellAction.DEACTIVATE: "Deactivate",
+	BoardCell.CellAction.MOVE: "Move",
 	BoardCell.CellAction.ATTACK: "Attack",
 	BoardCell.CellAction.USE: "Use"
 }
@@ -12,6 +13,7 @@ const cellActionNames = {
 const cellActionColors = {
 	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
 	BoardCell.CellAction.DEACTIVATE: Color("f4f4f4"),
+	BoardCell.CellAction.MOVE: Color("73eff7"),
 	BoardCell.CellAction.ATTACK: Color("b13e53"),
 	BoardCell.CellAction.USE: Color("38b764")
 }
@@ -109,7 +111,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	if cellPiece == null:
 		if activePiece != null:
 			# Can the active piece move to this cell?
-			if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.ACTIVATE:
+			if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.MOVE:
 				activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 				$Board.removePiece(activePiece)
 				$Board.insertPiece(activePiece, cellCoordinates)
@@ -218,7 +220,7 @@ func calculateCellActionsForPiece(piece: Piece):
 			
 			var offsetCellContents = $Board.getCellContent(offsetCellCoordinates)
 			if offsetCellContents == null:
-				$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.ACTIVATE)
+				$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.MOVE)
 			else:
 				if offsetCellContents.teamIndex == piece.teamIndex:
 					if piece.canUsePieces && distance == 1:
@@ -368,17 +370,17 @@ func faceWizards():
 func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 	var cellAction = $Board.getCellAction(cellCoordinates)
 	
-	var actionName = cellActionNames[cellAction].to_upper()
-	
-	var cellContents = $Board.getCellContent(cellCoordinates)
-	
-	if cellContents == null:
-		if cellAction == BoardCell.CellAction.ACTIVATE:
-			actionName = "Move".to_upper()
-	
+	var actionName = ""
 	var cellActionColor := Color("f4f4f4")
-	if cellActionColors.has(cellAction):
-		cellActionColor = cellActionColors[cellAction]
+	
+	if cellActionNames.has(cellAction):
+		actionName = cellActionNames[cellAction].to_upper()
+	
+	if !actionName.empty():
+		if cellActionColors.has(cellAction):
+			cellActionColor = cellActionColors[cellAction]
+		else:
+			printerr("No color for cell action: " + str(cellAction))
 	
 	$Ui.setCaptionText(actionName, cellActionColor)
 

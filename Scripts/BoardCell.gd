@@ -5,6 +5,7 @@ enum CellAction {
 	NONE = -1,
 	ACTIVATE,
 	DEACTIVATE,
+	MOVE,
 	ATTACK,
 	USE
 }
