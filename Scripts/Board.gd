@@ -4,13 +4,9 @@ class_name Board
 signal cellHover(cellCoordinates)
 signal cellPress(cellCoordinates)
 
-const CellDimensions := Vector2(16.0, 16.0)
-
-const TileMapOffset := Vector2(8.0, 8.0)
-
 var cells = []
 
-var tileNameCellActionOverlayTable = {
+const tileNameCellActionOverlayTable = {
 	"": BoardCell.CellAction.NONE,
 	"GroundLightBlue": BoardCell.CellAction.ACTIVATE,
 	"GroundRed": BoardCell.CellAction.ATTACK,
@@ -20,7 +16,7 @@ var tileNameCellActionOverlayTable = {
 var cellActionOverlayTileIndexTable = {}
 
 # warning-ignore:unused_class_variable
-var cellActionNames = {
+const cellActionNames = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "Activate",
 	BoardCell.CellAction.ATTACK: "Attack",
@@ -28,7 +24,7 @@ var cellActionNames = {
 }
 
 # warning-ignore:unused_class_variable
-var cellActionColors = {
+const cellActionColors = {
 	BoardCell.CellAction.ACTIVATE: Color("73eff7"),
 	BoardCell.CellAction.ATTACK: Color("b13e53"),
 	BoardCell.CellAction.USE: Color("38b764")
@@ -110,15 +106,15 @@ func removePiece(piece: Piece):
 		clearCell(cellCoordinates)
 
 func getCellPosition(cellCoordinates: Vector2):
-	return global_position + TileMapOffset + (cellCoordinates * CellDimensions) - Vector2(1.0, 1.0)
+	return global_position + $Cells.position + (cellCoordinates * $Cells.cell_size) - Vector2(1.0, 1.0)
 
 func getCellCoordinatesFromPosition(position: Vector2):
 	var cellCoordinates = Vector2()
 	
-	var cellFirstPosition = global_position + TileMapOffset
+	var cellFirstPosition = global_position + $Cells.position
 	
-	cellCoordinates.x = int((position.x - cellFirstPosition.x) / CellDimensions.x)
-	cellCoordinates.y = int((position.y - cellFirstPosition.y) / CellDimensions.y)
+	cellCoordinates.x = int((position.x - cellFirstPosition.x) / $Cells.cell_size.x)
+	cellCoordinates.y = int((position.y - cellFirstPosition.y) / $Cells.cell_size.y)
 	
 	if areCellCoordinatesOutOfBounds(cellCoordinates):
 		return null
