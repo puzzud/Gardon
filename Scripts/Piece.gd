@@ -1,52 +1,8 @@
-extends Node2D
+extends BoardCellContent
 class_name Piece
 
 # warning-ignore:unused_class_variable
-export(bool) var canAttack = false
-# warning-ignore:unused_class_variable
-export(bool) var canUsePieces = false
-
-# warning-ignore:unused_class_variable
 export(Vector2) var BoardCellOffset := Vector2(8, 7)
-
-var alive: bool = true
-
-var user: Piece = null
-
-export(int) var teamIndex = 0
-
-# warning-ignore:unused_class_variable
-export(int) var movementRange = 7
-
-var movementDirections = [
-	Global.DIRECTION_LEFT_UP,
-	Global.DIRECTION_UP,
-	Global.DIRECTION_RIGHT_UP,
-	Global.DIRECTION_LEFT,
-	Global.DIRECTION_RIGHT,
-	Global.DIRECTION_LEFT_DOWN,
-	Global.DIRECTION_DOWN,
-	Global.DIRECTION_RIGHT_DOWN
-]
-
-var moveDirectionAnimationNameSuffixes = {
-	Global.DIRECTION_LEFT_UP: "Up",
-	Global.DIRECTION_UP: "Up",
-	Global.DIRECTION_RIGHT_UP: "Up",
-	Global.DIRECTION_LEFT: "Left",
-	Global.DIRECTION_NONE: "Down",
-	Global.DIRECTION_RIGHT: "Right",
-	Global.DIRECTION_LEFT_DOWN: "Down",
-	Global.DIRECTION_DOWN: "Down",
-	Global.DIRECTION_RIGHT_DOWN: "Down"
-}
-
-var activated: bool = false
-
-var moving: bool = false
-var attacking: bool = false
-
-var targetPiece: Piece = null
 
 func _ready():
 	setTeamIndex(teamIndex)

@@ -126,16 +126,16 @@ func areCellCoordinatesOutOfBounds(cellCoordinates: Vector2):
 func getCellOffsetFromDirection(direction: int) -> Vector2:
 	var cellOffset = Vector2()
 	
-	if direction & Global.DIRECTION_FLAG_LEFT:
+	if direction & Direction.FLAG_LEFT:
 		cellOffset.x = cellOffset.x - 1
 		
-	if direction & Global.DIRECTION_FLAG_RIGHT:
+	if direction & Direction.FLAG_RIGHT:
 		cellOffset.x = cellOffset.x + 1
 	
-	if direction & Global.DIRECTION_FLAG_UP:
+	if direction & Direction.FLAG_UP:
 		cellOffset.y = cellOffset.y - 1
 	
-	if direction & Global.DIRECTION_FLAG_DOWN:
+	if direction & Direction.FLAG_DOWN:
 		cellOffset.y = cellOffset.y + 1
 	
 	return cellOffset
