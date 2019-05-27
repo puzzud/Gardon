@@ -16,7 +16,6 @@ const cellActionColors = {
 
 var teamTurnIndex = 0
 
-# warning-ignore:unused_class_variable
 export(Array, String) var teamNames
 export(Array, Color) var teamColors
 
@@ -62,9 +61,11 @@ func setTeamTurnIndex(teamTurnIndex: int):
 	
 	$AudioPlayers/StartTurn1.play()
 
+func getTeamName(teamIndex: int) -> String:
+	return teamNames[teamIndex]
+
 func getTeamColor(teamIndex: int) -> Color:
-	var teamColor = teamColors[teamIndex]
-	return teamColor
+	return teamColors[teamIndex]
 
 func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
 	$Cursor.cellCoordinates = cellCoordinates
