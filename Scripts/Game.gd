@@ -141,6 +141,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		activePiece.attack(cellPiece)
 		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 		$Board.removePiece(activePiece)
+		$Board.insertPiece(activePiece, cellCoordinates)
 		
 		addProcessingPiece(activePiece)
 		
@@ -171,14 +172,7 @@ func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = 
 		updateCaptionTextFromCellCoordinates($Cursor.cellCoordinates)
 
 func processPieceAttackingPiece(attackingPiece, targetPiece):
-	var cellCoordinates = $Board.getCellCoordinatesFromPiece(targetPiece)
-	$Board.removePiece(targetPiece)
 	targetPiece.receiveDamage(5.0, attackingPiece)
-	
-	$Board.insertPiece(attackingPiece, cellCoordinates)
-	
-	$Board.clearCellActions()
-	$Board.overlayCellActions()
 
 func calculateCellActions():
 	var activePiece = getActivePiece()
