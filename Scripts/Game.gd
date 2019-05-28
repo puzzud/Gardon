@@ -127,7 +127,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		
 		return
 	
-	if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.USE:
+	if cellAction == BoardCell.CellAction.USE:
 		var activePiece = getActivePiece()
 		var cellPiece = $Board.getCellContent(cellCoordinates)
 		cellPiece.user = activePiece
@@ -135,7 +135,7 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		
 		return
 	
-	if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.ATTACK:
+	if cellAction == BoardCell.CellAction.ATTACK:
 		var activePiece = getActivePiece()
 		var cellPiece = $Board.getCellContent(cellCoordinates)
 		activePiece.attack(cellPiece)
@@ -145,13 +145,12 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		addProcessingPiece(activePiece)
 		
 		$Board.clearCellActions()
-		$Board.setCellAction(cellCoordinates, BoardCell.CellAction.ATTACK)
 		$Board.overlayCellActions()
 		$Cursor.setFlashingColor(false)
 		
 		return
 	
-	if $Board.getCellAction(cellCoordinates) == BoardCell.CellAction.ACTIVATE:
+	if cellAction == BoardCell.CellAction.ACTIVATE:
 		var cellPiece = $Board.getCellContent(cellCoordinates)
 		setPieceActivated(cellPiece, true)
 		

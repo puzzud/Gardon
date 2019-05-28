@@ -10,7 +10,7 @@ enum CellAction {
 	USE
 }
 
-var content: Piece = null
+var content: BoardCellContent = null
 var action: int = CellAction.NONE
 
 func _ready():
