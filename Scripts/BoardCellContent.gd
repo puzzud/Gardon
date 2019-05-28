@@ -44,11 +44,5 @@ const moveDirectionAnimationNameSuffixes = {
 	Direction.RIGHT_DOWN: "Down"
 }
 
-# warning-ignore:unused_class_variable
-var activated: bool = false
-
-# warning-ignore:unused_class_variable
-var targetPiece: BoardCellContent = null
-
 func _ready():
 	pass

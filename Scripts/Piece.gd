@@ -8,6 +8,10 @@ var moving: bool = false
 
 var attacking: bool = false
 
+var activated: bool = false
+
+var targetPiece: Piece = null
+
 func _ready():
 	setTeamIndex(teamIndex)
 
