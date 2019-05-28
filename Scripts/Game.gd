@@ -1,6 +1,9 @@
 extends Node2D
 class_name Game
 
+const pawnScenePrefab = preload("res://Scenes/Tomato.tscn")
+const wizardScenePrefab = preload("res://Scenes/Farmer.tscn")
+
 const cellActionNames = {
 	BoardCell.CellAction.NONE: "",
 	BoardCell.CellAction.ACTIVATE: "Activate",
@@ -45,11 +48,60 @@ func _ready():
 func initializeBoard():
 	$Board.initialize()
 	
-	# Fill board with pieces based on their current location.
-	for teamPieces in [getTeamPieces(0), getTeamPieces(1)]:
-		for teamPiece in teamPieces:
-			if !$Board.insertPiece(teamPiece):
-				printerr("Unable to insert piece into board: " + teamPiece.name)
+	var initialBoardCellContentInformation = [
+		[{}, {"type": "pawn", "teamIndex": 1}, {}, {"type": "wizard", "teamIndex": 1}, {}, {}, {"type": "pawn", "teamIndex": 1}, {}],
+		[{}, {}, {"type": "pawn", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}, {}, {}],
+		[{}, {}, {}, {}, {}, {}, {}, {}],
+		[{}, {}, {}, {}, {}, {}, {}, {}],
+		[{}, {}, {}, {}, {}, {}, {}, {}],
+		[{}, {}, {}, {}, {}, {}, {}, {}],
+		[{}, {}, {"type": "pawn", "teamIndex": 0}, {"type": "pawn", "teamIndex": 0}, {"type": "pawn", "teamIndex": 0}, {"type": "pawn", "teamIndex": 0}, {}, {}],
+		[{}, {"type": "pawn", "teamIndex": 0}, {}, {}, {"type": "wizard", "teamIndex": 0}, {}, {"type": "pawn", "teamIndex": 0}, {}]
+	]
+	
+	# Fill board with pieces.
+	for y in range(0, initialBoardCellContentInformation.size()):
+		var row = initialBoardCellContentInformation[y]
+		
+		for x in range(0, row.size()):
+			var cellContentInformation = row[x]
+			
+			if !cellContentInformation.empty():
+				var type = cellContentInformation["type"]
+				var teamIndex = cellContentInformation["teamIndex"]
+				
+				var boardCellContent := BoardCellContent.new()
+				
+				boardCellContent.teamIndex = teamIndex
+				
+				var piece = null
+				
+				if type == "pawn":
+					boardCellContent.movementRange = 1
+					boardCellContent.canAttack = false
+					boardCellContent.canUsePieces = false
+					piece = pawnScenePrefab.instance()
+				elif type == "wizard":
+					boardCellContent.movementRange = 7
+					boardCellContent.canAttack = true
+					boardCellContent.canUsePieces = true
+					piece = wizardScenePrefab.instance()
+				
+				boardCellContent.piece = piece
+				piece.boardCellContent = boardCellContent
+				
+				var teamNode = null
+				if teamIndex == 0:
+					teamNode = $Pieces/Team1
+				elif teamIndex == 1:
+					teamNode = $Pieces/Team2
+				
+				teamNode.add_child(piece)
+				
+				var cellCoordinates = Vector2(x, y)
+				piece.setPosition($Board.getCellPosition(cellCoordinates) + piece.BoardCellOffset)
+				if !$Board.insertPiece(piece):
+					printerr("Unable to insert piece into board: " + piece.name)
 
 func setTeamTurnIndex(teamTurnIndex: int):
 	self.teamTurnIndex = teamTurnIndex
@@ -113,6 +165,10 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		$Board.removePiece(activePiece)
 		$Board.insertPiece(activePiece, cellCoordinates)
 		
+		var user = activePiece.boardCellContent.user
+		if user != null:
+			setPieceActivated(user.piece, false, false)
+		
 		addProcessingPiece(activePiece)
 		
 		$Board.clearCellActions()
@@ -129,15 +185,15 @@ func onBoardCellPress(cellCoordinates: Vector2):
 	
 	if cellAction == BoardCell.CellAction.USE:
 		var activePiece = getActivePiece()
-		var cellPiece = $Board.getCellContent(cellCoordinates)
-		cellPiece.user = activePiece
+		var cellPiece = $Board.getCellContent(cellCoordinates).piece
+		cellPiece.boardCellContent.user = activePiece.boardCellContent
 		setPieceActivated(cellPiece, true)
 		
 		return
 	
 	if cellAction == BoardCell.CellAction.ATTACK:
 		var activePiece = getActivePiece()
-		var cellPiece = $Board.getCellContent(cellCoordinates)
+		var cellPiece = $Board.getCellContent(cellCoordinates).piece
 		activePiece.attack(cellPiece)
 		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 		$Board.removePiece(activePiece)
@@ -152,8 +208,8 @@ func onBoardCellPress(cellCoordinates: Vector2):
 		return
 	
 	if cellAction == BoardCell.CellAction.ACTIVATE:
-		var cellPiece = $Board.getCellContent(cellCoordinates)
-		setPieceActivated(cellPiece, true)
+		var cellContent = $Board.getCellContent(cellCoordinates)
+		setPieceActivated(cellContent.piece, true)
 		
 		return
 
@@ -163,6 +219,7 @@ func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = 
 	if activated:
 		setActivePiece(piece)
 	else:
+		piece.boardCellContent.user = null
 		removeActivePiece(piece)
 	
 	if updateCellActions:
@@ -200,12 +257,14 @@ func calculateCellActionsForPiece(piece: Piece):
 	var cellCoordinates = $Board.getCellCoordinatesFromPiece(piece)
 	$Board.setCellAction(cellCoordinates, BoardCell.CellAction.DEACTIVATE)
 	
-	var pieceMovementDirections = piece.getMovementDirections()
+	var boardCellContent = piece.boardCellContent
+	
+	var pieceMovementDirections = boardCellContent.getMovementDirections()
 	for movementDirection in pieceMovementDirections:
 		var movementDirectionCellOffset = $Board.getCellOffsetFromDirection(movementDirection)
 		
-		var movementRange = piece.movementRange
-		if piece.user != null:
+		var movementRange = boardCellContent.movementRange
+		if boardCellContent.user != null:
 			movementRange = 7 # TODO: Determine this in a better way.
 		
 		for distance in range(1, movementRange + 1):
@@ -219,14 +278,14 @@ func calculateCellActionsForPiece(piece: Piece):
 			if offsetCellContents == null:
 				$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.MOVE)
 			else:
-				if offsetCellContents.teamIndex == piece.teamIndex:
-					if piece.canUsePieces && distance == 1:
+				if offsetCellContents.teamIndex == boardCellContent.teamIndex:
+					if boardCellContent.canUsePieces && distance == 1:
 						$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.USE)
 					break
 				else:
-					if piece.canAttack:
+					if boardCellContent.canAttack:
 						$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.ATTACK)
-					elif piece.user != null && piece.user.canAttack:
+					elif boardCellContent.user != null && boardCellContent.user.canAttack:
 						$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.ATTACK)
 					break
 
@@ -318,13 +377,7 @@ func getWizardsFromPieces(pieces: Array) -> Array:
 	return wizards
 
 func getNumberOfAlivePieces(pieces: Array):
-	var numberOfAlivePieces := 0
-	
-	for piece in pieces:
-		if piece.alive:
-			numberOfAlivePieces = numberOfAlivePieces + 1
-	
-	return numberOfAlivePieces
+	return pieces.size()
 
 func getActivePiece() -> Piece:
 	if activePieceStack.empty():

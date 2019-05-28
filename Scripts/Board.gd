@@ -68,7 +68,7 @@ func insertPiece(piece: Piece, cellCoordinates = null):
 	if cellCoordinates == null:
 		return false
 	
-	cells[cellCoordinates.y][cellCoordinates.x].content = piece
+	cells[cellCoordinates.y][cellCoordinates.x].content = piece.boardCellContent
 	
 	return true
 
@@ -100,7 +100,7 @@ func getCellCoordinatesFromPiece(piece: Piece):
 	for y in range(0, cells.size()):
 		var row = cells[y]
 		for x in range(0, row.size()):
-			if row[x].content == piece:
+			if row[x].content == piece.boardCellContent:
 				return Vector2(x, y)
 	
 	return null

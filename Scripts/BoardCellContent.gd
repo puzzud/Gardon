@@ -20,6 +20,8 @@ var alive: bool = true
 var user: BoardCellContent = null
 
 # warning-ignore:unused_class_variable
+var piece: Piece = null
+
 const movementDirections = [
 	Direction.LEFT_UP,
 	Direction.UP,
@@ -31,18 +33,8 @@ const movementDirections = [
 	Direction.RIGHT_DOWN
 ]
 
-# warning-ignore:unused_class_variable
-const moveDirectionAnimationNameSuffixes = {
-	Direction.LEFT_UP: "Up",
-	Direction.UP: "Up",
-	Direction.RIGHT_UP: "Up",
-	Direction.LEFT: "Left",
-	Direction.NONE: "Down",
-	Direction.RIGHT: "Right",
-	Direction.LEFT_DOWN: "Down",
-	Direction.DOWN: "Down",
-	Direction.RIGHT_DOWN: "Down"
-}
-
 func _ready():
 	pass
+
+func getMovementDirections():
+	return movementDirections

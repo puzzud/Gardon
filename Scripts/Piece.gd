@@ -1,8 +1,10 @@
-extends BoardCellContent
+extends Node2D
 class_name Piece
 
 # warning-ignore:unused_class_variable
 export(Vector2) var BoardCellOffset := Vector2(8, 7)
+
+var boardCellContent = null
 
 var moving: bool = false
 
@@ -12,8 +14,20 @@ var activated: bool = false
 
 var targetPiece: Piece = null
 
+const moveDirectionAnimationNameSuffixes = {
+	Direction.LEFT_UP: "Up",
+	Direction.UP: "Up",
+	Direction.RIGHT_UP: "Up",
+	Direction.LEFT: "Left",
+	Direction.NONE: "Down",
+	Direction.RIGHT: "Right",
+	Direction.LEFT_DOWN: "Down",
+	Direction.DOWN: "Down",
+	Direction.RIGHT_DOWN: "Down"
+}
+
 func _ready():
-	setTeamIndex(teamIndex)
+	setTeamIndex(boardCellContent.teamIndex)
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -24,11 +38,12 @@ func _process(delta):
 				attacking = false
 				targetPiece = null
 				
-				if user != null:
-					Global.game.setPieceActivated(user, false, false)
+				if boardCellContent.user != null:
+					Global.game.setPieceActivated(boardCellContent.user.piece, false, false)
 
+# warning-ignore:unused_argument
 func setTeamIndex(teamIndex):
-	self.teamIndex = teamIndex
+	pass
 
 func setActivated(activated: bool):
 	self.activated = activated
@@ -48,8 +63,6 @@ func setActivated(activated: bool):
 		
 		$AudioPlayers/Activate1.play(audioPlaybackPosition)
 	else:
-		user = null
-		
 		$AnimationPlayer.play("deactivate")
 		
 		if $AudioPlayers/Activate1.playing:
@@ -62,14 +75,11 @@ func setActivated(activated: bool):
 			
 		$AudioPlayers/Deactivate1.play(audioPlaybackPosition)
 
-func getMovementDirections():
-	return movementDirections
+func setPosition(position: Vector2):
+	global_position = position
 
 func moveToPosition(position: Vector2):
 	moving = true
-	
-	if user != null:
-		Global.game.setPieceActivated(user, false, false)
 	
 	$MoveTween.interpolate_property(self, "global_position", global_position, position, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$MoveTween.start()
@@ -122,8 +132,6 @@ func startDying():
 	$AudioPlayers/Hit1.play()
 
 func dyingAnimationFinished():
-	alive = false
-	
 	Global.game.removeProcessingPiece(self)
 	
 	self.queue_free()

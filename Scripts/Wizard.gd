@@ -7,7 +7,7 @@ const bodyTextureTeam1 = preload("res://Assets/Sprites/FarmerRed.tres")
 func _ready():
 	pass
 
-func setTeamIndex(teamIndex):
+func setTeamIndex(teamIndex: int):
 	.setTeamIndex(teamIndex)
 	
 	if teamIndex == 0:
@@ -34,7 +34,7 @@ func faceEnemyWizard():
 func getEnemyWizard() -> Wizard:
 	var enemyWizards := []
 	
-	for enemyTeamIndex in Global.game.getEnemyTeamIndices(teamIndex):
+	for enemyTeamIndex in Global.game.getEnemyTeamIndices(boardCellContent.teamIndex):
 		enemyWizards = enemyWizards + Global.game.getWizardsFromTeamIndex(enemyTeamIndex)
 	
 	if enemyWizards.empty():
