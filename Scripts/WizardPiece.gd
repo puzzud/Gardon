@@ -19,7 +19,7 @@ func onDeactivationFinished():
 	faceEnemyWizard()
 
 func faceEnemyWizard():
-	var enemyWizard := getEnemyWizard()
+	var enemyWizard: Wizard = boardCellContent.getEnemyWizard()
 	if enemyWizard == null:
 		if $AnimationPlayer.has_animation("idleDown"):
 			$AnimationPlayer.play("idleDown")
@@ -32,15 +32,3 @@ func faceEnemyWizard():
 	var animationName = "idle" + getAnimationNameSuffixFromMovementDirection(directionToEnemyWizard)
 	if $AnimationPlayer.has_animation(animationName):
 		$AnimationPlayer.play(animationName)
-
-func getEnemyWizard() -> Wizard:
-	var enemyWizards := []
-
-	for enemyTeamIndex in Global.game.getEnemyTeamIndices(boardCellContent.teamIndex):
-		enemyWizards = enemyWizards + Global.game.getWizardsFromTeamIndex(enemyTeamIndex)
-
-	if enemyWizards.empty():
-		return null
-
-	# Assume maximum of only one wizard per team.
-	return enemyWizards.front()
