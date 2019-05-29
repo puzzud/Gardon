@@ -132,25 +132,19 @@ func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
 	updateCaptionTextFromCellCoordinates(cellCoordinates)
 
 func onBoardCellHover(cellCoordinates: Vector2):
+	if $Ui.pauseBoardInteraction:
+		return
+	
 	cursorCellCoordinates = cellCoordinates
-	
-	if isGameOver:
-		return
-	
-	if !piecesThatAreProcessing.empty():
-		return
 	
 	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	$Cursor.visible = true
 
 func onBoardCellPress(cellCoordinates: Vector2):
+	if $Ui.pauseBoardInteraction:
+		return
+	
 	cursorCellCoordinates = cellCoordinates
-	
-	if isGameOver:
-		return
-	
-	if !piecesThatAreProcessing.empty():
-		return
 	
 	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	
@@ -306,6 +300,7 @@ func endGame(winningTeamIndex):
 	isGameOver = true
 	
 	$Ui.declareWinner(winningTeamIndex)
+	$Ui.pauseBoardInteraction = true
 	
 	$Timers/EndGameTimer.start()
 	
@@ -394,6 +389,8 @@ func removeActivePiece(piece = null):
 
 func addProcessingPiece(piece: Piece):
 	piecesThatAreProcessing.append(piece)
+	
+	$Ui.pauseBoardInteraction = true
 
 func removeProcessingPiece(piece: Piece):
 	var index = piecesThatAreProcessing.find(piece)
@@ -403,6 +400,8 @@ func removeProcessingPiece(piece: Piece):
 	piecesThatAreProcessing.remove(index)
 	
 	if piecesThatAreProcessing.empty():
+		$Ui.pauseBoardInteraction = false
+		
 		if activePieceStack.empty():
 			endTurn()
 

@@ -2,6 +2,8 @@ extends CanvasLayer
 
 const defaultCaptionTextColor: Color = Color("f4f4f4")
 
+var pauseBoardInteraction := false
+
 func _ready():
 	$CaptionMessageBox/Text.text = ""
 
