@@ -52,6 +52,17 @@ func clear():
 			var cell: BoardCell = row[x]
 			cell.clear()
 
+func getAllCellContents():
+	var cellContents = []
+	
+	for row in cells:
+		for x in range(0, row.size()):
+			var cell: BoardCell = row[x]
+			if cell.content != null:
+				cellContents.append(cell.content)
+	
+	return cellContents
+
 func getCellContent(cellCoordinates: Vector2):
 	# TODO: Do bound checking.
 	

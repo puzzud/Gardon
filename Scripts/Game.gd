@@ -70,22 +70,23 @@ func initializeBoard():
 				var type = cellContentInformation["type"]
 				var teamIndex = cellContentInformation["teamIndex"]
 				
-				var boardCellContent := BoardCellContent.new()
-				
-				boardCellContent.teamIndex = teamIndex
-				
+				var boardCellContent = null
 				var piece = null
 				
 				if type == "pawn":
+					boardCellContent = Pawn.new()
 					boardCellContent.movementRange = 1
 					boardCellContent.canAttack = false
 					boardCellContent.canUsePieces = false
 					piece = pawnScenePrefab.instance()
 				elif type == "wizard":
+					boardCellContent = Wizard.new()
 					boardCellContent.movementRange = 7
 					boardCellContent.canAttack = true
 					boardCellContent.canUsePieces = true
 					piece = wizardScenePrefab.instance()
+				
+				boardCellContent.teamIndex = teamIndex
 				
 				boardCellContent.piece = piece
 				piece.boardCellContent = boardCellContent
@@ -325,33 +326,32 @@ func getEnemyTeamIndices(teamIndex: int) -> Array:
 	return teamIndices
 
 func getWinningTeamIndex():
-	var team0Pieces = getTeamPieces(0)
-	var team1Pieces = getTeamPieces(1)
+	var team0BoardCellContents = getTeamBoardCellContents(0)
+	var team1BoardCellContents = getTeamBoardCellContents(1)
 	
-	var numberOfAliveTeam0Pieces = getNumberOfAlivePieces(team0Pieces)
-	var numberOfAliveTeam1Pieces = getNumberOfAlivePieces(team1Pieces)
-	
-	if numberOfAliveTeam0Pieces == 0:
+	if team0BoardCellContents.size() == 0:
 		return 1
-	elif numberOfAliveTeam1Pieces == 0:
+	elif team1BoardCellContents.size() == 0:
 		return 0
 	
-	if getWizardsFromPieces(team0Pieces).empty():
+	if getWizardsFromBoardCellContents(team0BoardCellContents).empty():
 		return 1
-	elif getWizardsFromPieces(team1Pieces).empty():
+	elif getWizardsFromBoardCellContents(team1BoardCellContents).empty():
 		return 0
 	
 	return -1
 
-func getTeamPieces(teamIndex: int) -> Array:
-	var teamNumber = teamIndex + 1
+func getTeamBoardCellContents(teamIndex: int, board = null) -> Array:
+	if board == null:
+		board = $Board
 	
-	var piecesNode = $Pieces
-	var teamPiecesNode = piecesNode.get_node("Team" + str(teamNumber))
-	if teamPiecesNode == null:
-		return []
+	var teamBoardCellContents = []
 	
-	return teamPiecesNode.get_children()
+	for boardCellContent in board.getAllCellContents():
+		if boardCellContent.teamIndex == teamIndex:
+			teamBoardCellContents.append(boardCellContent)
+	
+	return teamBoardCellContents
 
 func getWizards() -> Array:
 	var wizards := []
@@ -363,21 +363,18 @@ func getWizards() -> Array:
 	return wizards
 
 func getWizardsFromTeamIndex(teamIndex: int) -> Array:
-	var teamPieces = getTeamPieces(teamIndex)
-	var teamWizards = getWizardsFromPieces(teamPieces)
+	var teamBoardCellContents = getTeamBoardCellContents(teamIndex)
+	var teamWizards = getWizardsFromBoardCellContents(teamBoardCellContents)
 	return teamWizards
 
-func getWizardsFromPieces(pieces: Array) -> Array:
+func getWizardsFromBoardCellContents(boardCellContents: Array) -> Array:
 	var wizards := []
 	
-	for piece in pieces:
-		if piece is Wizard:
-			wizards.append(piece)
+	for boardCellContent in boardCellContents:
+		if boardCellContent is Wizard:
+			wizards.append(boardCellContent)
 	
 	return wizards
-
-func getNumberOfAlivePieces(pieces: Array):
-	return pieces.size()
 
 func getActivePiece() -> Piece:
 	if activePieceStack.empty():
@@ -415,7 +412,8 @@ func removeProcessingPiece(piece: Piece):
 
 func faceWizards():
 	for wizard in getWizards():
-		wizard.faceEnemyWizard()
+		var wizardPiece: WizardPiece = wizard.piece
+		wizardPiece.faceEnemyWizard()
 
 func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
 	var cellAction = $Board.getCellAction(cellCoordinates)

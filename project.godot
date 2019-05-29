@@ -39,10 +39,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Game.gd"
 }, {
-"base": "Piece",
+"base": "BoardCellContent",
 "class": "Pawn",
 "language": "GDScript",
 "path": "res://Scripts/Pawn.gd"
+}, {
+"base": "Piece",
+"class": "PawnPiece",
+"language": "GDScript",
+"path": "res://Scripts/PawnPiece.gd"
 }, {
 "base": "Node2D",
 "class": "Piece",
@@ -54,10 +59,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Title.gd"
 }, {
-"base": "Piece",
+"base": "BoardCellContent",
 "class": "Wizard",
 "language": "GDScript",
 "path": "res://Scripts/Wizard.gd"
+}, {
+"base": "Piece",
+"class": "WizardPiece",
+"language": "GDScript",
+"path": "res://Scripts/WizardPiece.gd"
 } ]
 _global_script_class_icons={
 "Board": "",
@@ -67,9 +77,11 @@ _global_script_class_icons={
 "Direction": "",
 "Game": "",
 "Pawn": "",
+"PawnPiece": "",
 "Piece": "",
 "TitleScreen": "",
-"Wizard": ""
+"Wizard": "",
+"WizardPiece": ""
 }
 
 [application]
