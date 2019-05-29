@@ -26,8 +26,6 @@ var teamTurnIndex = 0
 export(Array, String) var teamNames
 export(Array, Color) var teamColors
 
-var cursorCellCoordinates: Vector2 = Vector2(0, 0)
-
 var activePieceStack: Array = []
 
 var turnActionPerformed: bool = false
@@ -100,6 +98,10 @@ func initializeBoard():
 				if !$Board.insertPiece(piece):
 					printerr("Unable to insert piece into board: " + piece.name)
 
+func getBoard() -> Board:
+	var board: Board = $Board
+	return board
+
 func setTeamTurnIndex(teamTurnIndex: int):
 	self.teamTurnIndex = teamTurnIndex
 	
@@ -120,34 +122,11 @@ func getTeamName(teamIndex: int) -> String:
 func getTeamColor(teamIndex: int) -> Color:
 	return teamColors[teamIndex]
 
-func setCursorPositionFromCellCoordinates(cellCoordinates: Vector2):
-	$Cursor.cellCoordinates = cellCoordinates
-	
-	$Cursor.set_global_position($Board.getCellPosition(cellCoordinates) - Vector2(1.0, 1.0))
-	
-	var cellAction = $Board.getCellAction(cellCoordinates)
-	var cellHasAction = (cellAction != BoardCell.CellAction.NONE)
-	$Cursor.setFlashingColor(cellHasAction)
-	
-	updateCaptionTextFromCellCoordinates(cellCoordinates)
+func getCursor() -> Cursor:
+	var cursor: Cursor = $Cursor
+	return cursor
 
-func onBoardCellHover(cellCoordinates: Vector2):
-	if $Ui.pauseBoardInteraction:
-		return
-	
-	cursorCellCoordinates = cellCoordinates
-	
-	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
-	$Cursor.visible = true
-
-func onBoardCellPress(cellCoordinates: Vector2):
-	if $Ui.pauseBoardInteraction:
-		return
-	
-	cursorCellCoordinates = cellCoordinates
-	
-	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
-	
+func processCellAction(cellCoordinates: Vector2):
 	var cellAction = $Board.getCellAction(cellCoordinates)
 	
 	if cellAction == BoardCell.CellAction.MOVE:
@@ -217,7 +196,7 @@ func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = 
 		calculateCellActions()
 		$Board.overlayCellActions()
 		
-		updateCaptionTextFromCellCoordinates($Cursor.cellCoordinates)
+		$Ui.updateCaptionTextFromCellCoordinates($Cursor.cellCoordinates)
 
 func processPieceAttackingPiece(attackingPiece, targetPiece):
 	targetPiece.receiveDamage(5.0, attackingPiece)
@@ -286,9 +265,6 @@ func endTurn():
 	var nextTeamTurnIndex = teamTurnIndex + 1
 	if nextTeamTurnIndex > 1:
 		nextTeamTurnIndex = 0
-	
-	#$Cursor.visible = false
-	setCursorPositionFromCellCoordinates(cursorCellCoordinates)
 	
 	var winningTeamIndex = getWinningTeamIndex()
 	if winningTeamIndex < 0:
@@ -409,23 +385,6 @@ func faceWizards():
 	for wizard in getWizards():
 		var wizardPiece: WizardPiece = wizard.piece
 		wizardPiece.faceEnemyWizard()
-
-func updateCaptionTextFromCellCoordinates(cellCoordinates: Vector2):
-	var cellAction = $Board.getCellAction(cellCoordinates)
-	
-	var actionName = ""
-	var cellActionColor := Color("f4f4f4")
-	
-	if cellActionNames.has(cellAction):
-		actionName = cellActionNames[cellAction].to_upper()
-	
-	if !actionName.empty():
-		if cellActionColors.has(cellAction):
-			cellActionColor = cellActionColors[cellAction]
-		else:
-			printerr("No color for cell action: " + str(cellAction))
-	
-	$Ui.setCaptionText(actionName, cellActionColor)
 
 func onEndGameTimerTimeout():
 	#get_tree().reload_current_scene()

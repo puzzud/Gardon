@@ -53,8 +53,8 @@ stream = ExtResource( 6 )
 
 [node name="EndGame1" type="AudioStreamPlayer" parent="AudioPlayers"]
 stream = ExtResource( 7 )
-[connection signal="cellHover" from="Board" to="." method="onBoardCellHover"]
-[connection signal="cellPress" from="Board" to="." method="onBoardCellPress"]
+[connection signal="cellHover" from="Board" to="Ui" method="onBoardCellHover"]
+[connection signal="cellPress" from="Board" to="Ui" method="onBoardCellPress"]
 [connection signal="timeout" from="Timers/EndGameTimer" to="." method="onEndGameTimerTimeout"]
 
 [editable path="Ui"]

@@ -1,4 +1,5 @@
 extends Sprite
+class_name Cursor
 
 export(Color) var mainColor
 export(Color) var flashColor
