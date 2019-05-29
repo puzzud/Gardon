@@ -75,16 +75,12 @@ func initializeBoard():
 				
 				if type == "pawn":
 					boardCellContent = Pawn.new()
-					boardCellContent.movementRange = 1
-					boardCellContent.canAttack = false
-					boardCellContent.canUsePieces = false
 					piece = pawnScenePrefab.instance()
 				elif type == "wizard":
 					boardCellContent = Wizard.new()
-					boardCellContent.movementRange = 7
-					boardCellContent.canAttack = true
-					boardCellContent.canUsePieces = true
 					piece = wizardScenePrefab.instance()
+				
+				boardCellContent.initialize()
 				
 				boardCellContent.teamIndex = teamIndex
 				

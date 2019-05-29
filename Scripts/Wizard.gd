@@ -4,6 +4,13 @@ class_name Wizard
 func _ready():
 	pass
 
+func initialize():
+	.initialize()
+	
+	movementRange = 7
+	canAttack = true
+	canUsePieces = true
+
 func getEnemyWizard() -> Wizard:
 	var enemyWizards := []
 

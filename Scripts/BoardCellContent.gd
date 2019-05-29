@@ -36,5 +36,8 @@ const movementDirections = [
 func _ready():
 	pass
 
+func initialize():
+	pass
+
 func getMovementDirections():
 	return movementDirections
