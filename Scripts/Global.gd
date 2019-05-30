@@ -4,11 +4,21 @@ extends Node
 # warning-ignore:unused_class_variable
 var game: Game = null
 
+enum PlayerType {
+	COMPUTER,
+	HUMAN
+}
+
+var playerTypes = [PlayerType.HUMAN, PlayerType.HUMAN]
+
 # warning-ignore:unused_class_variable
-var numberOfHumanPlayers: int = 2
+var numberOfHumanPlayers: int = 0
 
 func _ready():
-	pass
+	numberOfHumanPlayers = 0
+	for playerType in playerTypes:
+		if playerType == PlayerType.HUMAN:
+			numberOfHumanPlayers = numberOfHumanPlayers + 1
 
 func getDirectionFromVector(vector: Vector2) -> int:
 	var direction = Direction.NONE

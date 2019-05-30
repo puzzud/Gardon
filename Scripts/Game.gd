@@ -102,19 +102,24 @@ func getBoard() -> Board:
 	var board: Board = $Board
 	return board
 
-func setTeamTurnIndex(teamTurnIndex: int):
+func setTeamTurnIndex(teamTurnIndex: int, simulate: bool = false):
 	self.teamTurnIndex = teamTurnIndex
 	
-	$Cursor.setMainColor(getTeamColor(teamTurnIndex))
-	
-	$Ui.indicateTeamTurn(teamTurnIndex)
-	
 	calculateCellActions()
-	$Board.overlayCellActions()
+	
+	if !simulate:
+		$Cursor.setMainColor(getTeamColor(teamTurnIndex))
+		$Ui.indicateTeamTurn(teamTurnIndex)
+		$Board.overlayCellActions()
 	
 	faceWizards()
 	
 	$AudioPlayers/StartTurn1.play()
+	
+	if Global.playerTypes[teamTurnIndex] == Global.PlayerType.HUMAN:
+		pass
+	elif Global.playerTypes[teamTurnIndex] == Global.PlayerType.COMPUTER:
+		performTurn(decideTurn(teamTurnIndex))
 
 func getTeamName(teamIndex: int) -> String:
 	return teamNames[teamIndex]
@@ -126,62 +131,81 @@ func getCursor() -> Cursor:
 	var cursor: Cursor = $Cursor
 	return cursor
 
-func processCellAction(cellCoordinates: Vector2):
+func processCellAction(cellCoordinates: Vector2, simulate: bool = false):
 	var cellAction = $Board.getCellAction(cellCoordinates)
 	
 	if cellAction == BoardCell.CellAction.MOVE:
-		var activePiece = getActivePiece()
+		processCellActionMove(cellCoordinates, simulate)
+	elif cellAction == BoardCell.CellAction.DEACTIVATE:
+		processCellActionDeactivate(cellCoordinates, simulate)
+	elif cellAction == BoardCell.CellAction.USE:
+		processCellActionUse(cellCoordinates, simulate)
+	elif cellAction == BoardCell.CellAction.ATTACK:
+		processCellActionAttack(cellCoordinates, simulate)
+	elif cellAction == BoardCell.CellAction.ACTIVATE:
+		processCellActionActivate(cellCoordinates, simulate)
+
+func processCellActionMove(cellCoordinates: Vector2, simulate: bool = false):
+	var activePiece = getActivePiece()
+	
+	if !simulate:
 		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-		$Board.removePiece(activePiece)
-		$Board.insertPiece(activePiece, cellCoordinates)
-		
-		var user = activePiece.boardCellContent.user
-		if user != null:
-			setPieceActivated(user.piece, false, false)
-		
 		addProcessingPiece(activePiece)
-		
-		$Board.clearCellActions()
+	
+	$Board.removePiece(activePiece)
+	$Board.insertPiece(activePiece, cellCoordinates)
+	
+	var user = activePiece.boardCellContent.user
+	if user != null:
+		setPieceActivated(user.piece, false, false)
+	
+	$Board.clearCellActions()
+	
+	if !simulate:
 		$Board.overlayCellActions()
 		$Cursor.setFlashingColor(false)
-		
-		return
 	
-	if cellAction == BoardCell.CellAction.DEACTIVATE:
-		var activePiece = getActivePiece()
-		setPieceActivated(activePiece, false)
-		
-		return
+	return
+
+func processCellActionDeactivate(cellCoordinates: Vector2, simulate: bool = false):
+	var activePiece = getActivePiece()
+	setPieceActivated(activePiece, false)
 	
-	if cellAction == BoardCell.CellAction.USE:
-		var activePiece = getActivePiece()
-		var cellPiece = $Board.getCellContent(cellCoordinates).piece
-		cellPiece.boardCellContent.user = activePiece.boardCellContent
-		setPieceActivated(cellPiece, true)
-		
-		return
+	return
+
+func processCellActionUse(cellCoordinates: Vector2, simulate: bool = false):
+	var activePiece = getActivePiece()
+	var cellPiece = $Board.getCellContent(cellCoordinates).piece
+	cellPiece.boardCellContent.user = activePiece.boardCellContent
+	setPieceActivated(cellPiece, true)
 	
-	if cellAction == BoardCell.CellAction.ATTACK:
-		var activePiece = getActivePiece()
-		var cellPiece = $Board.getCellContent(cellCoordinates).piece
+	return
+
+func processCellActionAttack(cellCoordinates: Vector2, simulate: bool = false):
+	var activePiece = getActivePiece()
+	var cellPiece = $Board.getCellContent(cellCoordinates).piece
+	
+	if !simulate:
 		activePiece.attack(cellPiece)
 		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
-		$Board.removePiece(activePiece)
-		$Board.insertPiece(activePiece, cellCoordinates)
-		
 		addProcessingPiece(activePiece)
-		
-		$Board.clearCellActions()
+	
+	$Board.removePiece(activePiece)
+	$Board.insertPiece(activePiece, cellCoordinates)
+	
+	$Board.clearCellActions()
+	
+	if !simulate:
 		$Board.overlayCellActions()
 		$Cursor.setFlashingColor(false)
-		
-		return
 	
-	if cellAction == BoardCell.CellAction.ACTIVATE:
-		var cellContent = $Board.getCellContent(cellCoordinates)
-		setPieceActivated(cellContent.piece, true)
-		
-		return
+	return
+
+func processCellActionActivate(cellCoordinates: Vector2, simulate: bool = false):
+	var cellContent = $Board.getCellContent(cellCoordinates)
+	setPieceActivated(cellContent.piece, true)
+	
+	return
 
 func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = true):
 	piece.setActivated(activated)
@@ -207,7 +231,7 @@ func calculateCellActions():
 		calculateCellActionsForPiece(activePiece)
 	else:
 		calculateCellActionsForTeam(teamTurnIndex)
-	
+
 func calculateCellActionsForTeam(teamIndex: int):
 	for y in range(0, $Board.cells.size()):
 		var row = $Board.cells[y]
@@ -259,16 +283,58 @@ func calculateCellActionsForPiece(piece: Piece):
 						$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.ATTACK)
 					break
 
-func endTurn():
-	turnActionPerformed = false
+func decideTurn(teamIndex: int) -> Turn:
+	return getBestTurn(teamIndex)
+
+func getBestTurn(teamIndex: int) -> Turn:
+	setTeamTurnIndex(teamIndex, true)
 	
-	var nextTeamTurnIndex = teamTurnIndex + 1
+	var possibleTurns = []
+	
+	for y in range(0, $Board.cells.size()):
+		var row = $Board.cells[y]
+		for x in range(0, row.size()):
+			var cell: BoardCell = row[x]
+			
+			var cellAction = cell.action
+			if cellAction == BoardCell.CellAction.ACTIVATE:
+				var turn = Turn.new()
+				turn.teamIndex = teamIndex
+				
+				var action = Action.new()
+				action.cellAction = cellAction
+				action.cellCoordinates = Vector2(x, y)
+				turn.actions.append(action)
+				
+				processCellAction(action.cellCoordinates)
+			
+			if [BoardCell.CellAction.ACTIVATE, BoardCell.CellAction.MOVE, BoardCell.CellAction.ATTACK].has(cellAction):
+				pass
+	
+	var bestTurnIndex = 0
+	
+	if possibleTurns.empty():
+		return null
+	
+	return possibleTurns[bestTurnIndex]
+
+func performTurn(turn: Turn):
+	if turn != null:
+		turn.free()
+
+func getNextTeamTurnIndex(currentTeamTurnIndex: int) -> int:
+	var nextTeamTurnIndex = currentTeamTurnIndex + 1
 	if nextTeamTurnIndex > 1:
 		nextTeamTurnIndex = 0
 	
+	return nextTeamTurnIndex
+
+func endTurn():
+	turnActionPerformed = false
+	
 	var winningTeamIndex = getWinningTeamIndex()
 	if winningTeamIndex < 0:
-		setTeamTurnIndex(nextTeamTurnIndex)
+		setTeamTurnIndex(getNextTeamTurnIndex(teamTurnIndex))
 	else:
 		endGame(winningTeamIndex)
 
