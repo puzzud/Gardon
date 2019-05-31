@@ -1,6 +1,8 @@
 extends Node
 #class_name Global
 
+const MaximumNumberOfPlayers := 2
+
 # warning-ignore:unused_class_variable
 var game: Game = null
 
@@ -9,7 +11,7 @@ enum PlayerType {
 	HUMAN
 }
 
-var playerTypes = [PlayerType.HUMAN, PlayerType.HUMAN]
+var playerTypes = [PlayerType.HUMAN, PlayerType.COMPUTER]
 
 # warning-ignore:unused_class_variable
 var numberOfHumanPlayers: int = 0

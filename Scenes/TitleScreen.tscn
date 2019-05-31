@@ -21,10 +21,36 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="1Player" type="Control" parent="."]
-visible = false
+[node name="Demo" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="0PlayersStart" type="Label" parent="Demo"]
+margin_left = 80.0
+margin_top = 120.0
+margin_right = 184.0
+margin_bottom = 128.0
+custom_fonts/font = ExtResource( 3 )
+text = "DEMO"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="0PlayersStartButton" parent="Demo" instance=ExtResource( 4 )]
+margin_left = 140.0
+margin_top = 117.675
+margin_right = 188.0
+margin_bottom = 135.675
+
+[node name="1Player" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="1PlayerStart" type="Label" parent="1Player"]
 margin_left = 64.0
@@ -33,17 +59,22 @@ margin_right = 184.0
 margin_bottom = 144.0
 custom_fonts/font = ExtResource( 3 )
 text = "1 PLAYER  START"
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="1PlayerStartButton" parent="1Player" instance=ExtResource( 4 )]
 margin_left = 140.0
 margin_top = 134.0
 margin_right = 188.0
 margin_bottom = 152.0
-disabled = true
 
 [node name="2Players" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="2PlayersStart" type="Label" parent="2Players"]
 margin_left = 64.0
@@ -52,6 +83,9 @@ margin_right = 184.0
 margin_bottom = 160.0
 custom_fonts/font = ExtResource( 3 )
 text = "2 PLAYERS START"
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="2PlayerStartButton" parent="2Players" instance=ExtResource( 4 )]
 margin_left = 140.0
@@ -90,5 +124,6 @@ margin_right = 224.0
 margin_bottom = 216.0
 custom_fonts/font = ExtResource( 3 )
 text = "WEEKLY GAME JAM : WEEK 97"
+[connection signal="button_up" from="Demo/0PlayersStartButton" to="." method="onStartButtonUp" binds= [ 0 ]]
 [connection signal="button_up" from="1Player/1PlayerStartButton" to="." method="onStartButtonUp" binds= [ 1 ]]
 [connection signal="button_up" from="2Players/2PlayerStartButton" to="." method="onStartButtonUp" binds= [ 2 ]]
