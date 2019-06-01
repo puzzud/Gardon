@@ -65,10 +65,10 @@ func initializeBoard():
 	]
 	
 	# Fill board with pieces.
-	for y in range(0, initialBoardCellContentInformation.size()):
+	for y in range(0, $Board.dimensions.y):
 		var row = initialBoardCellContentInformation[y]
 		
-		for x in range(0, row.size()):
+		for x in range(0, $Board.dimensions.x):
 			var cellContentInformation = row[x]
 			
 			if !cellContentInformation.empty():

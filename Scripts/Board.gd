@@ -4,6 +4,8 @@ class_name Board
 signal cellHover(cellCoordinates)
 signal cellPress(cellCoordinates)
 
+export(Vector2) var dimensions = Vector2(8, 8)
+
 var cells = []
 
 const cellActionOverlayTileNameTable = {
@@ -33,11 +35,11 @@ func initialize():
 	cells = []
 	
 # warning-ignore:unused_variable
-	for y in range(0, 8):
+	for y in range(0, dimensions.y):
 		var row = []
 		
 # warning-ignore:unused_variable
-		for x in range(0, 8):
+		for x in range(0, dimensions.x):
 			var newBoardCell = BoardCell.new()
 			
 			row.append(newBoardCell)
@@ -126,10 +128,10 @@ func getCellCoordinatesFromCellOffset(cellCoordinates: Vector2, cellOffset: Vect
 	
 func areCellCoordinatesOutOfBounds(cellCoordinates: Vector2):
 	# TODO: Make upper bounds actually use board dimensions.
-	if cellCoordinates.x < 0 || cellCoordinates.x >= 8:
+	if cellCoordinates.x < 0 || cellCoordinates.x >= dimensions.x:
 		return true
 	
-	if cellCoordinates.y < 0 || cellCoordinates.y >= 8:
+	if cellCoordinates.y < 0 || cellCoordinates.y >= dimensions.y:
 		return true
 	
 	return false
