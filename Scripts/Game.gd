@@ -53,7 +53,7 @@ func _process(delta):
 func initializeBoard():
 	$Board.initialize()
 	
-	var initialBoardCellContentInformation = [
+	var initialBoardCellContentInformation8x8 = [
 		[{}, {"type": "pawn", "teamIndex": 1}, {}, {"type": "wizard", "teamIndex": 1}, {}, {}, {"type": "pawn", "teamIndex": 1}, {}],
 		[{}, {}, {"type": "pawn", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}, {}, {}],
 		[{}, {}, {}, {}, {}, {}, {}, {}],
@@ -63,6 +63,18 @@ func initializeBoard():
 		[{}, {}, {"type": "pawn", "teamIndex": 0}, {"type": "pawn", "teamIndex": 0}, {"type": "pawn", "teamIndex": 0}, {"type": "pawn", "teamIndex": 0}, {}, {}],
 		[{}, {"type": "pawn", "teamIndex": 0}, {}, {}, {"type": "wizard", "teamIndex": 0}, {}, {"type": "pawn", "teamIndex": 0}, {}]
 	]
+	
+	var initialBoardCellContentInformation3x3 = [
+		[{}, {"type": "wizard", "teamIndex": 1}, {"type": "pawn", "teamIndex": 1}],
+		[{}, {"type": "pawn", "teamIndex": 1}, {}],
+		[{"type": "pawn", "teamIndex": 0}, {"type": "wizard", "teamIndex": 0}, {}]
+	]
+	
+	var initialBoardCellContentInformation = initialBoardCellContentInformation8x8
+	if $Board.dimensions.x == 8:
+		initialBoardCellContentInformation = initialBoardCellContentInformation8x8
+	elif $Board.dimensions.x == 3:
+		initialBoardCellContentInformation = initialBoardCellContentInformation3x3
 	
 	# Fill board with pieces.
 	for y in range(0, $Board.dimensions.y):
@@ -125,6 +137,7 @@ func setTeamTurnIndex(teamTurnIndex: int, simulate: bool = false):
 		
 		if Global.playerTypes[teamTurnIndex] == Global.PlayerType.COMPUTER:
 			var turn: Turn = decideTurn(teamTurnIndex)
+			self.teamTurnIndex = teamTurnIndex
 			performTurn(turn)
 			
 			# TODO: Remove when computer turn is executed.
@@ -314,7 +327,7 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 		var winningTeamIndex = getWinningTeamIndex()
 		if winningTeamIndex > -1:
 			turn = Turn.new()
-			if winningTeamIndex == positiveTeamIndex:
+			if teamIndex == positiveTeamIndex && teamIndex == winningTeamIndex:
 				turn.score = 10
 			else:
 				turn.score = -10
@@ -357,7 +370,7 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				var activePieceCellCoordinates = $Board.getCellCoordinatesFromPiece(activePiece)
 				
 				if cellAction == BoardCell.CellAction.MOVE:
-					#print(str(teamIndex) + "# Found move: " + str(x) + ":" + str(y))
+					print(str(teamIndex) + "# Found move: " + str(x) + ":" + str(y))
 					processCellActionMove(action.cellCoordinates, true)
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
@@ -369,7 +382,7 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					setActivePiece(activePiece)
 					
 				elif cellAction == BoardCell.CellAction.ATTACK:
-					#print(str(teamIndex) + "# Found attack: " + str(x) + ":" + str(y))
+					print(str(teamIndex) + "# Found attack: " + str(x) + ":" + str(y))
 					var cellPiece = $Board.getCellContent(action.cellCoordinates).piece
 					
 					processCellActionAttack(action.cellCoordinates, true)
@@ -413,8 +426,8 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 func performTurn(turn: Turn):
 	for action in turn.actions:
 		turnActions.append(action)
-		print(str(action.cellCoordinates))
-		print(cellActionNames[action.cellAction])
+		#print(str(action.cellCoordinates))
+		#print(cellActionNames[action.cellAction])
 	
 	if turn != null:
 		turn.free()
