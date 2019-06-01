@@ -345,7 +345,8 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 			
 			var cellAction = cell.action
 			if cellAction == BoardCell.CellAction.ACTIVATE:
-				#print(str(teamIndex) + "# Found activate: " + str(x) + ":" + str(y))
+				var cellPiece = $Board.getCellContent(Vector2(x, y)).piece
+				print(str(teamIndex) + "# Found activate: " + str(x) + ":" + str(y) + " \"" + cellPiece.name + "\"")
 				turn = Turn.new()
 				turn.teamIndex = teamIndex
 				
@@ -371,32 +372,31 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				
 				if cellAction == BoardCell.CellAction.MOVE:
 					print(str(teamIndex) + "# Found move: " + str(x) + ":" + str(y))
+					
 					processCellActionMove(action.cellCoordinates, true)
+					processCellActionDeactivate(action.cellCoordinates, true)
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
 					turn.score = getBestTurn(otherTeamTurnIndex, positiveTeamIndex, null, depth + 1).score
 					
-					setActivePiece(activePiece)
+					processCellActionActivate(action.cellCoordinates, true)
 					processCellActionMove(activePieceCellCoordinates, true)
-					
-					setActivePiece(activePiece)
 					
 				elif cellAction == BoardCell.CellAction.ATTACK:
 					print(str(teamIndex) + "# Found attack: " + str(x) + ":" + str(y))
+					
 					var cellPiece = $Board.getCellContent(action.cellCoordinates).piece
 					
 					processCellActionAttack(action.cellCoordinates, true)
+					processCellActionDeactivate(action.cellCoordinates, true)
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
 					turn.score = getBestTurn(otherTeamTurnIndex, positiveTeamIndex, null, depth + 1).score
 					
-					setActivePiece(activePiece)
+					processCellActionActivate(action.cellCoordinates, true)
 					processCellActionMove(activePieceCellCoordinates, true)
 					
-					setActivePiece(cellPiece)
-					processCellActionMove(action.cellCoordinates, true)
-					
-					setActivePiece(activePiece)
+					$Board.insertPiece(cellPiece, action.cellCoordinates)
 				
 				possibleTurns.append(turn)
 	
