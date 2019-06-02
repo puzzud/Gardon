@@ -180,3 +180,28 @@ func overlayCellActions():
 						printerr("No tile name for cell action: " + str(cellAction))
 			
 			$CellsOverlay.set_cell(x, y, tileIndex)
+
+func print():
+	print("--------")
+	
+	for y in range(0, cells.size()):
+		var line: String = ""
+		var row = cells[y]
+		for x in range(0, row.size()):
+			var content = row[x].content
+			if content == null:
+				line += "."
+			elif content is Wizard:
+				if content.teamIndex == 0:
+					line += "0"
+				else:
+					line += "1"
+			elif content is Pawn:
+				if content.teamIndex == 0:
+					line += "o"
+				else:
+					line += "x"
+		
+		print(line)
+	
+	print("--------")
