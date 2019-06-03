@@ -31,14 +31,11 @@ dimensions = Vector2( 3, 3 )
 [node name="Cursor" parent="." instance=ExtResource( 5 )]
 position = Vector2( 62, 38 )
 
-[node name="Pieces" type="Node2D" parent="."]
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="Pieces" type="YSort" parent="."]
 
-[node name="Team1" type="Node2D" parent="Pieces"]
+[node name="Team1" type="YSort" parent="Pieces"]
 
-[node name="Team0" type="Node2D" parent="Pieces"]
+[node name="Team0" type="YSort" parent="Pieces"]
 
 [node name="Timers" type="Node" parent="."]
 editor/display_folded = true
