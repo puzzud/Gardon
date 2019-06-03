@@ -331,10 +331,16 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 		var winningTeamIndex = getWinningTeamIndex()
 		if winningTeamIndex > -1:
 			turn = Turn.new()
-			if teamIndex == positiveTeamIndex && teamIndex == winningTeamIndex:
-				turn.score = 10
+			if teamIndex == positiveTeamIndex:
+				if winningTeamIndex == positiveTeamIndex:
+					turn.score = 10
+				else:
+					turn.score = -10
 			else:
-				turn.score = -10
+				if winningTeamIndex != positiveTeamIndex:
+					turn.score = -10
+				else:
+					turn.score = 10
 			
 			return turn
 	
@@ -347,6 +353,9 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 		for x in range(0, row.size()):
 			var cell: BoardCell = row[x]
 			
+			if depth == 0:
+				pass
+			
 			if turn == null && getActivePiece() != null:
 				turn = Turn.new()
 				var action := Action.new()
@@ -357,7 +366,8 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 			var cellAction = cell.action
 			if cellAction == BoardCell.CellAction.ACTIVATE:
 				var cellPiece = $Board.getCellContent(Vector2(x, y)).piece
-				print(str(teamIndex) + "# Found activate: " + str(x) + ":" + str(y) + " \"" + cellPiece.name + "\"")
+				if depth == 0:
+					print(str(teamIndex) + "# Found activate: " + str(x) + ":" + str(y) + " \"" + cellPiece.name + "\"")
 				
 				turn = Turn.new()
 				turn.teamIndex = teamIndex
@@ -369,7 +379,8 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				
 				processCellActionActivate(action.cellCoordinates, true)
 				
-				$Board.print()
+				if depth == 0:
+					$Board.print()
 				
 				possibleTurns.append(getBestTurn(teamIndex, positiveTeamIndex, turn, depth))
 				
@@ -386,12 +397,14 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				var activePieceCellCoordinates = $Board.getCellCoordinatesFromPiece(activePiece)
 				
 				if cellAction == BoardCell.CellAction.MOVE:
-					print(str(teamIndex) + "# Found move: " + str(x) + ":" + str(y))
+					if depth == 0:
+						print(str(teamIndex) + "# Found move: " + str(x) + ":" + str(y))
 					
 					processCellActionMove(action.cellCoordinates, true)
 					processCellActionDeactivate(action.cellCoordinates, true)
 					
-					$Board.print()
+					if depth == 0:
+						$Board.print()
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
 					turn.score = getBestTurn(otherTeamTurnIndex, positiveTeamIndex, null, depth + 1).score
@@ -400,18 +413,20 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					processCellActionMove(activePieceCellCoordinates, true)
 					#processCellActionDeactivate(activePieceCellCoordinates, true)
 					
-					print("Reversal")
-					$Board.print()
+					#print("Reversal")
+					#$Board.print()
 					
 				elif cellAction == BoardCell.CellAction.ATTACK:
-					print(str(teamIndex) + "# Found attack: " + str(x) + ":" + str(y))
+					if depth == 0:
+						print(str(teamIndex) + "# Found attack: " + str(x) + ":" + str(y))
 					
 					var cellPiece = $Board.getCellContent(action.cellCoordinates).piece
 					
 					processCellActionAttack(action.cellCoordinates, true)
 					processCellActionDeactivate(action.cellCoordinates, true)
 					
-					$Board.print()
+					if depth == 0:
+						$Board.print()
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
 					turn.score = getBestTurn(otherTeamTurnIndex, positiveTeamIndex, null, depth + 1).score
@@ -422,8 +437,8 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					
 					$Board.insertPiece(cellPiece, action.cellCoordinates)
 					
-					print("Reversal")
-					$Board.print()
+					#print("Reversal")
+					#$Board.print()
 				
 				possibleTurns.append(turn)
 				turn = null
