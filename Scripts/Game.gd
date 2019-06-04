@@ -321,21 +321,15 @@ func decideTurn(teamIndex: int) -> Turn:
 func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int = 0) -> Turn:
 	if turn == null:
 		#$Board.clearCellActions()
-		#activePieceStack.clear()
+		activePieceStack.clear()
 		
 		var winningTeamIndex = getWinningTeamIndex()
 		if winningTeamIndex > -1:
 			turn = Turn.new()
-			if teamIndex == positiveTeamIndex:
-				if winningTeamIndex == positiveTeamIndex:
-					turn.score = 10
-				else:
-					turn.score = -10
+			if winningTeamIndex == positiveTeamIndex:
+				turn.score = 10
 			else:
-				if winningTeamIndex != positiveTeamIndex:
-					turn.score = -10
-				else:
-					turn.score = 10
+				turn.score = -10
 			
 			return turn
 	
@@ -447,25 +441,27 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 	
 	if possibleTurns.empty():
 		turn = Turn.new()
+		turn.score = 0
 		return turn
 	
 	var bestTurn = null
-	var bestScore = 0
 	
 	if teamIndex == positiveTeamIndex:
-		bestScore = -100
+		var bestScore = -100
 		for possibleTurn in possibleTurns:
-			if possibleTurn != null:
-				if possibleTurn.score > bestScore:
-					bestScore = possibleTurn.score
-					bestTurn = possibleTurn
+			if possibleTurn.score > bestScore:
+				bestScore = possibleTurn.score
+				bestTurn = possibleTurn
 	else:
-		bestScore = 100
+		var worstScore = 100
 		for possibleTurn in possibleTurns:
-			if possibleTurn != null:
-				if possibleTurn.score < bestScore:
-					bestScore = possibleTurn.score
-					bestTurn = possibleTurn
+			if possibleTurn.score < worstScore:
+				worstScore = possibleTurn.score
+				bestTurn = possibleTurn
+	
+	if bestTurn == null:
+		turn = Turn.new()
+		turn.score = 0
 	
 	return bestTurn
 
