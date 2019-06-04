@@ -330,7 +330,7 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 			
 			return turn
 	
-	if depth > 3:
+	if depth > 2:
 		turn = Turn.new()
 		turn.score = 0
 		return turn
