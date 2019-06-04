@@ -460,9 +460,22 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				worstScore = possibleTurn.score
 				bestTurn = possibleTurn
 	
-	if bestTurn == null:
-		turn = Turn.new()
-		turn.score = 0
+	var randomizeTurnTies := false
+	if randomizeTurnTies:
+		if possibleTurns.size() > 1:
+			var allSameScores := true
+			var previousScore: int = possibleTurns[0].score
+			for i in range(1, possibleTurns.size()):
+				if possibleTurns[i].score != previousScore:
+					allSameScores = false
+					break
+				else:
+					previousScore = possibleTurns[i].score
+			
+			if allSameScores:
+				randomize()
+				var i = randi() & range(0, possibleTurns.size() - 1).size()
+				bestTurn = possibleTurns[i]
 	
 	return bestTurn
 
