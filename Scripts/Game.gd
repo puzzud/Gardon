@@ -323,11 +323,6 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 		#$Board.clearCellActions()
 		#activePieceStack.clear()
 		
-		if depth > 4:
-			turn = Turn.new()
-			turn.score = 0
-			return turn
-		
 		var winningTeamIndex = getWinningTeamIndex()
 		if winningTeamIndex > -1:
 			turn = Turn.new()
@@ -343,6 +338,11 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					turn.score = 10
 			
 			return turn
+	
+	if depth > 4:
+		turn = Turn.new()
+		turn.score = 0
+		return turn
 	
 	setTeamTurnIndex(teamIndex, true)
 	
