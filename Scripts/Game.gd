@@ -315,14 +315,11 @@ func calculateCellActionsForPiece(piece: Piece):
 					break
 
 func decideTurn(teamIndex: int) -> Turn:
-	$Board.print()
+	#$Board.print()
 	return getBestTurn(teamIndex, teamIndex, null)
 
 func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int = 0) -> Turn:
 	if turn == null:
-		#$Board.clearCellActions()
-		activePieceStack.clear()
-		
 		var winningTeamIndex = getWinningTeamIndex()
 		if winningTeamIndex > -1:
 			turn = Turn.new()
@@ -331,12 +328,19 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 			else:
 				turn.score = -10
 			
+			#$Board.clearCellActions()
+			#activePieceStack.clear()
+			
 			return turn
 	
 	if depth > 4:
 		turn = Turn.new()
 		turn.score = 0
 		return turn
+	
+	#if turn == null:
+		#$Board.clearCellActions()
+		#activePieceStack.clear()
 	
 	setTeamTurnIndex(teamIndex, true)
 	
@@ -374,12 +378,13 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				processCellActionActivate(action.cellCoordinates, true)
 				
 				if depth == 0:
-					$Board.print()
+					#$Board.print()
+					pass
 				
 				possibleTurns.append(getBestTurn(teamIndex, positiveTeamIndex, turn, depth))
 				
-				#if getActivePiece() != null:
-				#	processCellActionDeactivate(action.cellCoordinates, true)
+				activePieceStack.clear()
+				calculateCellActions()
 			
 			elif cellAction == BoardCell.CellAction.MOVE || cellAction == BoardCell.CellAction.ATTACK:
 				var action := Action.new()
@@ -398,10 +403,14 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					processCellActionDeactivate(action.cellCoordinates, true)
 					
 					if depth == 0:
-						$Board.print()
+						#$Board.print()
+						pass
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
 					turn.score = getBestTurn(otherTeamTurnIndex, positiveTeamIndex, null, depth + 1).score
+					
+					activePieceStack.clear()
+					calculateCellActions()
 					
 					processCellActionActivate(action.cellCoordinates, true)
 					processCellActionMove(activePieceCellCoordinates, true)
@@ -420,10 +429,14 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					processCellActionDeactivate(action.cellCoordinates, true)
 					
 					if depth == 0:
-						$Board.print()
+						#$Board.print()
+						pass
 					
 					var otherTeamTurnIndex = getNextTeamTurnIndex(teamIndex)
 					turn.score = getBestTurn(otherTeamTurnIndex, positiveTeamIndex, null, depth + 1).score
+					
+					activePieceStack.clear()
+					calculateCellActions()
 					
 					processCellActionActivate(action.cellCoordinates, true)
 					processCellActionMove(activePieceCellCoordinates, true)
