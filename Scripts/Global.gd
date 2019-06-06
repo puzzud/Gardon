@@ -1,6 +1,8 @@
 extends Node
 #class_name Global
 
+var debug = 0
+
 const MaximumNumberOfPlayers := 2
 
 # warning-ignore:unused_class_variable
