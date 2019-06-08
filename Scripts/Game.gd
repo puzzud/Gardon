@@ -47,7 +47,7 @@ func _ready():
 
 func _process(delta):
 	while !turnActions.empty():
-		var turnAction: Action = turnActions.pop_front()
+		var turnAction: TurnAction = turnActions.pop_front()
 		processCellAction(turnAction.cellCoordinates)
 
 func initializeBoard():
@@ -358,10 +358,10 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 			
 			if turn == null && getActivePiece() != null:
 				turn = Turn.new()
-				var action := Action.new()
-				action.cellAction = BoardCell.CellAction.ACTIVATE
-				action.cellCoordinates = $Board.getCellCoordinatesFromPiece(getActivePiece())
-				turn.actions.append(action)
+				var turnAction := TurnAction.new()
+				turnAction.cellAction = BoardCell.CellAction.ACTIVATE
+				turnAction.cellCoordinates = $Board.getCellCoordinatesFromPiece(getActivePiece())
+				turn.actions.append(turnAction)
 			
 			var cellAction = cell.action
 			if cellAction == BoardCell.CellAction.ACTIVATE:
@@ -374,12 +374,12 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				turn = Turn.new()
 				turn.teamIndex = teamIndex
 				
-				var action := Action.new()
-				action.cellAction = cellAction
-				action.cellCoordinates = Vector2(x, y)
-				turn.actions.append(action)
+				var turnAction := TurnAction.new()
+				turnAction.cellAction = cellAction
+				turnAction.cellCoordinates = Vector2(x, y)
+				turn.actions.append(turnAction)
 				
-				processCellActionActivate(action.cellCoordinates, true)
+				processCellActionActivate(turnAction.cellCoordinates, true)
 				
 				if Global.debug:
 					if depth == 0:
@@ -397,15 +397,15 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					if depth == 0:
 						print(str(teamIndex) + "# Found use: " + str(x) + ":" + str(y) + " \"" + cellPiece.name + "\"")
 				
-				var action := Action.new()
-				action.cellAction = cellAction
-				action.cellCoordinates = Vector2(x, y)
-				turn.actions.append(action)
+				var turnAction := TurnAction.new()
+				turnAction.cellAction = cellAction
+				turnAction.cellCoordinates = Vector2(x, y)
+				turn.actions.append(turnAction)
 				
 				var activePiece = getActivePiece()
 				var activePieceCellCoordinates = $Board.getCellCoordinatesFromPiece(activePiece)
 				
-				processCellActionUse(action.cellCoordinates, true)
+				processCellActionUse(turnAction.cellCoordinates, true)
 				
 				if Global.debug:
 					if depth == 0:
@@ -419,10 +419,10 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				calculateCellActions()
 			
 			elif cellAction == BoardCell.CellAction.MOVE || cellAction == BoardCell.CellAction.ATTACK:
-				var action := Action.new()
-				action.cellAction = cellAction
-				action.cellCoordinates = Vector2(x, y)
-				turn.actions.append(action)
+				var turnAction := TurnAction.new()
+				turnAction.cellAction = cellAction
+				turnAction.cellCoordinates = Vector2(x, y)
+				turn.actions.append(turnAction)
 				
 				var activePiece = getActivePiece()
 				var activePieceCellCoordinates = $Board.getCellCoordinatesFromPiece(activePiece)
@@ -433,8 +433,8 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 						if depth == 0:
 							print(str(teamIndex) + "# Found move: " + str(x) + ":" + str(y))
 					
-					processCellActionMove(action.cellCoordinates, true)
-					processCellActionDeactivate(action.cellCoordinates, true)
+					processCellActionMove(turnAction.cellCoordinates, true)
+					processCellActionDeactivate(turnAction.cellCoordinates, true)
 					
 					if Global.debug:
 						if depth == 0:
@@ -446,7 +446,7 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					activePieceStack.clear()
 					calculateCellActions()
 					
-					processCellActionActivate(action.cellCoordinates, true)
+					processCellActionActivate(turnAction.cellCoordinates, true)
 					processCellActionMove(activePieceCellCoordinates, true)
 					
 				elif cellAction == BoardCell.CellAction.ATTACK:
@@ -455,10 +455,10 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 						if depth == 0:
 							print(str(teamIndex) + "# Found attack: " + str(x) + ":" + str(y))
 					
-					var cellPiece = $Board.getCellContent(action.cellCoordinates).piece
+					var cellPiece = $Board.getCellContent(turnAction.cellCoordinates).piece
 					
-					processCellActionAttack(action.cellCoordinates, true)
-					processCellActionDeactivate(action.cellCoordinates, true)
+					processCellActionAttack(turnAction.cellCoordinates, true)
+					processCellActionDeactivate(turnAction.cellCoordinates, true)
 					
 					if Global.debug:
 						if depth == 0:
@@ -470,10 +470,10 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 					activePieceStack.clear()
 					calculateCellActions()
 					
-					processCellActionActivate(action.cellCoordinates, true)
+					processCellActionActivate(turnAction.cellCoordinates, true)
 					processCellActionMove(activePieceCellCoordinates, true)
 					
-					$Board.insertPiece(cellPiece, action.cellCoordinates)
+					$Board.insertPiece(cellPiece, turnAction.cellCoordinates)
 				
 				possibleTurns.append(turn)
 				turn = null
