@@ -17,9 +17,6 @@ export(bool) var canUsePieces = false
 var alive: bool = true
 
 # warning-ignore:unused_class_variable
-var user: BoardCellContent = null
-
-# warning-ignore:unused_class_variable
 var piece: Piece = null
 
 const movementDirections = [

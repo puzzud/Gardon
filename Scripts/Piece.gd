@@ -37,9 +37,6 @@ func _process(delta):
 				Global.game.processPieceAttackingPiece(self, targetPiece)
 				attacking = false
 				targetPiece = null
-				
-				if boardCellContent.user != null:
-					Global.game.setPieceActivated(boardCellContent.user.piece, false, false)
 
 # warning-ignore:unused_argument
 func setTeamIndex(teamIndex):

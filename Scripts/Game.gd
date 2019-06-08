@@ -183,15 +183,16 @@ func processCellActionMove(cellCoordinates: Vector2, simulate: bool = false):
 		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 		addProcessingPiece(activePiece)
 	else:
-		if activePiece.boardCellContent.user != null:
-			setPieceActivated(activePiece.boardCellContent.user.piece, false, !simulate, simulate)
+		var boardCellContentUser = getBoardCellContentUser(activePiece.boardCellContent)
+		if boardCellContentUser != null:
+			setPieceActivated(boardCellContentUser.piece, false, !simulate, simulate)
 	
 	$Board.removePiece(activePiece)
 	$Board.insertPiece(activePiece, cellCoordinates)
 	
-	var user = activePiece.boardCellContent.user
-	if user != null:
-		setPieceActivated(user.piece, false, false, simulate)
+	var boardCellContentUser = getBoardCellContentUser(activePiece.boardCellContent)
+	if boardCellContentUser != null:
+		setPieceActivated(boardCellContentUser.piece, false, false, simulate)
 	
 	$Board.clearCellActions()
 	
@@ -208,9 +209,7 @@ func processCellActionDeactivate(cellCoordinates: Vector2, simulate: bool = fals
 	return
 
 func processCellActionUse(cellCoordinates: Vector2, simulate: bool = false):
-	var activePiece = getActivePiece()
 	var cellPiece = $Board.getCellContent(cellCoordinates).piece
-	cellPiece.boardCellContent.user = activePiece.boardCellContent
 	setPieceActivated(cellPiece, true, !simulate, simulate)
 	
 	return
@@ -224,8 +223,9 @@ func processCellActionAttack(cellCoordinates: Vector2, simulate: bool = false):
 		activePiece.moveToPosition($Board.getCellPosition(cellCoordinates) + activePiece.BoardCellOffset)
 		addProcessingPiece(activePiece)
 	else:
-		if activePiece.boardCellContent.user != null:
-			setPieceActivated(activePiece.boardCellContent.user.piece, false, !simulate, simulate)
+		var boardCellContentUser = getBoardCellContentUser(activePiece.boardCellContent)
+		if boardCellContentUser != null:
+			setPieceActivated(boardCellContentUser.piece, false, !simulate, simulate)
 	
 	$Board.removePiece(activePiece)
 	$Board.insertPiece(activePiece, cellCoordinates)
@@ -251,7 +251,6 @@ func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = 
 	if activated:
 		setActivePiece(piece)
 	else:
-		piece.boardCellContent.user = null
 		removeActivePiece(piece)
 	
 	if updateCellActions:
@@ -262,8 +261,12 @@ func setPieceActivated(piece: Piece, activated: bool, updateCellActions: bool = 
 			
 			$Ui.updateCaptionTextFromCellCoordinates($Cursor.cellCoordinates)
 
-func processPieceAttackingPiece(attackingPiece, targetPiece):
+func processPieceAttackingPiece(attackingPiece: Piece, targetPiece: Piece):
 	targetPiece.receiveDamage(5.0, attackingPiece)
+	
+	var boardCellContentUser = getBoardCellContentUser(attackingPiece.boardCellContent)
+	if boardCellContentUser != null:
+		setPieceActivated(boardCellContentUser.piece, false, false)
 
 func calculateCellActions():
 	var activePiece = getActivePiece()
@@ -295,14 +298,15 @@ func calculateCellActionsForPiece(piece: Piece):
 	$Board.setCellAction(cellCoordinates, BoardCell.CellAction.DEACTIVATE)
 	
 	var boardCellContent = piece.boardCellContent
+	var boardCellContentUser = getBoardCellContentUser(boardCellContent)
+	
+	var movementRange = boardCellContent.movementRange
+	if boardCellContentUser != null:
+		movementRange = 7 # TODO: Determine this in a better way.
 	
 	var pieceMovementDirections = boardCellContent.getMovementDirections()
 	for movementDirection in pieceMovementDirections:
 		var movementDirectionCellOffset = $Board.getCellOffsetFromDirection(movementDirection)
-		
-		var movementRange = boardCellContent.movementRange
-		if boardCellContent.user != null:
-			movementRange = 7 # TODO: Determine this in a better way.
 		
 		for distance in range(1, movementRange + 1):
 			var scaledMovementDirectionCellOffset = movementDirectionCellOffset * distance
@@ -322,7 +326,7 @@ func calculateCellActionsForPiece(piece: Piece):
 				else:
 					if boardCellContent.canAttack:
 						$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.ATTACK)
-					elif boardCellContent.user != null && boardCellContent.user.canAttack:
+					elif boardCellContentUser != null && boardCellContentUser.canAttack:
 						$Board.setCellAction(offsetCellCoordinates, BoardCell.CellAction.ATTACK)
 					break
 
@@ -413,7 +417,6 @@ func getBestTurn(teamIndex: int, positiveTeamIndex: int, turn: Turn, depth: int 
 				
 				possibleTurns.append(getBestTurn(teamIndex, positiveTeamIndex, turn, depth))
 				
-				cellPiece.boardCellContent.user = null
 				activePieceStack.clear()
 				processCellActionActivate(activePieceCellCoordinates, true)
 				calculateCellActions()
@@ -634,6 +637,22 @@ func removeActivePiece(piece = null):
 		var index = activePieceStack.find(piece)
 		if index > -1:
 			activePieceStack.remove(index)
+
+func getBoardCellContentUser(boardCellContent: BoardCellContent) -> BoardCellContent:
+	if activePieceStack.size() < 2:
+		return null
+	
+	var piece = boardCellContent.piece
+	
+	var index = activePieceStack.find(piece)
+	if index < 0:
+		return null
+	
+	index += 1
+	if index >= activePieceStack.size():
+		return null
+	
+	return activePieceStack[index].boardCellContent
 
 func addProcessingPiece(piece: Piece):
 	piecesThatAreProcessing.append(piece)
